@@ -1,0 +1,140 @@
+@use 'sass:map';
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$button-gap: 10px;
+$button-arrow-width: 24px;
+$button-arrow-height: 16px;
+$button-transition: 200ms ease-out;
+
+$button-primary: (
+  min-height: 60px,
+  min-height-mobile: 52px,
+  padding: 16px 26px,
+  padding-mobile: 4px 16px,
+  radius: 0,
+  font-size: font-size(button),
+  font-size-mobile: font-size-mobile(button),
+  line-height: 1,
+  font-weight: $font-weight-semibold,
+  font-weight-hover: $font-weight-bold,
+);
+
+$button-secondary: (
+  min-height: 52px,
+  min-height-mobile: 52px,
+  padding: 16px 26px,
+  padding-mobile: 4px 16px,
+  radius: 5px,
+  font-size: font-size(label),
+  font-size-mobile: font-size(h6),
+  line-height: 1,
+  font-weight: $font-weight-medium,
+  font-weight-hover: $font-weight-medium,
+);
+
+$button-variants: (
+  primary-green: map.merge(
+      $button-primary,
+      (
+        background: $color-green-olive,
+        background-hover: $color-green-hover,
+        color: $color-cream,
+        color-hover: $color-white,
+      )
+    ),
+  primary-cream: map.merge(
+      $button-primary,
+      (
+        background: $color-cream,
+        background-hover: $color-cream-hover,
+        color: $color-green-bright,
+        color-hover: $color-green-bright,
+      )
+    ),
+  secondary-green: map.merge(
+      $button-secondary,
+      (
+        background: transparent,
+        background-hover: rgba($color-green-olive, 0.1),
+        color: $color-green-olive,
+        color-hover: $color-green-olive,
+      )
+    ),
+  secondary-cream: map.merge(
+      $button-secondary,
+      (
+        background: transparent,
+        background-hover: rgba($color-cream-hover, 0.2),
+        color: $color-cream,
+        color-hover: $color-cream,
+      )
+    ),
+);
+
+.button {
+  @include flex-center;
+  gap: $button-gap;
+  box-sizing: border-box;
+  border: none;
+  font-family: $font-family-base;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color $button-transition,
+    color $button-transition;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  // The bold copy of the label is invisible but keeps its width, so the button does not grow
+  // when the label turns bold on hover.
+  &__label {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+
+    &::after {
+      content: attr(data-label);
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+      font-weight: var(--button-font-weight-hover);
+      user-select: none;
+    }
+  }
+
+  &__arrow {
+    flex-shrink: 0;
+    width: $button-arrow-width;
+    height: $button-arrow-height;
+  }
+}
+
+@each $name, $variant in $button-variants {
+  .button--#{$name} {
+    --button-font-weight-hover: #{map.get($variant, font-weight-hover)};
+    min-height: map.get($variant, min-height);
+    padding: map.get($variant, padding);
+    border-radius: map.get($variant, radius);
+    background-color: map.get($variant, background);
+    color: map.get($variant, color);
+    font-size: map.get($variant, font-size);
+    font-weight: map.get($variant, font-weight);
+    line-height: map.get($variant, line-height);
+
+    @include hover-enabled {
+      background-color: map.get($variant, background-hover);
+      color: map.get($variant, color-hover);
+      font-weight: map.get($variant, font-weight-hover);
+    }
+
+    @include mobile {
+      min-height: map.get($variant, min-height-mobile);
+      padding: map.get($variant, padding-mobile);
+      font-size: map.get($variant, font-size-mobile);
+    }
+  }
+}

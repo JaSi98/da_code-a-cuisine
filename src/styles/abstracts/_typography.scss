@@ -1,0 +1,41 @@
+@use 'sass:map';
+
+$font-family-base: 'Quicksand', sans-serif;
+
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$font-sizes: (
+  h1: 104px,
+  h2: 54px,
+  h3: 48px,
+  h4: 40px,
+  card-headline: 28px,
+  h5: 24px,
+  button: 24px,
+  label: 20px,
+  h6: 18px,
+  text-large: 18px,
+  text: 16px,
+  small: 14px,
+);
+
+$font-sizes-mobile: (
+  h1: 64px,
+  h2: 32px,
+  h3: 24px,
+  h4: 18px,
+  button: 16px,
+);
+
+/// Returns the desktop font size of a text style, e.g. font-size(h2).
+@function font-size($name) {
+  @return map.get($font-sizes, $name);
+}
+
+/// Returns the mobile font size of a text style, e.g. font-size-mobile(h1).
+@function font-size-mobile($name) {
+  @return map.get($font-sizes-mobile, $name);
+}

@@ -1,0 +1,27 @@
+// Temporary component preview for review; removed after approval.
+@use '../styles/abstracts/colors' as *;
+@use '../styles/abstracts/mixins' as *;
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+
+  &__area {
+    padding: 24px;
+
+    &--dark {
+      @include focus-ring-on-dark;
+      background-color: $color-green-olive;
+      color: $color-cream;
+    }
+  }
+
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+  }
+}

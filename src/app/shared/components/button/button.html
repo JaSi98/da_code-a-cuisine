@@ -1,0 +1,24 @@
+@if (link(); as route) {
+  <a class="button" [class]="modifierClass()" [routerLink]="route">
+    <ng-container [ngTemplateOutlet]="content" />
+  </a>
+} @else {
+  <button
+    class="button"
+    [class]="modifierClass()"
+    [type]="type()"
+    [disabled]="isDisabled()"
+    (click)="emitClick()"
+  >
+    <ng-container [ngTemplateOutlet]="content" />
+  </button>
+}
+
+<ng-template #content>
+  <span class="button__label" [attr.data-label]="label()">{{ label() }}</span>
+  @if (hasArrow()) {
+    <svg class="button__arrow" viewBox="0 0 24 16" aria-hidden="true">
+      <use href="assets/icons/arrow-right.svg#icon"></use>
+    </svg>
+  }
+</ng-template>

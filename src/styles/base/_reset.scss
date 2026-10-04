@@ -1,0 +1,17 @@
+@use '../abstracts/colors' as *;
+@use '../abstracts/typography' as *;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: $color-green-dark;
+  font-family: $font-family-base;
+  font-size: font-size(text);
+  // User texts may contain very long words; they break instead of widening the layout.
+  overflow-wrap: anywhere;
+}
