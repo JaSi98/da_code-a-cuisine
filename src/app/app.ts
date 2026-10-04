@@ -1,25 +1,15 @@
 import { Component, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 
-import { Input } from './shared/components/input/input';
+import { Button } from './shared/components/button/button';
+import { SiteHeader } from './shared/components/site-header/site-header';
 
 @Component({
-  imports: [RouterOutlet, ReactiveFormsModule, Input],
+  imports: [RouterOutlet, Button, SiteHeader],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
 })
 export class App {
   protected readonly title = signal('code-a-cuisine');
-  // Temporary preview state; removed after approval.
-  protected readonly previewName = new FormControl('', { nonNullable: true });
-  protected readonly previewAmount = new FormControl('', { nonNullable: true });
-  protected readonly previewNameValue = toSignal(this.previewName.valueChanges, {
-    initialValue: '',
-  });
-  protected readonly previewAmountValue = toSignal(this.previewAmount.valueChanges, {
-    initialValue: '',
-  });
 }

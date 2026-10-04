@@ -1,11 +1,18 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
-  <section class="preview__area preview__narrow">
-    <h2>Input</h2>
-    <app-input label="Ingredient" placeholder="e.g. Pasta" [formControl]="previewName" />
-    <app-input label="Amount" type="number" placeholder="100" [formControl]="previewAmount" />
-    <app-input ariaLabel="Without label" placeholder="Field without visible label" />
-    <p>Values: {{ previewNameValue() }} / {{ previewAmountValue() }}</p>
+  <section class="preview__area">
+    <h2>Site header – green, with back link</h2>
+    <app-site-header backLink="/" backLabel="Back to results" />
+  </section>
+  <section class="preview__area preview__area--dark">
+    <h2>Site header – cream, with back link and button slot</h2>
+    <app-site-header variant="cream" backLink="/" backLabel="Back to cookbook">
+      <app-button variant="primary-cream" label="Get started" />
+    </app-site-header>
+  </section>
+  <section class="preview__area">
+    <h2>Site header – logo only</h2>
+    <app-site-header />
   </section>
 </main>
 <router-outlet />

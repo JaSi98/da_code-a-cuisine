@@ -1,0 +1,22 @@
+<header class="site-header" [class.site-header--cream]="variant() === 'cream'">
+  <a class="site-header__logo" routerLink="/">
+    <img
+      class="site-header__logo-image"
+      [src]="logoSource()"
+      alt="Code à Cuisine – Home"
+      width="142"
+      height="48"
+    />
+  </a>
+  @if (backLink(); as link) {
+    <a class="site-header__back" [routerLink]="link">
+      <svg class="site-header__back-arrow" viewBox="0 0 20 14" aria-hidden="true">
+        <use href="assets/icons/arrow-left.svg#icon"></use>
+      </svg>
+      <span class="site-header__back-label">{{ backLabel() }}</span>
+    </a>
+  }
+  <div class="site-header__actions">
+    <ng-content />
+  </div>
+</header>
