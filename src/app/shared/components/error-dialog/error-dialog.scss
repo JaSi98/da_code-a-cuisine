@@ -1,0 +1,89 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$error-dialog-width: 567px;
+$error-dialog-page-gutter: 16px;
+$error-dialog-radius: 30px;
+$error-dialog-padding: 44px 64px 64px;
+$error-dialog-padding-mobile: 32px 24px 40px;
+$error-dialog-gap: 24px;
+$error-dialog-close-size: 24px;
+$error-dialog-message-line-height: 26px;
+$error-dialog-backdrop-opacity: 0.4;
+$error-dialog-enter-duration: 400ms;
+
+// The dialog slides in from the right edge of the screen.
+@keyframes error-dialog-enter {
+  from {
+    transform: translateX(100vw);
+  }
+}
+
+.error-dialog {
+  @include focus-ring-on-dark;
+  box-sizing: border-box;
+  width: min(#{$error-dialog-width}, calc(100% - 2 * #{$error-dialog-page-gutter}));
+  max-width: none;
+  padding: 0;
+  border: none;
+  border-radius: $error-dialog-radius;
+  background-color: $color-green-olive;
+  color: $color-cream;
+  font-family: $font-family-base;
+
+  &[open] {
+    animation: error-dialog-enter $error-dialog-enter-duration linear;
+  }
+
+  &::backdrop {
+    background-color: rgba($color-green-shadow, $error-dialog-backdrop-opacity);
+  }
+
+  // The padding sits on an inner element, so clicks on the dialog itself only come from the backdrop.
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $error-dialog-gap;
+    padding: $error-dialog-padding;
+
+    @include mobile {
+      padding: $error-dialog-padding-mobile;
+    }
+  }
+
+  &__close {
+    @include flex-center;
+    align-self: flex-end;
+    width: $error-dialog-close-size;
+    height: $error-dialog-close-size;
+    padding: 0;
+    border: none;
+    background: none;
+    color: $color-cream;
+    cursor: pointer;
+  }
+
+  &__close-icon {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: font-size(card-headline);
+    font-weight: $font-weight-semibold;
+    line-height: 1;
+  }
+
+  &__message {
+    margin: 0;
+    font-size: font-size(text-large);
+    font-weight: $font-weight-semibold;
+    line-height: $error-dialog-message-line-height;
+  }
+
+  &__action {
+    align-self: flex-start;
+  }
+}

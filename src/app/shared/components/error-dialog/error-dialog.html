@@ -1,0 +1,27 @@
+<dialog
+  #dialog
+  class="error-dialog"
+  role="alertdialog"
+  [attr.aria-labelledby]="titleId"
+  [attr.aria-describedby]="messageId"
+  (cancel)="handleCancel($event)"
+  (close)="handleClose()"
+  (click)="closeOnBackdrop($event)"
+>
+  <div class="error-dialog__content">
+    <button class="error-dialog__close" type="button" aria-label="Close" (click)="close()">
+      <svg class="error-dialog__close-icon" viewBox="0 -960 960 960" aria-hidden="true">
+        <use href="assets/icons/close.svg#icon"></use>
+      </svg>
+    </button>
+    <h2 class="error-dialog__title" [id]="titleId">{{ title() }}</h2>
+    <p class="error-dialog__message" [id]="messageId">{{ message() }}</p>
+    <app-button
+      class="error-dialog__action"
+      variant="secondary-cream"
+      [label]="actionLabel()"
+      [link]="actionLink()"
+      (click)="close()"
+    />
+  </div>
+</dialog>
