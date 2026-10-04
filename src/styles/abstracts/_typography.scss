@@ -1,6 +1,7 @@
 @use 'sass:map';
 
 $font-family-base: 'Quicksand', sans-serif;
+$font-family-loading: 'Ubuntu', sans-serif;
 
 $font-weight-regular: 400;
 $font-weight-medium: 500;
@@ -12,6 +13,7 @@ $font-sizes: (
   h2: 54px,
   h3: 48px,
   h4: 40px,
+  loading: 36px,
   card-title: 32px,
   card-headline: 28px,
   h5: 24px,

@@ -1,0 +1,27 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+
+$loading-indicator-gap: 40px;
+
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $loading-indicator-gap;
+
+  &__animation {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  &__label {
+    margin: 0;
+    color: $color-cream;
+    font-family: $font-family-loading;
+    font-size: font-size(loading);
+    font-weight: $font-weight-bold;
+    line-height: 1;
+    text-align: center;
+  }
+}

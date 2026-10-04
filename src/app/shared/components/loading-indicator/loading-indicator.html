@@ -1,0 +1,13 @@
+<div class="loading-indicator" role="status">
+  <picture>
+    <source [media]="reducedMotionQuery" srcset="assets/loader/loader-static.webp" />
+    <img
+      class="loading-indicator__animation"
+      src="assets/loader/loader.webp"
+      alt=""
+      [width]="width"
+      [height]="height"
+    />
+  </picture>
+  <p class="loading-indicator__label">{{ label() }}</p>
+</div>

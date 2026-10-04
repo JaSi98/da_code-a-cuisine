@@ -5,3 +5,12 @@
   font-style: normal;
   font-display: swap;
 }
+
+// Only used for the loading text; subset to Latin characters to keep the file small.
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('../fonts/ubuntu-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

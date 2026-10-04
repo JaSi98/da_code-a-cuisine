@@ -1,21 +1,7 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
-  <section class="preview__area preview__banners">
-    @for (banner of previewSections; track banner.title) {
-      <app-hero-banner
-        [title]="banner.title"
-        [image]="'assets/banners/' + banner.file + '.webp'"
-        [imageMobile]="'assets/banners/' + banner.file + '-mobile.webp'"
-      />
-    }
-    @for (banner of previewCuisines; track banner.title) {
-      <app-hero-banner
-        variant="cuisine"
-        [title]="banner.title"
-        [image]="'assets/banners/' + banner.file + '.' + banner.format"
-        [imageMobile]="'assets/banners/' + banner.file + '-mobile.' + banner.format"
-      />
-    }
+  <section class="preview__area preview__area--dark">
+    <app-loading-indicator />
   </section>
 </main>
 <router-outlet />
