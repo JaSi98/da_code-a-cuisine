@@ -1,0 +1,136 @@
+@use 'sass:map';
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$icon-button-transition: 200ms ease-out;
+// Small buttons get an invisible larger hit area, so they are easy to tap on touch screens.
+$icon-button-min-hit-area: 32px;
+
+// Edit and delete in ingredient lists.
+$icon-button-list-action: (
+  size: 19px,
+  icon-size: 15px,
+  radius: 2px,
+  color: $color-green-dark,
+  background-hover: rgba($color-green-olive, 0.4),
+  color-hover: $color-green-dark,
+  background-active: rgba($color-green-olive, 0.4),
+  color-active: $color-white,
+);
+
+// Increase and decrease a number, e.g. the portions.
+$icon-button-counter: (
+  size: 28px,
+  icon-size: 20px,
+  radius: 4px,
+  color: $color-green-dark,
+  background-hover: $color-sage-light,
+  color-hover: $color-green-dark,
+  background-active: $color-sage-dark,
+  color-active: $color-green-dark,
+);
+
+$icon-button-variants: (
+  edit: $icon-button-list-action,
+  delete: $icon-button-list-action,
+  check: (
+    size: 19px,
+    icon-size: 19px,
+    radius: 2px,
+    color: $color-green-dark,
+    background-hover: $color-cream,
+    color-hover: $color-green-dark,
+    background-active: $color-cream,
+    color-active: $color-green-bright,
+  ),
+  add: (
+    size: 36px,
+    icon-size: 24px,
+    radius: 5px,
+    color: $color-green-dark,
+    background-hover: $color-cream,
+    color-hover: $color-green-olive,
+    background-active: transparent,
+    color-active: $color-green-bright,
+  ),
+  plus: $icon-button-counter,
+  minus: $icon-button-counter,
+  back: (
+    size: 36px,
+    icon-size: 20px,
+    icon-height: 14px,
+    radius: 2px,
+    color: $color-green-middle,
+    background-hover: $color-sage-medium,
+    color-hover: $color-green-middle,
+    background-active: $color-sage-medium,
+    color-active: $color-green-middle,
+  ),
+);
+
+.icon-button {
+  @include flex-center;
+  position: relative;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition:
+    background-color $icon-button-transition,
+    color $icon-button-transition;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, #{$icon-button-min-hit-area});
+    height: max(100%, #{$icon-button-min-hit-area});
+    transform: translate(-50%, -50%);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+@each $name, $variant in $icon-button-variants {
+  .icon-button--#{$name} {
+    width: map.get($variant, size);
+    height: map.get($variant, size);
+    border-radius: map.get($variant, radius);
+    color: map.get($variant, color);
+
+    .icon-button__icon {
+      width: map.get($variant, icon-size);
+      height: map.get($variant, icon-height) or map.get($variant, icon-size);
+    }
+
+    @include hover-enabled {
+      background-color: map.get($variant, background-hover);
+      color: map.get($variant, color-hover);
+    }
+
+    &:active:not(:disabled) {
+      background-color: map.get($variant, background-active);
+      color: map.get($variant, color-active);
+    }
+  }
+}
+
+// The back arrow on dark backgrounds.
+.icon-button--back.icon-button--on-dark {
+  color: $color-cream;
+
+  @include hover-enabled {
+    background-color: $color-sage-dark;
+    color: $color-cream;
+  }
+
+  &:active:not(:disabled) {
+    background-color: $color-sage-dark;
+    color: $color-cream;
+  }
+}
