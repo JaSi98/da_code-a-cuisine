@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 
-export type ChefNumber = 1 | 2 | 3 | 4;
+import { ChefNumber } from '../../models/recipe-step';
 
 /** Intrinsic image sizes in CSS pixels, so the label keeps its size while the image loads. */
 const CHEF_IMAGE_WIDTHS: Record<ChefNumber, number> = { 1: 27.5, 2: 25, 3: 22, 4: 15 };

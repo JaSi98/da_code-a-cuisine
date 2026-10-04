@@ -38,9 +38,3 @@
   grid-template-columns: repeat(2, minmax(0, 478px));
   gap: 32px;
 }
-
-.preview__steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 400px));
-  gap: 48px 64px;
-}

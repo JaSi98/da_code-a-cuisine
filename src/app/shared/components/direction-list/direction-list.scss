@@ -1,0 +1,58 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$direction-list-max-width: 864px;
+$direction-list-step-width: 400px;
+$direction-list-column-gap: 64px;
+$direction-list-row-gap: 40px;
+$direction-list-row-gap-mobile: 32px;
+$direction-list-toolbar-gap: 16px;
+$direction-list-filter-gap: 8px;
+
+:host {
+  display: block;
+}
+
+.direction-list {
+  display: flex;
+  flex-direction: column;
+  gap: $direction-list-row-gap;
+  max-width: $direction-list-max-width;
+  font-family: $font-family-base;
+
+  &__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: $direction-list-toolbar-gap;
+  }
+
+  &__filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $direction-list-filter-gap;
+  }
+
+  &__progress {
+    margin: 0;
+    color: $color-green-olive;
+    font-size: font-size(text);
+    font-weight: $font-weight-medium;
+  }
+
+  // Two columns like the design; they wrap into one on narrow screens.
+  &__steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, $direction-list-step-width), 1fr));
+    gap: $direction-list-row-gap $direction-list-column-gap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include mobile {
+      row-gap: $direction-list-row-gap-mobile;
+    }
+  }
+}

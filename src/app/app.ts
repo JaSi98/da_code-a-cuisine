@@ -1,11 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { ChefNumber } from './shared/components/cook-label/cook-label';
-import { DirectionStep } from './shared/components/direction-step/direction-step';
+import { DirectionList } from './shared/components/direction-list/direction-list';
+import { RecipeStep } from './shared/models/recipe-step';
 
 @Component({
-  imports: [RouterOutlet, DirectionStep],
+  imports: [RouterOutlet, DirectionList],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
@@ -13,12 +13,7 @@ import { DirectionStep } from './shared/components/direction-step/direction-step
 export class App {
   protected readonly title = signal('code-a-cuisine');
   // Temporary preview data; removed after approval.
-  protected readonly previewSteps: {
-    number: string;
-    title: string;
-    description: string;
-    chef: ChefNumber;
-  }[] = [
+  protected readonly previewSteps: RecipeStep[] = [
     {
       number: '1',
       title: 'Cook the pasta',
@@ -27,17 +22,24 @@ export class App {
       chef: 1,
     },
     {
-      number: '2a',
+      number: '2',
       title: 'Make the sauce',
       description:
-        'While the pasta is cooking, heat olive oil in a pan over medium heat. Add the garlic and sauté until it starts to turn golden.',
+        'While the pasta is cooking, heat olive oil in a pan over medium heat. Add the garlic, and sauté until it starts to turn golden.',
       chef: 2,
     },
     {
-      number: '2b',
-      title: 'Wash the spinach and halve the cherry tomatoes',
-      description: 'Rinse the spinach, let it drain and cut the tomatoes in half.',
-      chef: 3,
+      number: '3a',
+      title: 'Finish the pasta',
+      description:
+        'Add the noodles to the sauce, then add pasta water until the sauce is the right consistency.',
+      chef: 1,
+    },
+    {
+      number: '3b',
+      title: 'Make the sauce',
+      description: 'Lower the heat to low, stir until mixed, and remove from the heat.',
+      chef: 2,
     },
   ];
 }

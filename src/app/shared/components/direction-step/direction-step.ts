@@ -1,6 +1,7 @@
 import { Component, input, model } from '@angular/core';
 
-import { ChefNumber, CookLabel } from '../cook-label/cook-label';
+import { ChefNumber } from '../../models/recipe-step';
+import { CookLabel } from '../cook-label/cook-label';
 
 @Component({
   selector: 'app-direction-step',
