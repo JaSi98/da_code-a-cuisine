@@ -1,0 +1,72 @@
+@use 'sass:map';
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+// The banners keep their size on large screens and only shrink on smaller ones.
+$hero-banner-max-width: 1152px;
+$hero-banner-max-width-mobile: 340px;
+$hero-banner-cuisine-line-height: 1.04;
+
+$hero-banner-variants: (
+  section: (
+    font-size: font-size(card-title),
+    font-size-mobile: font-size-mobile(card-title),
+    font-weight: $font-weight-semibold,
+    color: $color-green-middle,
+    line-height: 1,
+  ),
+  cuisine: (
+    font-size: font-size(h4),
+    font-size-mobile: font-size-mobile(h4),
+    font-weight: $font-weight-bold,
+    font-weight-mobile: $font-weight-semibold,
+    color: $color-green-dark,
+    color-mobile: $color-green-middle,
+    line-height: $hero-banner-cuisine-line-height,
+  ),
+);
+
+:host {
+  display: block;
+}
+
+.hero-banner {
+  position: relative;
+  max-width: $hero-banner-max-width;
+  margin-inline: auto;
+
+  @include mobile {
+    max-width: $hero-banner-max-width-mobile;
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  // The text sits on the light band in the middle of the image.
+  &__title {
+    position: absolute;
+    inset: 0;
+    @include flex-center;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+@each $name, $variant in $hero-banner-variants {
+  .hero-banner--#{$name} .hero-banner__title {
+    color: map.get($variant, color);
+    font-size: map.get($variant, font-size);
+    font-weight: map.get($variant, font-weight);
+    line-height: map.get($variant, line-height);
+
+    @include mobile {
+      color: map.get($variant, color-mobile) or map.get($variant, color);
+      font-size: map.get($variant, font-size-mobile);
+      font-weight: map.get($variant, font-weight-mobile) or map.get($variant, font-weight);
+    }
+  }
+}

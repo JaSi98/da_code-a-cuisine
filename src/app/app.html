@@ -1,10 +1,21 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
-  <section class="preview__area preview__narrow">
-    <app-pagination [totalPages]="8" [(currentPage)]="previewPage" />
-    <p>Current page: {{ previewPage() }}</p>
-    <app-pagination [totalPages]="3" />
-    <app-pagination [totalPages]="20" [currentPage]="10" />
+  <section class="preview__area preview__banners">
+    @for (banner of previewSections; track banner.title) {
+      <app-hero-banner
+        [title]="banner.title"
+        [image]="'assets/banners/' + banner.file + '.webp'"
+        [imageMobile]="'assets/banners/' + banner.file + '-mobile.webp'"
+      />
+    }
+    @for (banner of previewCuisines; track banner.title) {
+      <app-hero-banner
+        variant="cuisine"
+        [title]="banner.title"
+        [image]="'assets/banners/' + banner.file + '.' + banner.format"
+        [imageMobile]="'assets/banners/' + banner.file + '-mobile.' + banner.format"
+      />
+    }
   </section>
 </main>
 <router-outlet />

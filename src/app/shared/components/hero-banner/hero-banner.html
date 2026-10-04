@@ -1,0 +1,12 @@
+<div class="hero-banner" [class]="'hero-banner--' + variant()">
+  <picture class="hero-banner__picture">
+    <source [media]="mobileMediaQuery" [srcset]="imageMobile()" />
+    <img class="hero-banner__image" [src]="image()" alt="" />
+  </picture>
+  <!-- A cuisine banner is the page title, a section banner heads a part of the page. -->
+  @if (variant() === 'cuisine') {
+    <h1 class="hero-banner__title">{{ title() }}</h1>
+  } @else {
+    <h2 class="hero-banner__title">{{ title() }}</h2>
+  }
+</div>

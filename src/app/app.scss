@@ -39,8 +39,8 @@
   gap: 32px;
 }
 
-.preview__cuisines {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 400px));
-  gap: 24px;
+.preview__banners {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
 }
