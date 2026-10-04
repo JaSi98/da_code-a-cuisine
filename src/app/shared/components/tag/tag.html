@@ -1,0 +1,14 @@
+@if (isInteractive()) {
+  <button
+    class="tag tag--interactive"
+    [class.tag--active]="isActive()"
+    type="button"
+    [disabled]="isDisabled()"
+    [attr.aria-pressed]="isActive()"
+    (click)="emitClick()"
+  >
+    {{ label() }}
+  </button>
+} @else {
+  <span class="tag" [class.tag--active]="isActive()">{{ label() }}</span>
+}

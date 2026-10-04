@@ -1,0 +1,48 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$tag-height: 32px;
+$tag-padding: 6px 12px;
+$tag-radius: 30px;
+$tag-line-height: 20px;
+$tag-transition: 200ms ease-out;
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: $tag-height;
+  padding: $tag-padding;
+  border: none;
+  border-radius: $tag-radius;
+  background-color: $color-cream;
+  color: $color-green-middle;
+  font-family: $font-family-base;
+  font-size: font-size(label);
+  font-weight: $font-weight-medium;
+  line-height: $tag-line-height;
+  white-space: nowrap;
+
+  &--interactive {
+    cursor: pointer;
+    transition:
+      background-color $tag-transition,
+      color $tag-transition;
+
+    @include hover-enabled {
+      background-color: $color-cream-hover;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  // Wins over hover, so a selected tag keeps its look under the mouse pointer.
+  &--active,
+  &--interactive.tag--active:hover:not(:disabled) {
+    background-color: rgba($color-green-olive, 0.2);
+    color: $color-green-dark;
+  }
+}

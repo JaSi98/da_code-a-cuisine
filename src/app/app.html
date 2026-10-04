@@ -1,22 +1,24 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
   <section class="preview__area">
-    <h2>Icon button – light background</h2>
+    <h2>Tag – interactive (click toggles)</h2>
     <div class="preview__row">
-      <app-icon-button icon="edit" ariaLabel="Edit ingredient" />
-      <app-icon-button icon="delete" ariaLabel="Delete ingredient" />
-      <app-icon-button icon="check" ariaLabel="Save ingredient" />
-      <app-icon-button icon="add" ariaLabel="Add ingredient" />
-      <app-icon-button icon="minus" ariaLabel="Fewer portions" />
-      <app-icon-button icon="plus" ariaLabel="More portions" />
-      <app-icon-button icon="back" ariaLabel="Back" />
-      <app-icon-button icon="delete" ariaLabel="Disabled" [isDisabled]="true" />
+      @for (option of previewOptions; track option) {
+        <app-tag
+          [label]="option"
+          [isActive]="previewSelection() === option"
+          (tagClick)="previewSelection.set(option)"
+        />
+      }
+      <app-tag label="Disabled" [isDisabled]="true" />
     </div>
   </section>
-  <section class="preview__area preview__area--dark">
-    <h2>Icon button – green background</h2>
+  <section class="preview__area">
+    <h2>Tag – display only</h2>
     <div class="preview__row">
-      <app-icon-button icon="back" ariaLabel="Back" [isOnDark]="true" />
+      <app-tag label="Vegetarian" [isInteractive]="false" [isActive]="true" />
+      <app-tag label="Quick" [isInteractive]="false" [isActive]="true" />
+      <app-tag label="Italian" [isInteractive]="false" />
     </div>
   </section>
 </main>
