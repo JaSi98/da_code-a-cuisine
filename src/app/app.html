@@ -1,18 +1,10 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
-  <section class="preview__area preview__cuisines">
-    <app-cuisine-card
-      name="Italian cuisine"
-      emoji="🤌"
-      image="assets/cuisines/italian.webp"
-      link="/"
-    />
-    <app-cuisine-card
-      name="A very long cuisine name for wrapping"
-      emoji="🍝"
-      image="assets/cuisines/italian.webp"
-      link="/"
-    />
+  <section class="preview__area preview__narrow">
+    <app-pagination [totalPages]="8" [(currentPage)]="previewPage" />
+    <p>Current page: {{ previewPage() }}</p>
+    <app-pagination [totalPages]="3" />
+    <app-pagination [totalPages]="20" [currentPage]="10" />
   </section>
 </main>
 <router-outlet />

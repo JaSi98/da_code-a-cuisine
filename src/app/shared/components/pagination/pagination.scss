@@ -1,0 +1,63 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$pagination-gap: 24px;
+$pagination-pages-gap: 10px;
+$pagination-item-height: 27px;
+$pagination-item-padding: 0 8px;
+$pagination-item-radius: 2px;
+$pagination-disabled-opacity: 0.3;
+$pagination-transition: 200ms ease-out;
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $pagination-gap;
+
+  &__pages {
+    display: flex;
+    align-items: center;
+    gap: $pagination-pages-gap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item,
+  &__gap {
+    @include flex-center;
+    box-sizing: border-box;
+    min-width: $pagination-item-height;
+    height: $pagination-item-height;
+    padding: $pagination-item-padding;
+    color: $color-green-dark;
+    font-family: $font-family-base;
+    font-size: font-size(h6);
+    font-weight: $font-weight-medium;
+    line-height: 1;
+  }
+
+  &__item {
+    border: none;
+    border-radius: $pagination-item-radius;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color $pagination-transition;
+
+    @include hover-enabled {
+      background-color: rgba($color-sage-dark, 0.4);
+    }
+
+    &--active,
+    &--active:hover:not(:disabled) {
+      background-color: $color-sage-dark;
+    }
+
+    &:disabled {
+      opacity: $pagination-disabled-opacity;
+      cursor: not-allowed;
+    }
+  }
+}

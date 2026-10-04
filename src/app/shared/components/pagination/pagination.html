@@ -1,0 +1,42 @@
+@if (totalPages() > 1) {
+  <nav class="pagination" [attr.aria-label]="ariaLabel()">
+    <button
+      class="pagination__item pagination__step"
+      type="button"
+      aria-label="Previous page"
+      [disabled]="isFirstPage()"
+      (click)="step(-1)"
+    >
+      <span aria-hidden="true">&lt;</span>
+    </button>
+    <ul class="pagination__pages">
+      @for (item of items(); track $index) {
+        <li>
+          @if (item === null) {
+            <span class="pagination__gap" aria-hidden="true">...</span>
+          } @else {
+            <button
+              class="pagination__item"
+              [class.pagination__item--active]="item === currentPage()"
+              type="button"
+              [attr.aria-label]="'Page ' + item"
+              [attr.aria-current]="item === currentPage() ? 'page' : null"
+              (click)="goToPage(item)"
+            >
+              {{ item }}
+            </button>
+          }
+        </li>
+      }
+    </ul>
+    <button
+      class="pagination__item pagination__step"
+      type="button"
+      aria-label="Next page"
+      [disabled]="isLastPage()"
+      (click)="step(1)"
+    >
+      <span aria-hidden="true">&gt;</span>
+    </button>
+  </nav>
+}
