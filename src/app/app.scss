@@ -39,8 +39,8 @@
   gap: 32px;
 }
 
-.preview__banners {
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
+.preview__nutrition {
+  max-width: 600px;
+  border-radius: 20px;
+  background-color: rgba($color-cream, 0.8);
 }

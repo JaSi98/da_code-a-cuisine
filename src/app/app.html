@@ -1,15 +1,7 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
-  <section class="preview__area preview__row">
-    <app-button label="Show error" (buttonClick)="isPreviewDialogOpen.set(true)" />
-    <span>Open: {{ isPreviewDialogOpen() }}</span>
+  <section class="preview__area preview__nutrition">
+    <app-nutrition-info [perServing]="previewNutrition" [servings]="2" />
   </section>
-  <app-error-dialog
-    [(isOpen)]="isPreviewDialogOpen"
-    title="Ups! Not quite enough..."
-    message="It looks like some ingredient quantities aren’t sufficient for your selected servings. Please add or adjust quantities and try again."
-    actionLabel="Go back to ingredients"
-    actionLink="/"
-  />
 </main>
 <router-outlet />

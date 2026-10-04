@@ -1,17 +1,22 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { Button } from './shared/components/button/button';
-import { ErrorDialog } from './shared/components/error-dialog/error-dialog';
+import { NutritionInfo } from './shared/components/nutrition-info/nutrition-info';
+import { NutritionValues } from './shared/models/nutrition-values';
 
 @Component({
-  imports: [RouterOutlet, Button, ErrorDialog],
+  imports: [RouterOutlet, NutritionInfo],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
 })
 export class App {
   protected readonly title = signal('code-a-cuisine');
-  // Temporary preview state; removed after approval.
-  protected readonly isPreviewDialogOpen = signal<boolean>(false);
+  // Temporary preview data; removed after approval.
+  protected readonly previewNutrition: NutritionValues = {
+    energy: 630,
+    protein: 18,
+    fat: 24,
+    carbs: 58,
+  };
 }

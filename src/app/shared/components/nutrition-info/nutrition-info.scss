@@ -1,0 +1,113 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$nutrition-info-gap: 8px;
+$nutrition-info-header-gap: 16px;
+$nutrition-info-column-gap: 24px;
+$nutrition-info-column-gap-mobile: 12px;
+$nutrition-info-padding-left: 8px;
+$nutrition-info-label-size: 22px;
+$nutrition-info-value-line-height: 20px;
+$nutrition-info-bar-height: 6px;
+$nutrition-info-bar-radius: 3px;
+$nutrition-info-share-gap: 4px;
+$nutrition-info-transition: 200ms ease-out;
+
+.nutrition-info {
+  display: flex;
+  flex-direction: column;
+  gap: $nutrition-info-gap;
+  padding-left: $nutrition-info-padding-left;
+  color: $color-green-dark;
+  font-family: $font-family-base;
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $nutrition-info-header-gap;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: font-size(h6);
+    font-weight: $font-weight-medium;
+    line-height: 1;
+  }
+
+  &__basis {
+    display: flex;
+    gap: $nutrition-info-gap;
+  }
+
+  // Columns are spaced by the cell padding, so they line up like the design.
+  &__table {
+    align-self: flex-start;
+    border-collapse: separate;
+    border-spacing: $nutrition-info-column-gap $nutrition-info-gap;
+    margin-inline: -$nutrition-info-column-gap;
+
+    @include mobile {
+      border-spacing: $nutrition-info-column-gap-mobile $nutrition-info-gap;
+      margin-inline: -$nutrition-info-column-gap-mobile;
+    }
+  }
+
+  &__label,
+  &__value {
+    padding: 0;
+    text-align: center;
+    vertical-align: top;
+    white-space: nowrap;
+  }
+
+  &__label {
+    font-size: $nutrition-info-label-size;
+    font-weight: $font-weight-bold;
+    line-height: 1;
+
+    @include mobile {
+      font-size: font-size(h6);
+    }
+  }
+
+  &__value {
+    font-size: font-size(label);
+    font-weight: $font-weight-medium;
+    line-height: $nutrition-info-value-line-height;
+
+    @include mobile {
+      font-size: font-size(text);
+    }
+  }
+
+  &__share {
+    display: flex;
+    flex-direction: column;
+    gap: $nutrition-info-share-gap;
+    margin-top: $nutrition-info-gap;
+  }
+
+  &__bar {
+    display: block;
+    height: $nutrition-info-bar-height;
+    overflow: hidden;
+    border-radius: $nutrition-info-bar-radius;
+    background-color: rgba($color-green-olive, 0.2);
+  }
+
+  &__bar-fill {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background-color: $color-green-olive;
+    transition: width $nutrition-info-transition;
+  }
+
+  &__percent {
+    color: $color-green-olive;
+    font-size: font-size(small);
+    line-height: 1;
+  }
+}

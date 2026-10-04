@@ -1,0 +1,39 @@
+<section class="nutrition-info" [attr.aria-labelledby]="titleId">
+  <div class="nutrition-info__header">
+    <h3 class="nutrition-info__title" [id]="titleId">Nutritional information</h3>
+    <div class="nutrition-info__basis" role="group" aria-label="Show values">
+      <app-tag
+        label="Per serving"
+        [isActive]="basis() === 'serving'"
+        (tagClick)="selectBasis('serving')"
+      />
+      <app-tag
+        label="Whole recipe"
+        [isActive]="basis() === 'recipe'"
+        (tagClick)="selectBasis('recipe')"
+      />
+    </div>
+  </div>
+  <table class="nutrition-info__table">
+    <tr>
+      <th class="nutrition-info__label" scope="col">Energy</th>
+      @for (row of macronutrients(); track row.key) {
+        <th class="nutrition-info__label" scope="col">{{ row.label }}</th>
+      }
+    </tr>
+    <tr>
+      <td class="nutrition-info__value">{{ values().energy }} kcal</td>
+      @for (row of macronutrients(); track row.key) {
+        <td class="nutrition-info__value">
+          {{ row.grams }}g
+          <span class="nutrition-info__share">
+            <span class="nutrition-info__bar" aria-hidden="true">
+              <span class="nutrition-info__bar-fill" [style.width.%]="row.percent"></span>
+            </span>
+            <span class="nutrition-info__percent">{{ row.percent }} %</span>
+          </span>
+        </td>
+      }
+    </tr>
+  </table>
+</section>
