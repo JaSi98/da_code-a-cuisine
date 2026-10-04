@@ -1,0 +1,130 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$cookbook-recipe-item-padding: 6px 10px;
+$cookbook-recipe-item-radius: 16px;
+$cookbook-recipe-item-column-gap: 8px;
+$cookbook-recipe-item-tags-gap: 24px;
+$cookbook-recipe-item-row-gap-mobile: 4px;
+$cookbook-recipe-item-tags-offset-mobile: 12px;
+$cookbook-recipe-item-position-size: 30px;
+$cookbook-recipe-item-time-gap: 4px;
+$cookbook-recipe-item-time-icon-size: 24px;
+$cookbook-recipe-item-time-line-height: 20px;
+$cookbook-recipe-item-tag-gap: 8px;
+$cookbook-recipe-item-likes-height: 32px;
+$cookbook-recipe-item-likes-padding: 6px 12px;
+$cookbook-recipe-item-likes-radius: 30px;
+$cookbook-recipe-item-likes-icon-size: 20px;
+$cookbook-recipe-item-transition: 200ms ease-out;
+
+:host {
+  display: block;
+}
+
+// The number sits next to the title, the tags stay on the right of both text lines.
+.cookbook-recipe-item {
+  display: grid;
+  grid-template-areas:
+    '. time tags'
+    'position title tags';
+  grid-template-columns: $cookbook-recipe-item-position-size minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: $cookbook-recipe-item-column-gap;
+  box-sizing: border-box;
+  padding: $cookbook-recipe-item-padding;
+  border-radius: $cookbook-recipe-item-radius;
+  font-family: $font-family-base;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  transition: background-color $cookbook-recipe-item-transition;
+
+  &:hover {
+    background-color: rgba($color-cream, 0.7);
+  }
+
+  @include mobile {
+    grid-template-areas:
+      'position time'
+      'title title'
+      'tags tags';
+    grid-template-columns: $cookbook-recipe-item-position-size minmax(0, 1fr);
+    row-gap: $cookbook-recipe-item-row-gap-mobile;
+  }
+
+  &__position {
+    @include flex-center;
+    grid-area: position;
+    width: $cookbook-recipe-item-position-size;
+    height: $cookbook-recipe-item-position-size;
+    border-radius: 50%;
+    background-color: $color-sand;
+    color: $color-green-middle;
+    font-size: font-size(text-large);
+    line-height: 1;
+  }
+
+  &__time {
+    display: flex;
+    grid-area: time;
+    align-items: center;
+    gap: $cookbook-recipe-item-time-gap;
+    color: $color-green-olive;
+    font-size: font-size(text);
+    line-height: $cookbook-recipe-item-time-line-height;
+  }
+
+  &__time-icon {
+    flex-shrink: 0;
+    width: $cookbook-recipe-item-time-icon-size;
+    height: $cookbook-recipe-item-time-icon-size;
+  }
+
+  &__title {
+    grid-area: title;
+    color: $color-green-middle;
+    font-size: font-size(h5);
+    line-height: 1;
+
+    @include mobile {
+      font-size: font-size(h6);
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    grid-area: tags;
+    gap: $cookbook-recipe-item-tag-gap;
+    margin-left: $cookbook-recipe-item-tags-gap;
+
+    @include mobile {
+      margin-top: $cookbook-recipe-item-tags-offset-mobile;
+      margin-left: 0;
+    }
+  }
+
+  &__likes {
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
+    min-height: $cookbook-recipe-item-likes-height;
+    padding: $cookbook-recipe-item-likes-padding;
+    border-radius: $cookbook-recipe-item-likes-radius;
+    background-color: rgba($color-green-olive, 0.3);
+    color: $color-green-dark;
+    font-size: font-size(text);
+    line-height: 1;
+  }
+
+  &__likes-icon {
+    width: $cookbook-recipe-item-likes-icon-size;
+    height: $cookbook-recipe-item-likes-icon-size;
+  }
+
+  &__likes-label {
+    @include visually-hidden;
+  }
+}
