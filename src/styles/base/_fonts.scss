@@ -6,7 +6,16 @@
   font-display: swap;
 }
 
-// Only used for the loading text; subset to Latin characters to keep the file small.
+// Display font for the brand title, teasers and the loading text. Both weights are subset to
+// Latin characters to keep the files small.
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('../fonts/ubuntu-medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 @font-face {
   font-family: 'Ubuntu';
   src: url('../fonts/ubuntu-bold.woff2') format('woff2');

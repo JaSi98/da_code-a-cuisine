@@ -17,8 +17,7 @@ export const routes: Routes = [
   {
     path: 'generate/preferences',
     title: `Preferences – ${APP_NAME}`,
-    loadComponent: () =>
-      import('./pages/preferences/preferences').then((page) => page.Preferences),
+    loadComponent: () => import('./pages/preferences/preferences').then((page) => page.Preferences),
   },
   {
     path: 'results',

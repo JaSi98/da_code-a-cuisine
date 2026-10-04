@@ -1,0 +1,184 @@
+@use '../../../styles/abstracts/colors' as *;
+@use '../../../styles/abstracts/typography' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+$home-intro-gap: 64px;
+$home-intro-gap-mobile: 40px;
+$home-teaser-gap: 16px;
+$home-teaser-title-max-width-mobile: 164px;
+// The link text lines up with the title; the button padding stays as touch area.
+$home-teaser-link-offset-mobile: -16px;
+$home-title-line-height-mobile: 1.125;
+$home-teaser-line-height: 1.04;
+$home-teaser-line-height-mobile: 1.2;
+
+// Space above the intro and below the teaser; it shrinks with the viewport height.
+$home-space-top: clamp(44px, 15dvh, 152px);
+$home-space-bottom: clamp(38px, 12dvh, 126px);
+$home-space-top-mobile: 44px;
+$home-space-bottom-mobile: 38px;
+
+// The headline scales down on tablets, so it does not run into the plates.
+$home-title-size-fluid: 7.2vw;
+$home-eyebrow-size-fluid: 3.3vw;
+
+// The plates form a column on the right that fills the full height of the page. Their size
+// follows the height, but is capped by the width on narrow screens.
+$home-plate-size: min(46dvh, 36vw);
+$home-plate-size-mobile: min(46dvh, 97vw);
+$home-plates-inset: 3.5%;
+$home-plates-start-mobile: 63%;
+$home-plate-shadow: drop-shadow(6px -2px 4px rgba($color-black, 0.25));
+
+// Vertical centre of each plate, relative to the page height.
+$home-plate-centers: (
+  top: 18%,
+  middle: 51%,
+  bottom: 84%,
+);
+$home-plate-scale-middle: 1.03;
+
+:host {
+  @include focus-ring-on-dark;
+  --plate-size: #{$home-plate-size};
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  overflow: clip;
+  background-color: $color-green-olive;
+  color: $color-cream;
+
+  @include mobile {
+    --plate-size: #{$home-plate-size-mobile};
+  }
+}
+
+.home {
+  &__main {
+    @include page-container;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: $home-intro-gap;
+    padding-block: $home-space-top $home-space-bottom;
+
+    @include mobile {
+      gap: $home-intro-gap-mobile;
+      padding-block: $home-space-top-mobile $home-space-bottom-mobile;
+    }
+  }
+
+  &__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $home-intro-gap;
+
+    @include mobile {
+      gap: $home-intro-gap-mobile;
+    }
+  }
+
+  &__headline {
+    margin: 0;
+  }
+
+  &__eyebrow {
+    margin: 0;
+    font-size: clamp(#{font-size-mobile(h3)}, #{$home-eyebrow-size-fluid}, #{font-size(h3)});
+    font-weight: $font-weight-semibold;
+    line-height: 1;
+
+    @include mobile {
+      font-size: font-size-mobile(h3);
+    }
+  }
+
+  // Two lines on mobile, one line otherwise.
+  &__eyebrow-line {
+    @include mobile {
+      display: block;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $font-family-display;
+    font-size: clamp(#{font-size-mobile(h1)}, #{$home-title-size-fluid}, #{font-size(h1)});
+    font-weight: $font-weight-bold;
+    line-height: 1;
+
+    @include mobile {
+      font-size: font-size-mobile(h1);
+      line-height: $home-title-line-height-mobile;
+    }
+  }
+
+  &__teaser {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $home-teaser-gap;
+
+    @include tablet {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  &__teaser-title {
+    margin: 0;
+    font-family: $font-family-display;
+    font-size: font-size(teaser);
+    font-weight: $font-weight-medium;
+    line-height: $home-teaser-line-height;
+
+    @include mobile {
+      max-width: $home-teaser-title-max-width-mobile;
+      font-size: font-size-mobile(teaser);
+      line-height: $home-teaser-line-height-mobile;
+    }
+  }
+
+  &__teaser-link {
+    @include mobile {
+      margin-inline-start: $home-teaser-link-offset-mobile;
+    }
+  }
+
+  // Aligned to the right edge of the desktop width, also on wide screens.
+  &__plates {
+    position: absolute;
+    inset-block: 0;
+    right: calc(max(0px, (100% - #{$page-max-width}) / 2) + #{$home-plates-inset});
+    width: var(--plate-size);
+    pointer-events: none;
+
+    @include tablet {
+      right: auto;
+      left: $home-plates-start-mobile;
+    }
+  }
+
+  &__plate {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: auto;
+    filter: $home-plate-shadow;
+  }
+}
+
+@each $position, $center in $home-plate-centers {
+  .home__plate--#{$position} {
+    top: calc(#{$center} - var(--plate-size) / 2);
+  }
+}
+
+.home__plate--middle {
+  scale: $home-plate-scale-middle;
+}

@@ -1,4 +1,49 @@
-<!-- Placeholder until the page is built. -->
-<main>
-  <h1>Home</h1>
+<app-site-header variant="cream" />
+
+<main class="home__main">
+  <section class="home__intro" aria-labelledby="home-title">
+    <hgroup class="home__headline">
+      <p class="home__eyebrow">
+        <span class="home__eyebrow-line">AI-Powered </span>
+        <span class="home__eyebrow-line">recipe generator</span>
+      </p>
+      <h1 class="home__title" id="home-title">Code à Cuisine</h1>
+    </hgroup>
+    <app-button variant="primary-cream" label="Get started" link="/generate" />
+  </section>
+
+  <section class="home__teaser" aria-labelledby="home-teaser-title">
+    <h2 class="home__teaser-title" id="home-teaser-title">Hungry for inspiration?</h2>
+    <app-button
+      class="home__teaser-link"
+      variant="secondary-cream"
+      label="Go to cookbook"
+      link="/cookbook"
+    />
+  </section>
 </main>
+
+<div class="home__plates">
+  <img
+    class="home__plate home__plate--top"
+    src="assets/home/plate-1.webp"
+    alt=""
+    width="656"
+    height="643"
+    fetchpriority="high"
+  />
+  <img
+    class="home__plate home__plate--middle"
+    src="assets/home/plate-2.webp"
+    alt=""
+    width="857"
+    height="848"
+  />
+  <img
+    class="home__plate home__plate--bottom"
+    src="assets/home/plate-3.webp"
+    alt=""
+    width="960"
+    height="933"
+  />
+</div>
