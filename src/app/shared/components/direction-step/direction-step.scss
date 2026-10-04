@@ -1,0 +1,119 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$direction-step-gap: 32px;
+$direction-step-gap-mobile: 16px;
+$direction-step-header-gap: 8px;
+$direction-step-chef-gap: 16px;
+$direction-step-marker-size: 32px;
+$direction-step-check-size: 20px;
+$direction-step-text-line-height: 23px;
+$direction-step-done-opacity: 0.5;
+$direction-step-transition: 200ms ease-out;
+
+:host {
+  display: block;
+}
+
+.direction-step {
+  display: flex;
+  flex-direction: column;
+  gap: $direction-step-gap;
+  color: $color-green-dark;
+  font-family: $font-family-base;
+  font-weight: $font-weight-medium;
+
+  @include mobile {
+    gap: $direction-step-gap-mobile;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $direction-step-header-gap;
+  }
+
+  // The number doubles as the checkbox of the to-do list.
+  &__marker {
+    @include flex-center;
+    position: relative;
+    flex-shrink: 0;
+    width: $direction-step-marker-size;
+    height: $direction-step-marker-size;
+    border-radius: 50%;
+    background-color: $color-cream;
+    font-size: font-size(text-large);
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      background-color $direction-step-transition,
+      color $direction-step-transition;
+
+    &:hover {
+      background-color: $color-cream-hover;
+    }
+
+    &:has(:focus-visible) {
+      @include focus-ring;
+    }
+  }
+
+  &__checkbox {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  &__check {
+    width: $direction-step-check-size;
+    height: $direction-step-check-size;
+  }
+
+  &__title {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-size: font-size(h5);
+    font-weight: $font-weight-medium;
+    line-height: 1;
+
+    @include mobile {
+      font-size: font-size(h6);
+    }
+  }
+
+  &__chef {
+    flex-shrink: 0;
+    margin-left: $direction-step-chef-gap - $direction-step-header-gap;
+  }
+
+  &__description {
+    margin: 0;
+    font-size: font-size(text-large);
+    line-height: $direction-step-text-line-height;
+    white-space: pre-line;
+
+    @include mobile {
+      font-size: font-size(text);
+    }
+  }
+
+  &--done {
+    .direction-step__marker {
+      background-color: $color-green-olive;
+      color: $color-cream;
+    }
+
+    .direction-step__title {
+      text-decoration: line-through;
+    }
+
+    .direction-step__title,
+    .direction-step__description {
+      opacity: $direction-step-done-opacity;
+    }
+  }
+}

@@ -1,0 +1,23 @@
+<article class="direction-step" [class.direction-step--done]="isDone()">
+  <div class="direction-step__header">
+    <label class="direction-step__marker">
+      <input
+        class="direction-step__checkbox"
+        type="checkbox"
+        [checked]="isDone()"
+        [attr.aria-label]="'Step ' + number() + ' done'"
+        (change)="toggleDone($event)"
+      />
+      @if (isDone()) {
+        <svg class="direction-step__check" viewBox="0 -960 960 960" aria-hidden="true">
+          <use href="assets/icons/check.svg#icon"></use>
+        </svg>
+      } @else {
+        <span aria-hidden="true">{{ number() }}.</span>
+      }
+    </label>
+    <h4 class="direction-step__title">{{ title() }}</h4>
+    <app-cook-label class="direction-step__chef" [chef]="chef()" />
+  </div>
+  <p class="direction-step__description">{{ description() }}</p>
+</article>

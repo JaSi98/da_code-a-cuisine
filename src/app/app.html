@@ -1,7 +1,15 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
-  <section class="preview__area preview__nutrition">
-    <app-nutrition-info [perServing]="previewNutrition" [servings]="2" />
+  <section class="preview__area preview__steps">
+    @for (step of previewSteps; track step.number) {
+      <app-direction-step
+        [number]="step.number"
+        [title]="step.title"
+        [description]="step.description"
+        [chef]="step.chef"
+        [isDone]="step.number === '1'"
+      />
+    }
   </section>
 </main>
 <router-outlet />
