@@ -1,10 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { Tag } from './shared/components/tag/tag';
+import { LikeButton } from './shared/components/like-button/like-button';
 
 @Component({
-  imports: [RouterOutlet, Tag],
+  imports: [RouterOutlet, LikeButton],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
@@ -12,6 +12,5 @@ import { Tag } from './shared/components/tag/tag';
 export class App {
   protected readonly title = signal('code-a-cuisine');
   // Temporary preview state; removed after approval.
-  protected readonly previewOptions = ['Quick', 'Medium', 'Complex'];
-  protected readonly previewSelection = signal<string>('Quick');
+  protected readonly previewLiked = signal<boolean>(false);
 }

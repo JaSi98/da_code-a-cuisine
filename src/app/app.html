@@ -1,24 +1,14 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
   <section class="preview__area">
-    <h2>Tag – interactive (click toggles)</h2>
+    <h2>Like button (click toggles)</h2>
     <div class="preview__row">
-      @for (option of previewOptions; track option) {
-        <app-tag
-          [label]="option"
-          [isActive]="previewSelection() === option"
-          (tagClick)="previewSelection.set(option)"
-        />
-      }
-      <app-tag label="Disabled" [isDisabled]="true" />
-    </div>
-  </section>
-  <section class="preview__area">
-    <h2>Tag – display only</h2>
-    <div class="preview__row">
-      <app-tag label="Vegetarian" [isInteractive]="false" [isActive]="true" />
-      <app-tag label="Quick" [isInteractive]="false" [isActive]="true" />
-      <app-tag label="Italian" [isInteractive]="false" />
+      <app-like-button
+        [isLiked]="previewLiked()"
+        (likeToggle)="previewLiked.set(!previewLiked())"
+      />
+      <app-like-button [isLiked]="true" />
+      <app-like-button [isDisabled]="true" />
     </div>
   </section>
 </main>

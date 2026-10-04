@@ -1,0 +1,38 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$like-button-width: 52px;
+$like-button-height: 48px;
+$like-button-radius: 5px;
+$like-button-icon-size: 40px;
+$like-button-transition: 200ms ease-out;
+
+.like-button {
+  @include flex-center;
+  flex-shrink: 0;
+  width: $like-button-width;
+  height: $like-button-height;
+  padding: 0;
+  border: none;
+  border-radius: $like-button-radius;
+  background-color: transparent;
+  color: $color-green-bright;
+  cursor: pointer;
+  transition: background-color $like-button-transition;
+
+  // A liked heart is filled and needs no hover background.
+  &:not(.like-button--liked) {
+    @include hover-enabled {
+      background-color: rgba($color-sage-medium, 0.6);
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &__icon {
+    width: $like-button-icon-size;
+    height: $like-button-icon-size;
+  }
+}

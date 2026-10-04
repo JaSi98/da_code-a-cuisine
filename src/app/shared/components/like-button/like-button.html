@@ -1,0 +1,13 @@
+<button
+  class="like-button"
+  [class.like-button--liked]="isLiked()"
+  type="button"
+  [disabled]="isDisabled()"
+  [attr.aria-label]="ariaLabel()"
+  [attr.aria-pressed]="isLiked()"
+  (click)="emitToggle()"
+>
+  <svg class="like-button__icon" viewBox="0 -960 960 960" aria-hidden="true">
+    <use [attr.href]="iconHref()"></use>
+  </svg>
+</button>
