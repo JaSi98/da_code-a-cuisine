@@ -1,0 +1,74 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$ingredient-list-item-min-height: 30px;
+$ingredient-list-item-padding: 2px 4px;
+$ingredient-list-item-radius: 8px;
+$ingredient-list-item-gap: 16px;
+$ingredient-list-item-actions-gap: 10px;
+$ingredient-list-item-field-gap: 4px;
+$ingredient-list-item-amount-min-width: 40px;
+$ingredient-list-item-bullet-size: 5px;
+$ingredient-list-item-bullet-gap: 8px;
+
+.ingredient-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $ingredient-list-item-gap;
+  box-sizing: border-box;
+  min-height: $ingredient-list-item-min-height;
+  padding: $ingredient-list-item-padding;
+  border-radius: $ingredient-list-item-radius;
+  color: $color-black;
+  font-size: font-size(h6);
+  font-weight: $font-weight-medium;
+  transition: background-color $motion-duration $motion-easing;
+
+  &:not(&--editing):hover {
+    background-color: $color-cream;
+  }
+
+  // The bullet of the list, drawn here because the item replaces the list marker.
+  &::before {
+    content: '';
+    flex-shrink: 0;
+    width: $ingredient-list-item-bullet-size;
+    height: $ingredient-list-item-bullet-size;
+    margin-right: -$ingredient-list-item-gap + $ingredient-list-item-bullet-gap;
+    border-radius: 50%;
+    background-color: currentColor;
+  }
+
+  &__text,
+  &__edit {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: $ingredient-list-item-gap;
+    min-width: 0;
+    margin: 0;
+  }
+
+  // Amount and unit belong together and sit closer than the name.
+  &__edit app-input {
+    margin-right: $ingredient-list-item-field-gap - $ingredient-list-item-gap;
+  }
+
+  &__amount {
+    flex-shrink: 0;
+    min-width: $ingredient-list-item-amount-min-width;
+  }
+
+  &__name {
+    min-width: 0;
+  }
+
+  &__actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: $ingredient-list-item-actions-gap;
+  }
+}

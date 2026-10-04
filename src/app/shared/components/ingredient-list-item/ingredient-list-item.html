@@ -1,0 +1,48 @@
+<div class="ingredient-list-item" [class.ingredient-list-item--editing]="isEditing()">
+  @if (isEditing()) {
+    <div class="ingredient-list-item__edit">
+      <app-input
+        type="number"
+        width="61px"
+        [ariaLabel]="'Amount of ' + entry().name"
+        [isRequired]="true"
+        [formControl]="amountControl"
+      />
+      <app-unit-select
+        [options]="units"
+        [ariaLabel]="'Unit of ' + entry().name"
+        [formControl]="unitControl"
+      />
+      <span class="ingredient-list-item__name">{{ entry().name }}</span>
+    </div>
+    <div class="ingredient-list-item__actions">
+      <app-icon-button
+        icon="check"
+        [ariaLabel]="'Save ' + entry().name"
+        (buttonClick)="confirmEditing()"
+      />
+      <app-icon-button
+        icon="delete"
+        [ariaLabel]="'Remove ' + entry().name"
+        (buttonClick)="removeEntry()"
+      />
+    </div>
+  } @else {
+    <p class="ingredient-list-item__text">
+      <span class="ingredient-list-item__amount">{{ formattedAmount() }}</span>
+      <span class="ingredient-list-item__name">{{ entry().name }}</span>
+    </p>
+    <div class="ingredient-list-item__actions">
+      <app-icon-button
+        icon="edit"
+        [ariaLabel]="'Edit ' + entry().name"
+        (buttonClick)="startEditing()"
+      />
+      <app-icon-button
+        icon="delete"
+        [ariaLabel]="'Remove ' + entry().name"
+        (buttonClick)="removeEntry()"
+      />
+    </div>
+  }
+</div>

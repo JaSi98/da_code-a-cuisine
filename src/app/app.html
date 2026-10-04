@@ -1,15 +1,16 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
-  <section class="preview__area">
-    <h2>Ingredient input (try "Pas", "Tom" or "Ch")</h2>
-    <app-ingredient-input
-      [suggestions]="previewSuggestions"
-      (ingredientAdd)="previewAdded.update((list) => [$event, ...list])"
-    />
-    <p>Added (newest first):</p>
-    <ul>
-      @for (entry of previewAdded(); track $index) {
-        <li>{{ entry.name }} – {{ entry.amount }} {{ entry.unit }}</li>
+  <section class="preview__area preview__list">
+    <h2>Ingredient list item (hover, edit, delete)</h2>
+    <ul class="preview__plain-list">
+      @for (entry of previewEntries(); track entry.name) {
+        <li>
+          <app-ingredient-list-item
+            [entry]="entry"
+            (entryChange)="replacePreviewEntry(entry, $event)"
+            (entryRemove)="removePreviewEntry(entry)"
+          />
+        </li>
       }
     </ul>
   </section>
