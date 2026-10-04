@@ -39,8 +39,8 @@
   gap: 32px;
 }
 
-.preview__cards {
+.preview__popular {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 411px));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 285px), 370px));
   gap: 24px;
 }

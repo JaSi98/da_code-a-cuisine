@@ -1,0 +1,101 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$popular-recipe-card-padding: 16px 12px;
+$popular-recipe-card-radius: 16px;
+$popular-recipe-card-gap: 24px;
+$popular-recipe-card-gap-mobile: 16px;
+$popular-recipe-card-content-gap: 8px;
+$popular-recipe-card-time-gap: 4px;
+$popular-recipe-card-time-icon-size: 24px;
+$popular-recipe-card-time-line-height: 20px;
+$popular-recipe-card-likes-height: 32px;
+$popular-recipe-card-likes-padding: 6px 12px;
+$popular-recipe-card-likes-radius: 30px;
+$popular-recipe-card-likes-icon-size: 20px;
+$popular-recipe-card-transition: 200ms ease-out;
+
+:host {
+  display: block;
+}
+
+// The whole card is one link, so it fills the grid cell and cards in one row get the same height.
+.popular-recipe-card {
+  display: flex;
+  align-items: flex-start;
+  gap: $popular-recipe-card-gap;
+  box-sizing: border-box;
+  height: 100%;
+  padding: $popular-recipe-card-padding;
+  border-radius: $popular-recipe-card-radius;
+  background-color: rgba($color-sage, 0.7);
+  font-family: $font-family-base;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  transition: background-color $popular-recipe-card-transition;
+
+  &:hover {
+    background-color: $color-sage;
+  }
+
+  @include mobile {
+    gap: $popular-recipe-card-gap-mobile;
+  }
+
+  &__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: $popular-recipe-card-content-gap;
+    min-width: 0;
+  }
+
+  &__time {
+    display: flex;
+    align-items: center;
+    gap: $popular-recipe-card-time-gap;
+    color: $color-green-olive;
+    font-size: font-size(text);
+    line-height: $popular-recipe-card-time-line-height;
+  }
+
+  &__time-icon {
+    flex-shrink: 0;
+    width: $popular-recipe-card-time-icon-size;
+    height: $popular-recipe-card-time-icon-size;
+  }
+
+  &__title {
+    color: $color-green-middle;
+    font-size: font-size(h5);
+    line-height: 1;
+
+    @include mobile {
+      font-size: font-size(h6);
+    }
+  }
+
+  &__likes {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    box-sizing: border-box;
+    min-height: $popular-recipe-card-likes-height;
+    padding: $popular-recipe-card-likes-padding;
+    border-radius: $popular-recipe-card-likes-radius;
+    background-color: rgba($color-green-olive, 0.3);
+    color: $color-green-dark;
+    font-size: font-size(text);
+    line-height: 1;
+  }
+
+  &__likes-icon {
+    width: $popular-recipe-card-likes-icon-size;
+    height: $popular-recipe-card-likes-icon-size;
+  }
+
+  &__likes-label {
+    @include visually-hidden;
+  }
+}

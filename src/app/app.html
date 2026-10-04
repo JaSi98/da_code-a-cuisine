@@ -1,11 +1,11 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
-  <section class="preview__area preview__cards">
-    @for (recipe of previewRecipes; track recipe.position) {
-      <app-recipe-card
-        [position]="recipe.position"
+  <section class="preview__area preview__popular">
+    @for (recipe of previewRecipes; track recipe.title) {
+      <app-popular-recipe-card
         [title]="recipe.title"
         [cookingTime]="recipe.cookingTime"
+        [likes]="recipe.likes"
         link="/"
       />
     }
