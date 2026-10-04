@@ -1,11 +1,17 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
   <section class="preview__area">
-    <h2>Unit select</h2>
-    <div class="preview__row">
-      <app-unit-select [options]="previewUnits" [formControl]="previewUnit" />
-      <p>Selected value: {{ previewUnitValue() }}</p>
-    </div>
+    <h2>Expand toggle</h2>
+    <app-expand-toggle controlsId="preview-list" [(isExpanded)]="previewExpanded" />
+    <ul id="preview-list">
+      <li>Pasta</li>
+      <li>Tomatoes</li>
+      @if (previewExpanded()) {
+        <li>Spinach</li>
+        <li>Garlic</li>
+        <li>Olive oil</li>
+      }
+    </ul>
   </section>
 </main>
 <router-outlet />

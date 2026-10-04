@@ -1,0 +1,58 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$expand-toggle-height: 34px;
+$expand-toggle-padding-inline: 16px;
+$expand-toggle-radius: 16px;
+$expand-toggle-gap: 8px;
+$expand-toggle-border-width: 1px;
+$expand-toggle-line-height: 20px;
+$expand-toggle-arrow-width: 14px;
+$expand-toggle-arrow-height: 8px;
+
+.expand-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: $expand-toggle-gap;
+  box-sizing: border-box;
+  min-height: $expand-toggle-height;
+  // The border is always there and lies inside the padding, so it never shifts the content.
+  padding: (
+      ($expand-toggle-height - $expand-toggle-line-height) * 0.5 - $expand-toggle-border-width
+    )
+    ($expand-toggle-padding-inline - $expand-toggle-border-width);
+  border: $expand-toggle-border-width solid transparent;
+  border-radius: $expand-toggle-radius;
+  background-color: transparent;
+  color: $color-green-olive;
+  font-family: $font-family-base;
+  font-size: font-size(text);
+  font-weight: $font-weight-medium;
+  line-height: $expand-toggle-line-height;
+  cursor: pointer;
+  transition:
+    background-color $motion-duration $motion-easing,
+    border-color $motion-duration $motion-easing;
+
+  @include hover-enabled {
+    border-color: $color-green-olive;
+  }
+
+  &--expanded {
+    border-color: rgba($color-green-olive, 0.5);
+    background-color: rgba($color-cream, 0.6);
+  }
+
+  &__arrow {
+    flex-shrink: 0;
+    width: $expand-toggle-arrow-width;
+    height: $expand-toggle-arrow-height;
+    color: $color-green-middle;
+    transition: transform $motion-duration $motion-easing;
+  }
+
+  &--expanded &__arrow {
+    transform: rotate(180deg);
+  }
+}

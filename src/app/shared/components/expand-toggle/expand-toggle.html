@@ -1,0 +1,13 @@
+<button
+  class="expand-toggle"
+  [class.expand-toggle--expanded]="isExpanded()"
+  type="button"
+  [attr.aria-expanded]="isExpanded()"
+  [attr.aria-controls]="controlsId()"
+  (click)="toggle()"
+>
+  {{ label() }}
+  <svg class="expand-toggle__arrow" viewBox="308 -560 344 188" aria-hidden="true">
+    <use href="assets/icons/arrow-drop-down.svg#icon"></use>
+  </svg>
+</button>
