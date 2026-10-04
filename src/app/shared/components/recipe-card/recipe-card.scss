@@ -1,0 +1,105 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$recipe-card-padding: 32px 24px;
+$recipe-card-radius: 20px;
+$recipe-card-gap: 48px;
+$recipe-card-gap-mobile: 32px;
+$recipe-card-content-gap: 16px;
+$recipe-card-time-gap: 4px;
+$recipe-card-icon-width: 40px;
+$recipe-card-icon-height: 28px;
+$recipe-card-time-icon-size: 24px;
+$recipe-card-time-line-height: 24px;
+$recipe-card-transition: 200ms ease-out;
+
+:host {
+  display: block;
+}
+
+// Stretches to the row height, so the buttons of cards in one row line up.
+.recipe-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: $recipe-card-gap;
+  box-sizing: border-box;
+  height: 100%;
+  padding: $recipe-card-padding;
+  border-radius: $recipe-card-radius;
+  background-color: $color-sage;
+  transition: background-color $recipe-card-transition;
+
+  &:hover {
+    background-color: rgba($color-sage-medium, 0.9);
+  }
+
+  @include mobile {
+    gap: $recipe-card-gap-mobile;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $recipe-card-content-gap;
+  }
+
+  &__position,
+  &__title,
+  &__time {
+    margin: 0;
+  }
+
+  &__position {
+    display: flex;
+    align-items: center;
+    gap: $recipe-card-content-gap;
+    color: $color-green-middle;
+    font-size: font-size(h5);
+    font-weight: $font-weight-semibold;
+    line-height: 1;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: $recipe-card-icon-width;
+    height: $recipe-card-icon-height;
+  }
+
+  &__title {
+    color: $color-green-dark;
+    font-size: font-size(card-title);
+    font-weight: $font-weight-semibold;
+    line-height: 1;
+
+    @include mobile {
+      font-size: font-size-mobile(card-title);
+    }
+  }
+
+  &__time {
+    display: flex;
+    align-items: center;
+    gap: $recipe-card-time-gap;
+    color: $color-green-olive;
+    font-size: font-size(label);
+    font-weight: $font-weight-medium;
+    line-height: $recipe-card-time-line-height;
+
+    @include mobile {
+      font-size: font-size(text-large);
+    }
+  }
+
+  &__time-icon {
+    flex-shrink: 0;
+    width: $recipe-card-time-icon-size;
+    height: $recipe-card-time-icon-size;
+  }
+
+  &__button {
+    align-self: flex-start;
+  }
+}

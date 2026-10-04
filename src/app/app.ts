@@ -1,16 +1,20 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { ChefNumber, CookLabel } from './shared/components/cook-label/cook-label';
+import { RecipeCard } from './shared/components/recipe-card/recipe-card';
 
 @Component({
-  imports: [RouterOutlet, CookLabel],
+  imports: [RouterOutlet, RecipeCard],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
 })
 export class App {
   protected readonly title = signal('code-a-cuisine');
-  // Temporary preview state; removed after approval.
-  protected readonly previewChefs: ChefNumber[] = [1, 2, 3, 4];
+  // Temporary preview data; removed after approval.
+  protected readonly previewRecipes = [
+    { position: 1, title: 'Pasta with spinach and cherry tomatoes', cookingTime: 20 },
+    { position: 2, title: 'Spinach omelette', cookingTime: 15 },
+    { position: 3, title: 'Creamy tomato soup with fresh basil and croutons', cookingTime: 35 },
+  ];
 }

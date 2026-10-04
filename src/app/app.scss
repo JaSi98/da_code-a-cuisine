@@ -38,3 +38,9 @@
   grid-template-columns: repeat(2, minmax(0, 478px));
   gap: 32px;
 }
+
+.preview__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 411px));
+  gap: 24px;
+}

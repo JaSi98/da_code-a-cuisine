@@ -1,8 +1,13 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
-  <section class="preview__area preview__row">
-    @for (chef of previewChefs; track chef) {
-      <app-cook-label [chef]="chef" />
+  <section class="preview__area preview__cards">
+    @for (recipe of previewRecipes; track recipe.position) {
+      <app-recipe-card
+        [position]="recipe.position"
+        [title]="recipe.title"
+        [cookingTime]="recipe.cookingTime"
+        link="/"
+      />
     }
   </section>
 </main>

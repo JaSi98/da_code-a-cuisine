@@ -20,6 +20,8 @@ export class Button {
   readonly type = input<ButtonType>('button');
   readonly isDisabled = input<boolean>(false);
   readonly link = input<string | null>(null);
+  readonly ariaLabel = input<string | null>(null);
+  readonly isStretched = input<boolean>(false);
 
   readonly buttonClick = output<void>();
 

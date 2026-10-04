@@ -89,6 +89,13 @@ $button-variants: (
     cursor: not-allowed;
   }
 
+  // Covers the nearest positioned ancestor, so a whole card can be clicked through one button.
+  &--stretched::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
   // The bold copy of the label is invisible but keeps its width, so the button does not grow
   // when the label turns bold on hover.
   &__label {

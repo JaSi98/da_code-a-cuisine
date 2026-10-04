@@ -1,0 +1,23 @@
+<article class="recipe-card">
+  <div class="recipe-card__content">
+    <p class="recipe-card__position">
+      <img class="recipe-card__icon" src="assets/icons/cloche.png" alt="" width="40" height="28" />
+      Recipe {{ position() }}
+    </p>
+    <h2 class="recipe-card__title">{{ title() }}</h2>
+    <p class="recipe-card__time">
+      <svg class="recipe-card__time-icon" viewBox="0 -960 960 960" aria-hidden="true">
+        <use href="assets/icons/schedule.svg#icon"></use>
+      </svg>
+      Cooking time: {{ cookingTime() }}min
+    </p>
+  </div>
+  <app-button
+    class="recipe-card__button"
+    variant="primary-cream"
+    label="View"
+    [link]="link()"
+    [ariaLabel]="viewLabel()"
+    [isStretched]="true"
+  />
+</article>
