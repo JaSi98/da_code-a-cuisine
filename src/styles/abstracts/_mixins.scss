@@ -60,3 +60,29 @@ $focus-ring-offset: 2px;
   outline: $focus-ring-width solid var(--focus-ring-color);
   outline-offset: $focus-ring-offset;
 }
+
+$motion-duration: 200ms;
+$motion-easing: ease-out;
+
+// Hidden state of an element that fades and slides in and out. It stays in the DOM so it can
+// animate out, but visibility keeps it away from mouse, keyboard and screen readers.
+@mixin reveal-hidden($hidden-transform, $duration: $motion-duration) {
+  opacity: 0;
+  transform: $hidden-transform;
+  visibility: hidden;
+  transition:
+    opacity $duration $motion-easing,
+    transform $duration $motion-easing,
+    visibility 0s linear $duration;
+}
+
+// Visible state; visibility switches at once so the element can animate in.
+@mixin reveal-visible($duration: $motion-duration) {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+  transition:
+    opacity $duration $motion-easing,
+    transform $duration $motion-easing,
+    visibility 0s;
+}

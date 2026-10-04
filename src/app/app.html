@@ -1,14 +1,10 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
   <section class="preview__area">
-    <h2>Like button (click toggles)</h2>
+    <h2>Unit select</h2>
     <div class="preview__row">
-      <app-like-button
-        [isLiked]="previewLiked()"
-        (likeToggle)="previewLiked.set(!previewLiked())"
-      />
-      <app-like-button [isLiked]="true" />
-      <app-like-button [isDisabled]="true" />
+      <app-unit-select [options]="previewUnits" [formControl]="previewUnit" />
+      <p>Selected value: {{ previewUnitValue() }}</p>
     </div>
   </section>
 </main>

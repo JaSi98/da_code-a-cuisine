@@ -1,0 +1,44 @@
+<button
+  class="unit-select__trigger"
+  type="button"
+  role="combobox"
+  aria-haspopup="listbox"
+  [attr.aria-label]="ariaLabel()"
+  [attr.aria-expanded]="isOpen()"
+  [attr.aria-controls]="listboxId"
+  [attr.aria-activedescendant]="activeOptionId()"
+  [disabled]="isDisabled()"
+  (click)="toggle()"
+  (keydown)="handleKeydown($event)"
+>
+  <span class="unit-select__value">{{ value() }}</span>
+  <svg
+    class="unit-select__arrow"
+    [class.unit-select__arrow--open]="isOpen()"
+    viewBox="308 -560 344 188"
+    aria-hidden="true"
+  >
+    <use href="assets/icons/arrow-drop-down.svg#icon"></use>
+  </svg>
+</button>
+<ul
+  class="unit-select__list"
+  [class.unit-select__list--open]="isOpen()"
+  role="listbox"
+  [id]="listboxId"
+  [attr.aria-label]="ariaLabel()"
+>
+  @for (unit of options(); track unit) {
+    <li
+      class="unit-select__option"
+      [class.unit-select__option--active]="$index === activeIndex()"
+      role="option"
+      [id]="getOptionId($index)"
+      [attr.aria-selected]="unit === value()"
+      (click)="selectOption(unit)"
+      (mouseenter)="setActiveIndex($index)"
+    >
+      {{ unit }}
+    </li>
+  }
+</ul>
