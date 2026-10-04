@@ -1,0 +1,16 @@
+<section class="ingredient-list" aria-labelledby="ingredient-list-title">
+  <h2 id="ingredient-list-title" class="ingredient-list__title">List of your Ingredients</h2>
+  @if (entries().length > 0) {
+    <ul class="ingredient-list__items">
+      @for (entry of entries(); track $index) {
+        <li class="ingredient-list__item">
+          <app-ingredient-list-item
+            [entry]="entry"
+            (entryChange)="changeEntry($index, $event)"
+            (entryRemove)="removeEntry($index)"
+          />
+        </li>
+      }
+    </ul>
+  }
+</section>

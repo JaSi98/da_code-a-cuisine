@@ -33,12 +33,8 @@
   max-width: 300px;
 }
 
-.preview__list {
-  max-width: 430px;
-}
-
-.preview__plain-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.preview__lists {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 478px));
+  gap: 32px;
 }

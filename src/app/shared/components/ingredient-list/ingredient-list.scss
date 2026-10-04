@@ -1,0 +1,45 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+
+$ingredient-list-min-height: 209px;
+$ingredient-list-padding: 24px;
+$ingredient-list-gap: 24px;
+$ingredient-list-radius: 20px;
+$ingredient-list-title-line-height: 20px;
+$ingredient-list-column-gap: 16px;
+
+.ingredient-list {
+  display: flex;
+  flex-direction: column;
+  gap: $ingredient-list-gap;
+  box-sizing: border-box;
+  min-height: $ingredient-list-min-height;
+  padding: $ingredient-list-padding;
+  border-radius: $ingredient-list-radius;
+  background-color: rgba($color-green-olive, 0.3);
+
+  &__title {
+    margin: 0;
+    color: $color-green-dark;
+    font-size: font-size(label);
+    font-weight: $font-weight-medium;
+    line-height: $ingredient-list-title-line-height;
+  }
+
+  // One grid for all rows; each row takes its columns from here (subgrid).
+  &__items {
+    --ingredient-list-columns: subgrid;
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    column-gap: $ingredient-list-column-gap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+  }
+}

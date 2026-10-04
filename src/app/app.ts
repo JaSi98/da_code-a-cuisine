@@ -1,11 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { IngredientListItem } from './shared/components/ingredient-list-item/ingredient-list-item';
+import { IngredientList } from './shared/components/ingredient-list/ingredient-list';
 import { IngredientEntry } from './shared/models/ingredient-entry';
 
 @Component({
-  imports: [RouterOutlet, IngredientListItem],
+  imports: [RouterOutlet, IngredientList],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
@@ -15,18 +15,19 @@ export class App {
   // Temporary preview state; removed after approval.
   protected readonly previewEntries = signal<IngredientEntry[]>([
     { name: 'Pasta', amount: 100, unit: 'gram' },
-    { name: 'Cherry tomatoes', amount: 6, unit: 'piece' },
-    { name: 'Spinach', amount: 1, unit: 'kg' },
-    { name: 'Olive oil', amount: 50, unit: 'ml' },
+    { name: 'Baby spinach', amount: 100, unit: 'gram' },
+    { name: 'Cherry tomatoes', amount: 150, unit: 'gram' },
+    { name: 'Egg', amount: 1, unit: 'piece' },
+    { name: 'Olive oil', amount: 1000, unit: 'ml' },
   ]);
 
   /** Replaces an entry after editing in the preview. */
-  protected replacePreviewEntry(oldEntry: IngredientEntry, newEntry: IngredientEntry): void {
-    this.previewEntries.update((entries) => entries.map((e) => (e === oldEntry ? newEntry : e)));
+  protected replacePreviewEntry(index: number, entry: IngredientEntry): void {
+    this.previewEntries.update((entries) => entries.map((e, i) => (i === index ? entry : e)));
   }
 
   /** Removes an entry in the preview. */
-  protected removePreviewEntry(entry: IngredientEntry): void {
-    this.previewEntries.update((entries) => entries.filter((e) => e !== entry));
+  protected removePreviewEntry(index: number): void {
+    this.previewEntries.update((entries) => entries.filter((_, i) => i !== index));
   }
 }
