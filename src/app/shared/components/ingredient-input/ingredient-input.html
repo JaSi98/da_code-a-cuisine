@@ -1,0 +1,53 @@
+<form class="ingredient-input" [formGroup]="form" (ngSubmit)="addIngredient()">
+  <div class="ingredient-input__name">
+    <app-input
+      formControlName="name"
+      label="Ingredient"
+      [isRequired]="true"
+      [completion]="completion()"
+      [suggestionListId]="suggestionListId"
+      [isSuggestionListOpen]="isSuggestionListOpen()"
+      [activeSuggestionId]="activeSuggestionId()"
+      (input)="handleTyping()"
+      (keydown)="handleNameKeydown($event)"
+    />
+    <ul
+      class="ingredient-input__suggestions"
+      [class.ingredient-input__suggestions--open]="isSuggestionListOpen()"
+      role="listbox"
+      [id]="suggestionListId"
+      aria-label="Ingredient suggestions"
+    >
+      @for (suggestion of matchingSuggestions(); track suggestion) {
+        <li
+          class="ingredient-input__suggestion"
+          [class.ingredient-input__suggestion--active]="$index === activeIndex()"
+          role="option"
+          [id]="getSuggestionId($index)"
+          [attr.aria-selected]="$index === activeIndex()"
+          (mousedown)="$event.preventDefault()"
+          (click)="selectSuggestion(suggestion)"
+          (mouseenter)="setActiveIndex($index)"
+        >
+          {{ suggestion }}
+        </li>
+      }
+    </ul>
+  </div>
+
+  <fieldset class="ingredient-input__serving">
+    <legend class="ingredient-input__legend">Serving size</legend>
+    <div class="ingredient-input__amount-row">
+      <app-input
+        formControlName="amount"
+        type="number"
+        placeholder="100"
+        width="61px"
+        ariaLabel="Amount"
+        [isRequired]="true"
+      />
+      <app-unit-select formControlName="unit" [options]="units" />
+      <app-icon-button icon="add" ariaLabel="Add ingredient" type="submit" />
+    </div>
+  </fieldset>
+</form>

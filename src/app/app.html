@@ -1,18 +1,17 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
   <section class="preview__area">
-    <h2>Site header – green, with back link</h2>
-    <app-site-header backLink="/" backLabel="Back to results" />
-  </section>
-  <section class="preview__area preview__area--dark">
-    <h2>Site header – cream, with back link and button slot</h2>
-    <app-site-header variant="cream" backLink="/" backLabel="Back to cookbook">
-      <app-button variant="primary-cream" label="Get started" />
-    </app-site-header>
-  </section>
-  <section class="preview__area">
-    <h2>Site header – logo only</h2>
-    <app-site-header />
+    <h2>Ingredient input (try "Pas", "Tom" or "Ch")</h2>
+    <app-ingredient-input
+      [suggestions]="previewSuggestions"
+      (ingredientAdd)="previewAdded.update((list) => [$event, ...list])"
+    />
+    <p>Added (newest first):</p>
+    <ul>
+      @for (entry of previewAdded(); track $index) {
+        <li>{{ entry.name }} – {{ entry.amount }} {{ entry.unit }}</li>
+      }
+    </ul>
   </section>
 </main>
 <router-outlet />

@@ -1,0 +1,104 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$ingredient-input-max-width: 577px;
+$ingredient-input-padding: 25px 33px;
+$ingredient-input-radius: 20px;
+$ingredient-input-gap: 32px;
+$ingredient-input-name-min-width: 300px;
+$ingredient-input-label-gap: 16px;
+$ingredient-input-row-gap: 8px;
+$ingredient-input-legend-line-height: 20px;
+$ingredient-input-suggestion-height: 28px;
+$ingredient-input-suggestion-padding: 4px 8px;
+$ingredient-input-suggestion-radius: 8px;
+$ingredient-input-suggestion-line-height: 20px;
+$ingredient-input-list-offset: 4px;
+
+$ingredient-input-mobile-padding: 24px 16px;
+$ingredient-input-mobile-gap: 24px;
+
+.ingredient-input {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: $ingredient-input-gap;
+  box-sizing: border-box;
+  max-width: $ingredient-input-max-width;
+  padding: $ingredient-input-padding;
+  border-radius: $ingredient-input-radius;
+  background-color: rgba($color-green-olive, 0.3);
+  color: $color-green-dark;
+
+  @include mobile {
+    flex-direction: column;
+    align-items: stretch;
+    gap: $ingredient-input-mobile-gap;
+    padding: $ingredient-input-mobile-padding;
+  }
+
+  &__name {
+    display: flex;
+    flex: 1 1 $ingredient-input-name-min-width;
+    flex-direction: column;
+    min-width: 0;
+
+    @include mobile {
+      flex-basis: auto;
+    }
+  }
+
+  // The suggestions take part in the layout, so the card grows instead of covering other content.
+  &__suggestions {
+    display: none;
+    flex-direction: column;
+    margin: $ingredient-input-list-offset 0 0;
+    padding: 0;
+    list-style: none;
+
+    &--open {
+      display: flex;
+    }
+  }
+
+  &__suggestion {
+    min-height: $ingredient-input-suggestion-height;
+    box-sizing: border-box;
+    padding: $ingredient-input-suggestion-padding;
+    border-radius: $ingredient-input-suggestion-radius;
+    font-size: font-size(text);
+    font-weight: $font-weight-medium;
+    line-height: $ingredient-input-suggestion-line-height;
+    cursor: pointer;
+
+    &--active {
+      background-color: $color-cream;
+    }
+  }
+
+  &__serving {
+    display: flex;
+    flex-direction: column;
+    gap: $ingredient-input-label-gap;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+
+  &__legend {
+    float: left;
+    padding: 0;
+    font-size: font-size(label);
+    font-weight: $font-weight-medium;
+    line-height: $ingredient-input-legend-line-height;
+  }
+
+  &__amount-row {
+    clear: both;
+    display: flex;
+    align-items: center;
+    gap: $ingredient-input-row-gap;
+  }
+}

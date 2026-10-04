@@ -1,15 +1,30 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { Button } from './shared/components/button/button';
-import { SiteHeader } from './shared/components/site-header/site-header';
+import { IngredientInput } from './shared/components/ingredient-input/ingredient-input';
+import { IngredientEntry } from './shared/models/ingredient-entry';
 
 @Component({
-  imports: [RouterOutlet, Button, SiteHeader],
+  imports: [RouterOutlet, IngredientInput],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
 })
 export class App {
   protected readonly title = signal('code-a-cuisine');
+  // Temporary preview state; removed after approval.
+  protected readonly previewSuggestions = [
+    'Pasta',
+    'Pastrami',
+    'Passion fruit',
+    'Tomato',
+    'Tofu',
+    'Cheese',
+    'Chicken',
+    'Chickpeas',
+    'Chili',
+    'Chives',
+    'Chocolate',
+  ];
+  protected readonly previewAdded = signal<IngredientEntry[]>([]);
 }

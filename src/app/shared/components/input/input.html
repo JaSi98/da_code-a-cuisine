@@ -1,16 +1,30 @@
 @if (label(); as labelText) {
   <label class="input__label" [for]="fieldId">{{ labelText }}</label>
 }
-<input
-  class="input__control"
-  [id]="fieldId"
-  [type]="type()"
-  [value]="value()"
-  [placeholder]="placeholder()"
-  [disabled]="isDisabled()"
-  [attr.aria-label]="ariaLabel()"
-  [attr.aria-required]="isRequired() || null"
-  [attr.aria-invalid]="isInvalid()"
-  (input)="updateValue($event)"
-  (blur)="markAsTouched()"
-/>
+<div class="input__field">
+  <input
+    class="input__control"
+    [id]="fieldId"
+    [type]="type()"
+    [value]="value()"
+    [placeholder]="placeholder()"
+    [disabled]="isDisabled()"
+    [attr.aria-label]="ariaLabel()"
+    [attr.aria-required]="isRequired() || null"
+    [attr.aria-invalid]="isInvalid()"
+    [attr.role]="suggestionListId() ? 'combobox' : null"
+    [attr.aria-autocomplete]="suggestionListId() ? 'both' : null"
+    [attr.aria-controls]="suggestionListId()"
+    [attr.aria-expanded]="suggestionListId() ? isSuggestionListOpen() : null"
+    [attr.aria-activedescendant]="activeSuggestionId()"
+    autocomplete="off"
+    (input)="updateValue($event)"
+    (blur)="markAsTouched()"
+  />
+  @if (completion()) {
+    <span class="input__completion" aria-hidden="true">
+      <span class="input__completion-typed">{{ value() }}</span
+      >{{ completion() }}
+    </span>
+  }
+</div>

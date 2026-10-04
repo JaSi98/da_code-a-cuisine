@@ -10,6 +10,7 @@ let nextInputId = 0;
   selector: 'app-input',
   styleUrl: './input.scss',
   templateUrl: './input.html',
+  host: { '[style.width]': 'width()' },
 })
 export class Input implements ControlValueAccessor, DoCheck {
   private readonly ngControl = inject(NgControl, { self: true, optional: true });
@@ -24,6 +25,11 @@ export class Input implements ControlValueAccessor, DoCheck {
   readonly type = input<InputType>('text');
   readonly ariaLabel = input<string | null>(null);
   readonly isRequired = input<boolean>(false);
+  readonly width = input<string | null>(null);
+  readonly completion = input<string>('');
+  readonly suggestionListId = input<string | null>(null);
+  readonly isSuggestionListOpen = input<boolean>(false);
+  readonly activeSuggestionId = input<string | null>(null);
 
   protected readonly fieldId = `input-${nextInputId++}`;
   protected readonly value = signal<string>('');

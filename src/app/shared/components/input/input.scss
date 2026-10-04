@@ -2,7 +2,7 @@
 @use '../../../../styles/abstracts/typography' as *;
 @use '../../../../styles/abstracts/mixins' as *;
 
-$input-gap: 8px;
+$input-gap: 16px;
 $input-label-line-height: 20px;
 $input-height: 36px;
 $input-padding: 0 12px;
@@ -23,6 +23,18 @@ $input-radius: 20px;
     line-height: $input-label-line-height;
   }
 
+  // Holds the field and the completion hint, which lies exactly on top of the typed text.
+  &__field {
+    position: relative;
+  }
+
+  &__control,
+  &__completion {
+    font-family: inherit;
+    font-size: font-size(text-large);
+    font-weight: $font-weight-medium;
+  }
+
   &__control {
     box-sizing: border-box;
     width: 100%;
@@ -33,16 +45,41 @@ $input-radius: 20px;
     background-color: rgba($color-cream, 0.8);
     color: $color-green-dark;
     caret-color: rgba($color-green-dark, 0.4);
-    font-family: inherit;
-    font-size: font-size(text-large);
-    font-weight: $font-weight-medium;
 
     &::placeholder {
-      color: rgba($color-green-dark, 0.5);
+      color: rgba($color-green-dark, 0.3);
+    }
+
+    // Number fields get no spin buttons; they would cover the digits in narrow fields.
+    &[type='number'] {
+      appearance: textfield;
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        margin: 0;
+        appearance: none;
+      }
     }
 
     &:disabled {
       cursor: not-allowed;
     }
+  }
+
+  &__completion {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    padding: $input-padding;
+    overflow: hidden;
+    color: rgba($color-green-dark, 0.3);
+    white-space: pre;
+    pointer-events: none;
+  }
+
+  // Invisible copy of the typed text, so the hint starts exactly where the typed text ends.
+  &__completion-typed {
+    visibility: hidden;
   }
 }
