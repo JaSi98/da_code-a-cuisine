@@ -1,12 +1,9 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
-  <section class="preview__area preview__lists">
-    <app-ingredient-list [entries]="[]" />
-    <app-ingredient-list
-      [entries]="previewEntries()"
-      (entryChange)="replacePreviewEntry($event.index, $event.entry)"
-      (entryRemove)="removePreviewEntry($event)"
-    />
+  <section class="preview__area preview__row">
+    @for (chef of previewChefs; track chef) {
+      <app-cook-label [chef]="chef" />
+    }
   </section>
 </main>
 <router-outlet />

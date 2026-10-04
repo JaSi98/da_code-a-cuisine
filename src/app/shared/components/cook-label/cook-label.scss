@@ -1,0 +1,44 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+
+$cook-label-height: 27px;
+$cook-label-padding: 2px 4px;
+$cook-label-gap: 4px;
+$cook-label-radius: 6px;
+$cook-label-image-height: 22px;
+
+// Each chef gets its own colour, so the cooking steps can be told apart at a glance.
+$cook-label-backgrounds: (
+  1: $color-sage-medium,
+  2: $color-peach,
+  3: rgba($color-lime, 0.3),
+  4: rgba($color-green-bright, 0.4),
+);
+
+.cook-label {
+  display: inline-flex;
+  align-items: center;
+  gap: $cook-label-gap;
+  box-sizing: border-box;
+  min-height: $cook-label-height;
+  padding: $cook-label-padding;
+  border-radius: $cook-label-radius;
+  color: $color-green-dark;
+  font-family: $font-family-base;
+  font-size: font-size(h6);
+  font-weight: $font-weight-medium;
+  line-height: 1;
+  white-space: nowrap;
+
+  &__image {
+    flex-shrink: 0;
+    width: auto;
+    height: $cook-label-image-height;
+  }
+}
+
+@each $chef, $background in $cook-label-backgrounds {
+  .cook-label--chef-#{$chef} {
+    background-color: $background;
+  }
+}

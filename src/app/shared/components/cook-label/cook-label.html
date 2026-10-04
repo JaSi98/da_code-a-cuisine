@@ -1,0 +1,10 @@
+<span class="cook-label" [class]="'cook-label--chef-' + chef()">
+  <img
+    class="cook-label__image"
+    [src]="imageSource()"
+    alt=""
+    [width]="imageWidth()"
+    [height]="imageHeight"
+  />
+  Chef {{ chef() }}
+</span>
