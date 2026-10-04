@@ -1,0 +1,48 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$input-gap: 8px;
+$input-label-line-height: 20px;
+$input-height: 36px;
+$input-padding: 0 12px;
+$input-radius: 20px;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: $input-gap;
+  font-family: $font-family-base;
+}
+
+.input {
+  &__label {
+    color: $color-green-dark;
+    font-size: font-size(label);
+    font-weight: $font-weight-medium;
+    line-height: $input-label-line-height;
+  }
+
+  &__control {
+    box-sizing: border-box;
+    width: 100%;
+    height: $input-height;
+    padding: $input-padding;
+    border: none;
+    border-radius: $input-radius;
+    background-color: rgba($color-cream, 0.8);
+    color: $color-green-dark;
+    caret-color: rgba($color-green-dark, 0.4);
+    font-family: inherit;
+    font-size: font-size(text-large);
+    font-weight: $font-weight-medium;
+
+    &::placeholder {
+      color: rgba($color-green-dark, 0.5);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+}

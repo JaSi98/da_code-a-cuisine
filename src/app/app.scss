@@ -25,3 +25,10 @@
     gap: 16px;
   }
 }
+
+.preview__narrow {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 300px;
+}

@@ -1,17 +1,11 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
-  <section class="preview__area">
-    <h2>Expand toggle</h2>
-    <app-expand-toggle controlsId="preview-list" [(isExpanded)]="previewExpanded" />
-    <ul id="preview-list">
-      <li>Pasta</li>
-      <li>Tomatoes</li>
-      @if (previewExpanded()) {
-        <li>Spinach</li>
-        <li>Garlic</li>
-        <li>Olive oil</li>
-      }
-    </ul>
+  <section class="preview__area preview__narrow">
+    <h2>Input</h2>
+    <app-input label="Ingredient" placeholder="e.g. Pasta" [formControl]="previewName" />
+    <app-input label="Amount" type="number" placeholder="100" [formControl]="previewAmount" />
+    <app-input ariaLabel="Without label" placeholder="Field without visible label" />
+    <p>Values: {{ previewNameValue() }} / {{ previewAmountValue() }}</p>
   </section>
 </main>
 <router-outlet />

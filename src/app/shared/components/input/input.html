@@ -1,0 +1,16 @@
+@if (label(); as labelText) {
+  <label class="input__label" [for]="fieldId">{{ labelText }}</label>
+}
+<input
+  class="input__control"
+  [id]="fieldId"
+  [type]="type()"
+  [value]="value()"
+  [placeholder]="placeholder()"
+  [disabled]="isDisabled()"
+  [attr.aria-label]="ariaLabel()"
+  [attr.aria-required]="isRequired() || null"
+  [attr.aria-invalid]="isInvalid()"
+  (input)="updateValue($event)"
+  (blur)="markAsTouched()"
+/>
