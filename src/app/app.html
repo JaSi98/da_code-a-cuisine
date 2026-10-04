@@ -1,16 +1,18 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
-  <section class="preview__area preview__cookbook">
-    @for (recipe of previewRecipes; track recipe.position) {
-      <app-cookbook-recipe-item
-        [position]="recipe.position"
-        [title]="recipe.title"
-        [cookingTime]="recipe.cookingTime"
-        [tags]="recipe.tags"
-        [likes]="recipe.likes"
-        link="/"
-      />
-    }
+  <section class="preview__area preview__cuisines">
+    <app-cuisine-card
+      name="Italian cuisine"
+      emoji="🤌"
+      image="assets/cuisines/italian.webp"
+      link="/"
+    />
+    <app-cuisine-card
+      name="A very long cuisine name for wrapping"
+      emoji="🍝"
+      image="assets/cuisines/italian.webp"
+      link="/"
+    />
   </section>
 </main>
 <router-outlet />

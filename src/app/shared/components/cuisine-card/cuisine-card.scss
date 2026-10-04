@@ -1,0 +1,53 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+
+$cuisine-card-gap: 8px;
+$cuisine-card-emoji-rotation: -30deg;
+$cuisine-card-transition: 200ms ease-out;
+
+:host {
+  display: block;
+}
+
+.cuisine-card {
+  display: flex;
+  flex-direction: column;
+  gap: $cuisine-card-gap;
+  text-decoration: none;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $cuisine-card-gap;
+  }
+
+  &__name,
+  &__emoji {
+    margin: 0;
+    font-size: font-size(card-headline);
+    font-weight: $font-weight-semibold;
+    line-height: 1;
+  }
+
+  &__name {
+    color: $color-green-middle;
+  }
+
+  &__emoji {
+    flex-shrink: 0;
+    transition: transform $cuisine-card-transition;
+  }
+
+  // The emoji gives a small wink when the card is pointed at.
+  &:hover &__emoji {
+    transform: rotate($cuisine-card-emoji-rotation);
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+}

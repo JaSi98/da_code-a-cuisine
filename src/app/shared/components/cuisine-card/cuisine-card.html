@@ -1,0 +1,14 @@
+<a class="cuisine-card" [routerLink]="link()">
+  <span class="cuisine-card__header">
+    <h2 class="cuisine-card__name">{{ name() }}</h2>
+    <span class="cuisine-card__emoji" aria-hidden="true">{{ emoji() }}</span>
+  </span>
+  <img
+    class="cuisine-card__image"
+    [src]="image()"
+    alt=""
+    [width]="imageSize"
+    [height]="imageSize"
+    loading="lazy"
+  />
+</a>

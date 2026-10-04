@@ -39,8 +39,8 @@
   gap: 32px;
 }
 
-.preview__cookbook {
-  display: flex;
-  flex-direction: column;
-  max-width: 900px;
+.preview__cuisines {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 400px));
+  gap: 24px;
 }
