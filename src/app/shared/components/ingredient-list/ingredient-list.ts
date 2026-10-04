@@ -1,13 +1,7 @@
 import { Component, input, output } from '@angular/core';
 
-import { IngredientEntry } from '../../models/ingredient-entry';
+import { IngredientEntry, IngredientEntryChange } from '../../models/ingredient-entry';
 import { IngredientListItem } from '../ingredient-list-item/ingredient-list-item';
-
-/** Tells the parent which entry changed and what it looks like now. */
-export interface IngredientEntryChange {
-  index: number;
-  entry: IngredientEntry;
-}
 
 @Component({
   selector: 'app-ingredient-list',

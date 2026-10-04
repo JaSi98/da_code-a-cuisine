@@ -10,10 +10,6 @@ $popular-recipe-card-content-gap: 8px;
 $popular-recipe-card-time-gap: 4px;
 $popular-recipe-card-time-icon-size: 24px;
 $popular-recipe-card-time-line-height: 20px;
-$popular-recipe-card-likes-height: 32px;
-$popular-recipe-card-likes-padding: 6px 12px;
-$popular-recipe-card-likes-radius: 30px;
-$popular-recipe-card-likes-icon-size: 20px;
 $popular-recipe-card-transition: 200ms ease-out;
 
 :host {
@@ -74,28 +70,5 @@ $popular-recipe-card-transition: 200ms ease-out;
     @include mobile {
       font-size: font-size(h6);
     }
-  }
-
-  &__likes {
-    display: inline-flex;
-    flex-shrink: 0;
-    align-items: center;
-    box-sizing: border-box;
-    min-height: $popular-recipe-card-likes-height;
-    padding: $popular-recipe-card-likes-padding;
-    border-radius: $popular-recipe-card-likes-radius;
-    background-color: rgba($color-green-olive, 0.3);
-    color: $color-green-dark;
-    font-size: font-size(text);
-    line-height: 1;
-  }
-
-  &__likes-icon {
-    width: $popular-recipe-card-likes-icon-size;
-    height: $popular-recipe-card-likes-icon-size;
-  }
-
-  &__likes-label {
-    @include visually-hidden;
   }
 }

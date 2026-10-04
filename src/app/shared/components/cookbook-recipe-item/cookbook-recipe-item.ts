@@ -1,11 +1,12 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { LikeCount } from '../like-count/like-count';
 import { Tag } from '../tag/tag';
 
 @Component({
   selector: 'app-cookbook-recipe-item',
-  imports: [RouterLink, Tag],
+  imports: [LikeCount, RouterLink, Tag],
   styleUrl: './cookbook-recipe-item.scss',
   templateUrl: './cookbook-recipe-item.html',
 })

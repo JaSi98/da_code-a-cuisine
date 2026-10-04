@@ -1,7 +1,27 @@
 <!-- Temporary component preview for review; removed after approval. -->
 <main class="preview">
+  <section class="preview__area preview__row">
+    <app-like-count [count]="8" />
+    <app-like-count [count]="66" />
+    <app-like-count [count]="1204" />
+  </section>
   <section class="preview__area">
-    <app-direction-list [steps]="previewSteps" storageKey="preview-pasta" />
+    <app-popular-recipe-card
+      title="Pasta with spinach and cherry tomatoes"
+      [cookingTime]="20"
+      [likes]="66"
+      link="/"
+    />
+  </section>
+  <section class="preview__area">
+    <app-cookbook-recipe-item
+      [position]="1"
+      title="Pasta with spinach and cherry tomatoes"
+      [cookingTime]="20"
+      [tags]="['Vegetarian', 'Quick']"
+      [likes]="66"
+      link="/"
+    />
   </section>
 </main>
 <router-outlet />

@@ -8,3 +8,9 @@ export interface IngredientEntry {
   amount: number;
   unit: IngredientUnit;
 }
+
+/** Tells the parent which entry changed and what it looks like now. */
+export interface IngredientEntryChange {
+  index: number;
+  entry: IngredientEntry;
+}

@@ -1,0 +1,38 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$like-count-height: 32px;
+$like-count-padding: 6px 12px;
+$like-count-radius: 30px;
+$like-count-icon-size: 20px;
+
+:host {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.like-count {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: $like-count-height;
+  padding: $like-count-padding;
+  border-radius: $like-count-radius;
+  background-color: rgba($color-green-olive, 0.3);
+  color: $color-green-dark;
+  font-family: $font-family-base;
+  font-size: font-size(text);
+  font-weight: $font-weight-medium;
+  line-height: 1;
+
+  &__icon {
+    width: $like-count-icon-size;
+    height: $like-count-icon-size;
+  }
+
+  // Screen readers hear "66 likes" instead of a bare number.
+  &__label {
+    @include visually-hidden;
+  }
+}

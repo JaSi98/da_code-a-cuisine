@@ -11,12 +11,6 @@
     @for (tag of tags(); track tag) {
       <app-tag [label]="tag" [isActive]="true" [isInteractive]="false" />
     }
-    <span class="cookbook-recipe-item__likes">
-      <svg class="cookbook-recipe-item__likes-icon" viewBox="0 -960 960 960" aria-hidden="true">
-        <use href="assets/icons/heart.svg#icon"></use>
-      </svg>
-      {{ likes() }}
-      <span class="cookbook-recipe-item__likes-label">likes</span>
-    </span>
+    <app-like-count [count]="likes()" />
   </span>
 </a>

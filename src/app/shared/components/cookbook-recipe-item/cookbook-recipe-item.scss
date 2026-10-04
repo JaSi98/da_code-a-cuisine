@@ -13,10 +13,6 @@ $cookbook-recipe-item-time-gap: 4px;
 $cookbook-recipe-item-time-icon-size: 24px;
 $cookbook-recipe-item-time-line-height: 20px;
 $cookbook-recipe-item-tag-gap: 8px;
-$cookbook-recipe-item-likes-height: 32px;
-$cookbook-recipe-item-likes-padding: 6px 12px;
-$cookbook-recipe-item-likes-radius: 30px;
-$cookbook-recipe-item-likes-icon-size: 20px;
 $cookbook-recipe-item-transition: 200ms ease-out;
 
 :host {
@@ -104,27 +100,5 @@ $cookbook-recipe-item-transition: 200ms ease-out;
       margin-top: $cookbook-recipe-item-tags-offset-mobile;
       margin-left: 0;
     }
-  }
-
-  &__likes {
-    display: inline-flex;
-    align-items: center;
-    box-sizing: border-box;
-    min-height: $cookbook-recipe-item-likes-height;
-    padding: $cookbook-recipe-item-likes-padding;
-    border-radius: $cookbook-recipe-item-likes-radius;
-    background-color: rgba($color-green-olive, 0.3);
-    color: $color-green-dark;
-    font-size: font-size(text);
-    line-height: 1;
-  }
-
-  &__likes-icon {
-    width: $cookbook-recipe-item-likes-icon-size;
-    height: $cookbook-recipe-item-likes-icon-size;
-  }
-
-  &__likes-label {
-    @include visually-hidden;
   }
 }

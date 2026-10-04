@@ -8,11 +8,5 @@
     </span>
     <span class="popular-recipe-card__title">{{ title() }}</span>
   </span>
-  <span class="popular-recipe-card__likes">
-    <svg class="popular-recipe-card__likes-icon" viewBox="0 -960 960 960" aria-hidden="true">
-      <use href="assets/icons/heart.svg#icon"></use>
-    </svg>
-    {{ likes() }}
-    <span class="popular-recipe-card__likes-label">likes</span>
-  </span>
+  <app-like-count [count]="likes()" />
 </a>
