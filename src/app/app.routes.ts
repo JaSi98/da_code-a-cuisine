@@ -46,5 +46,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/cuisine-recipes/cuisine-recipes').then((page) => page.CuisineRecipes),
   },
+  {
+    path: 'imprint',
+    title: `Legal notice – ${APP_NAME}`,
+    loadComponent: () => import('./pages/imprint/imprint').then((page) => page.Imprint),
+  },
   { path: '**', redirectTo: '' },
 ];

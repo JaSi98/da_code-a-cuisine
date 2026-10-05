@@ -150,6 +150,7 @@ supabase/              database schema
 | `/cookbook` | Cookbook overview |
 | `/cookbook/:cuisine` | Recipes of one cuisine, `?page=` for pagination |
 | `/cookbook/recipe/:id` | Recipe opened from the cookbook |
+| `/imprint` | Legal notice |
 
 ## Credits
 

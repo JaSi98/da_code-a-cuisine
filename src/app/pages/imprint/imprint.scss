@@ -1,0 +1,63 @@
+@use '../../../styles/abstracts/colors' as *;
+@use '../../../styles/abstracts/typography' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+$imprint-max-width: 800px;
+$imprint-space-top: 48px;
+$imprint-space-bottom: 64px;
+$imprint-gap: 32px;
+$imprint-section-gap: 8px;
+$imprint-text-line-height: 1.5;
+
+$imprint-mobile-space-top: 24px;
+
+:host {
+  display: block;
+  min-height: 100dvh;
+  background-color: $color-white;
+  color: $color-green-dark;
+}
+
+.imprint {
+  @include page-container;
+  display: flex;
+  flex-direction: column;
+  gap: $imprint-gap;
+  max-width: calc(#{$imprint-max-width} + 2 * #{$page-gutter-max});
+  padding-block: $imprint-space-top $imprint-space-bottom;
+
+  @include mobile {
+    padding-top: $imprint-mobile-space-top;
+  }
+
+  &__title {
+    margin: 0;
+    color: $color-green-middle;
+    font-size: font-size(h2);
+    font-weight: $font-weight-semibold;
+
+    @include mobile {
+      font-size: font-size-mobile(h2);
+    }
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: $imprint-section-gap;
+  }
+
+  &__heading {
+    margin: 0;
+    font-size: font-size(label);
+    font-weight: $font-weight-semibold;
+  }
+
+  &__address,
+  &__text {
+    margin: 0;
+    font-size: font-size(text-large);
+    font-style: normal;
+    line-height: $imprint-text-line-height;
+  }
+}

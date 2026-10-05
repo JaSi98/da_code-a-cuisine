@@ -1,0 +1,37 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$site-footer-padding-block: 16px;
+$site-footer-gap: 8px 24px;
+
+:host {
+  @include focus-ring-on-dark;
+  display: block;
+  background-color: $color-green-dark;
+  color: $color-cream;
+}
+
+.site-footer {
+  @include page-container;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: $site-footer-gap;
+  padding-block: $site-footer-padding-block;
+  font-size: font-size(small);
+
+  &__copyright {
+    margin: 0;
+  }
+
+  &__link {
+    color: inherit;
+    text-underline-offset: 3px;
+
+    &:hover {
+      text-decoration-thickness: 2px;
+    }
+  }
+}
