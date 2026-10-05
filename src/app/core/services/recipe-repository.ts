@@ -38,10 +38,8 @@ export interface RecipePage {
 @Injectable({ providedIn: 'root' })
 export class RecipeRepository {
   private readonly http = inject(HttpClient);
-  private readonly headers = new HttpHeaders({
-    apikey: environment.supabaseAnonKey,
-    Authorization: `Bearer ${environment.supabaseAnonKey}`,
-  });
+  // A publishable key is no JWT, so it goes in the apikey header only, not in Authorization.
+  private readonly headers = new HttpHeaders({ apikey: environment.supabasePublishableKey });
 
   /** Loads one recipe; emits null if there is no recipe with this id. */
   getById(id: string): Observable<Recipe | null> {

@@ -41,7 +41,7 @@ The endpoints live in [`src/environments/environment.ts`](src/environments/envir
 | --- | --- |
 | `generateRecipeUrl` | Webhook URL of the n8n recipe workflow |
 | `supabaseUrl` | URL of the Supabase project |
-| `supabaseAnonKey` | Public anon key (read access only, plus the like function) |
+| `supabasePublishableKey` | Publishable key (`sb_publishable_…`): read access only, plus the like function |
 
 The values in the repository are placeholders. Until they are replaced, generating a recipe and loading the cookbook end in the app's error and empty states.
 

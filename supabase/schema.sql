@@ -1,5 +1,6 @@
 -- Recipes created by the recipe generator workflow. The workflow writes with the service role;
--- the web app reads with the anon key and can only change the likes through the function below.
+-- the web app reads with the publishable key (role anon) and can only change the likes through
+-- the function below.
 
 create table if not exists public.recipes (
   id uuid primary key default gen_random_uuid(),
@@ -26,7 +27,8 @@ alter table public.recipes enable row level security;
 drop policy if exists "Recipes are readable by everyone" on public.recipes;
 create policy "Recipes are readable by everyone" on public.recipes for select using (true);
 
--- Adds or removes one like; runs with the owner's rights, so the anon key needs no update access.
+-- Adds or removes one like; runs with the owner's rights, so the publishable key needs no update
+-- access.
 create or replace function public.change_recipe_likes(recipe_id uuid, delta integer)
 returns integer
 language plpgsql
