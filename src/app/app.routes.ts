@@ -35,6 +35,12 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/cookbook/cookbook').then((page) => page.Cookbook),
   },
   {
+    path: 'cookbook/recipe/:id',
+    title: `Recipe – ${APP_NAME}`,
+    data: { origin: 'cookbook' },
+    loadComponent: () => import('./pages/recipe/recipe').then((page) => page.Recipe),
+  },
+  {
     path: 'cookbook/:cuisine',
     title: `Cookbook – ${APP_NAME}`,
     loadComponent: () =>

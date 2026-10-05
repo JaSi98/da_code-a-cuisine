@@ -1,4 +1,62 @@
-<!-- Placeholder until the page is built. -->
-<main>
-  <h1>Cookbook</h1>
+<app-site-header backLink="/" backLabel="Back" />
+
+<main class="cookbook">
+  <section class="cookbook__intro">
+    <div class="cookbook__headline">
+      <h1 class="cookbook__title">Cookbook</h1>
+      <p class="cookbook__text">
+        From quick bites to gourmet delights, explore them all in our ultimate cookbook and get
+        inspired for your next culinary adventure.
+      </p>
+    </div>
+
+    <section class="cookbook__popular" aria-labelledby="popular-title">
+      <h2 class="cookbook__popular-title" id="popular-title">
+        Most liked recipes
+        <svg class="cookbook__heart" viewBox="0 -960 960 960" aria-hidden="true">
+          <use href="assets/icons/heart.svg#icon"></use>
+        </svg>
+      </h2>
+      @if (popularResource.isLoading()) {
+        <p class="cookbook__note">Loading recipes ...</p>
+      } @else if (popularRecipes().length > 0) {
+        <ul class="cookbook__popular-list">
+          @for (recipe of popularRecipes(); track recipe.id) {
+            <li class="cookbook__popular-item">
+              <app-popular-recipe-card
+                [title]="recipe.title"
+                [cookingTime]="recipe.cookingTime"
+                [likes]="recipe.likes"
+                [link]="getRecipeLink(recipe)"
+              />
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="cookbook__note">No liked recipes yet. Be the first to give one a heart!</p>
+      }
+    </section>
+  </section>
+
+  <section class="cookbook__cuisines" aria-label="Cuisines">
+    <ul class="cookbook__cuisine-list">
+      @for (cuisine of cuisines; track cuisine.value) {
+        <li>
+          <app-cuisine-card
+            [name]="cuisine.name"
+            [emoji]="cuisine.emoji"
+            [image]="cuisine.image"
+            [link]="getCuisineLink(cuisine.value)"
+          />
+        </li>
+      }
+    </ul>
+  </section>
+
+  <app-button
+    class="cookbook__new"
+    variant="secondary-green"
+    label="Generate new recipe"
+    link="/generate"
+  />
 </main>

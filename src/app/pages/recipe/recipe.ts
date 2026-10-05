@@ -64,8 +64,8 @@ export class Recipe {
   private readonly likedRecipes = inject(LikedRecipes);
 
   readonly id = input.required<string>();
-  /** Set to "cookbook" by links from the cookbook, so the back link returns there. */
-  readonly from = input<string | undefined>();
+  /** Set to "cookbook" by the cookbook route, so the back link returns there. */
+  readonly origin = input<string | undefined>();
 
   protected readonly recipeResource = rxResource({
     params: () => this.id(),
@@ -133,7 +133,7 @@ export class Recipe {
   /** Leads back to the cookbook or to the results, depending on where the user came from. */
   private getBackLink(): BackLink {
     const recipe = this.recipe();
-    if (this.from() === COOKBOOK_ORIGIN || !this.requestStore.results()) {
+    if (this.origin() === COOKBOOK_ORIGIN || !this.requestStore.results()) {
       const link = recipe ? `${COOKBOOK_ROUTE}/${recipe.cuisine}` : COOKBOOK_ROUTE;
       return { link, label: 'Cookbook' };
     }

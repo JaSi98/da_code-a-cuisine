@@ -1,0 +1,170 @@
+@use '../../../styles/abstracts/colors' as *;
+@use '../../../styles/abstracts/typography' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+$cookbook-max-width: 1248px;
+$cookbook-space-top: 48px;
+$cookbook-space-bottom: 64px;
+$cookbook-section-gap: 64px;
+$cookbook-intro-padding: 32px 24px;
+$cookbook-intro-gap: 32px;
+$cookbook-radius: 20px;
+$cookbook-headline-gap: 16px;
+$cookbook-headline-width: 400px;
+$cookbook-title-line-height: 1.2;
+$cookbook-text-line-height: 1.3;
+$cookbook-popular-gap: 16px;
+$cookbook-popular-title-gap: 8px;
+$cookbook-heart-size: 28px;
+$cookbook-popular-card-width: 300px;
+$cookbook-popular-list-gap: 16px;
+// Room below the cards for the scrollbar.
+$cookbook-popular-scroll-space: 8px;
+$cookbook-cuisine-min-width: 280px;
+$cookbook-cuisine-gap: 40px 56px;
+
+$cookbook-mobile-space-top: 24px;
+$cookbook-mobile-section-gap: 40px;
+$cookbook-mobile-intro-padding: 24px 16px;
+$cookbook-mobile-popular-card-width: 260px;
+$cookbook-mobile-cuisine-gap: 32px;
+
+:host {
+  display: block;
+  min-height: 100dvh;
+  background-color: $color-white;
+  color: $color-green-dark;
+}
+
+.cookbook {
+  @include page-container;
+  display: flex;
+  flex-direction: column;
+  gap: $cookbook-section-gap;
+  max-width: calc(#{$cookbook-max-width} + 2 * #{$page-gutter-max});
+  padding-block: $cookbook-space-top $cookbook-space-bottom;
+
+  @include mobile {
+    gap: $cookbook-mobile-section-gap;
+    padding-top: $cookbook-mobile-space-top;
+  }
+
+  &__intro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $cookbook-intro-gap;
+    padding: $cookbook-intro-padding;
+    border-radius: $cookbook-radius;
+    background-color: $color-sage-light;
+
+    @include mobile {
+      padding: $cookbook-mobile-intro-padding;
+    }
+  }
+
+  &__headline {
+    display: flex;
+    flex: 0 1 $cookbook-headline-width;
+    flex-direction: column;
+    gap: $cookbook-headline-gap;
+    min-width: 0;
+  }
+
+  &__title {
+    margin: 0;
+    color: $color-green-middle;
+    font-size: font-size(h2);
+    font-weight: $font-weight-semibold;
+    line-height: $cookbook-title-line-height;
+
+    @include mobile {
+      font-size: font-size-mobile(h2);
+    }
+  }
+
+  &__text {
+    margin: 0;
+    font-size: font-size(label);
+    font-weight: $font-weight-medium;
+    line-height: $cookbook-text-line-height;
+
+    @include mobile {
+      font-size: font-size(text);
+    }
+  }
+
+  // Takes the remaining width; its cards scroll sideways.
+  &__popular {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: $cookbook-popular-gap;
+    min-width: min(100%, #{$cookbook-popular-card-width});
+  }
+
+  &__popular-title {
+    display: flex;
+    align-items: center;
+    gap: $cookbook-popular-title-gap;
+    margin: 0;
+    color: $color-green-middle;
+    font-size: font-size(label);
+    font-weight: $font-weight-medium;
+  }
+
+  &__heart {
+    width: $cookbook-heart-size;
+    height: $cookbook-heart-size;
+    color: $color-green-bright;
+  }
+
+  &__popular-list {
+    display: grid;
+    grid-auto-columns: $cookbook-popular-card-width;
+    grid-auto-flow: column;
+    gap: $cookbook-popular-list-gap;
+    margin: 0;
+    padding: 0 0 $cookbook-popular-scroll-space;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-color: $color-sage-dark transparent;
+    scrollbar-width: thin;
+    list-style: none;
+
+    @include mobile {
+      grid-auto-columns: $cookbook-mobile-popular-card-width;
+    }
+  }
+
+  &__popular-item {
+    display: grid;
+    scroll-snap-align: start;
+  }
+
+  &__note {
+    margin: 0;
+    font-size: font-size(text);
+  }
+
+  &__cuisine-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax($cookbook-cuisine-min-width, 1fr));
+    gap: $cookbook-cuisine-gap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include mobile {
+      gap: $cookbook-mobile-cuisine-gap;
+    }
+  }
+
+  &__new {
+    align-self: flex-end;
+
+    @include mobile {
+      align-self: center;
+    }
+  }
+}
