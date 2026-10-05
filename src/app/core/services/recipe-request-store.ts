@@ -1,6 +1,8 @@
 import { Injectable, computed, signal } from '@angular/core';
 
+import { GenerateRecipeRequest } from '../../shared/models/generate-recipe-request';
 import { IngredientEntry, IngredientEntryChange } from '../../shared/models/ingredient-entry';
+import { Recipe } from '../../shared/models/recipe';
 import {
   COOKS_RANGE,
   RecipePreferences,
@@ -9,10 +11,14 @@ import {
 
 const STORAGE_KEY = 'recipe-request';
 
-/** What the user has entered so far; it is sent to the generator after the last step. */
+/**
+ * What the user has entered so far, and the recipes generated for it. The results are kept
+ * until the input changes, so going back from a recipe does not start a new generation.
+ */
 interface RecipeRequestState {
   ingredients: IngredientEntry[];
   preferences: RecipePreferences;
+  results: Recipe[] | null;
 }
 
 const EMPTY_STATE: RecipeRequestState = {
@@ -24,6 +30,7 @@ const EMPTY_STATE: RecipeRequestState = {
     cuisine: null,
     diet: null,
   },
+  results: null,
 };
 
 /**
@@ -37,6 +44,8 @@ export class RecipeRequestStore {
   readonly ingredients = computed<IngredientEntry[]>(() => this.state().ingredients);
   readonly hasIngredients = computed<boolean>(() => this.ingredients().length > 0);
   readonly preferences = computed<RecipePreferences>(() => this.state().preferences);
+  readonly results = computed<Recipe[] | null>(() => this.state().results);
+  readonly request = computed<GenerateRecipeRequest | null>(() => this.buildRequest());
 
   /** Adds an ingredient at the top, so the latest one is the first in the list. */
   addIngredient(entry: IngredientEntry): void {
@@ -59,17 +68,39 @@ export class RecipeRequestStore {
 
   /** Merges the changed preferences into the stored ones. */
   updatePreferences(change: Partial<RecipePreferences>): void {
-    this.state.update((state) => ({
-      ...state,
-      preferences: { ...state.preferences, ...change },
-    }));
-    this.writeState(this.state());
+    const state = this.state();
+    this.setState({ ...state, preferences: { ...state.preferences, ...change }, results: null });
   }
 
-  /** Applies a change to the ingredient list and stores the new state. */
+  /** Keeps the generated recipes for the current input. */
+  setResults(results: Recipe[]): void {
+    this.setState({ ...this.state(), results });
+  }
+
+  /** Clears everything, so the generator starts again from the first step. */
+  reset(): void {
+    this.setState(EMPTY_STATE);
+  }
+
+  /** Applies a change to the ingredient list; earlier results no longer fit the new list. */
   private updateIngredients(change: (ingredients: IngredientEntry[]) => IngredientEntry[]): void {
-    this.state.update((state) => ({ ...state, ingredients: change(state.ingredients) }));
-    this.writeState(this.state());
+    const state = this.state();
+    this.setState({ ...state, ingredients: change(state.ingredients), results: null });
+  }
+
+  /** Replaces the state and keeps a copy in the session storage. */
+  private setState(state: RecipeRequestState): void {
+    this.state.set(state);
+    this.writeState(state);
+  }
+
+  /** Returns the data for the generator, or null while something is still missing. */
+  private buildRequest(): GenerateRecipeRequest | null {
+    const { servings, cooks, cookingTime, cuisine, diet } = this.preferences();
+    if (!this.hasIngredients() || !cookingTime || !cuisine || !diet) {
+      return null;
+    }
+    return { ingredients: this.ingredients(), servings, cooks, cookingTime, cuisine, diet };
   }
 
   /** Reads the stored state; a missing, broken or blocked storage starts empty. */
@@ -87,6 +118,7 @@ export class RecipeRequestStore {
     return {
       ingredients: stored.ingredients ?? EMPTY_STATE.ingredients,
       preferences: { ...EMPTY_STATE.preferences, ...stored.preferences },
+      results: stored.results ?? null,
     };
   }
 

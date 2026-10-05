@@ -18,10 +18,12 @@ export function buildPaginationItems(currentPage: number, totalPages: number): P
   for (let page = start; page <= end; page++) {
     pages.add(page);
   }
-  return [...pages].sort((a, b) => a - b).flatMap((page, index, sorted) => {
-    const hasGap = index > 0 && page - sorted[index - 1] > 1;
-    return hasGap ? [null, page] : [page];
-  });
+  return [...pages]
+    .sort((a, b) => a - b)
+    .flatMap((page, index, sorted) => {
+      const hasGap = index > 0 && page - sorted[index - 1] > 1;
+      return hasGap ? [null, page] : [page];
+    });
 }
 
 @Component({

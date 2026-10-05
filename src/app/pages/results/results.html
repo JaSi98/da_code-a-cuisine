@@ -1,4 +1,59 @@
-<!-- Placeholder until the page is built. -->
-<main>
-  <h1>Results</h1>
-</main>
+<app-site-header variant="cream" />
+
+@if (status() === 'ready') {
+  <main class="results">
+    <section class="results__intro" aria-labelledby="results-title">
+      <h1 class="results__title" id="results-title">The recipe results</h1>
+      <img
+        class="results__visual"
+        src="assets/results/results-visual.webp"
+        alt=""
+        width="1200"
+        height="800"
+      />
+      <p class="results__text">
+        We took what you have and let our AI do the thinking. Here are 3 easy recipes you can make
+        right now!
+      </p>
+      <ul class="results__tags" aria-label="Your choices">
+        @for (label of choiceLabels(); track label) {
+          <li><app-tag [label]="label" [isInteractive]="false" /></li>
+        }
+      </ul>
+    </section>
+
+    <ol class="results__list" aria-label="Generated recipes">
+      @for (recipe of recipes(); track recipe.id) {
+        <li class="results__item">
+          <app-recipe-card
+            [position]="$index + 1"
+            [title]="recipe.title"
+            [cookingTime]="recipe.cookingTime"
+            [link]="getRecipeLink(recipe)"
+          />
+        </li>
+      }
+    </ol>
+
+    <app-button
+      class="results__new"
+      variant="secondary-cream"
+      label="Generate new recipe"
+      (buttonClick)="startOver()"
+    />
+  </main>
+} @else {
+  <main class="results results--waiting">
+    @if (status() === 'loading') {
+      <app-loading-indicator />
+    }
+  </main>
+}
+
+<app-error-dialog
+  [(isOpen)]="isErrorOpen"
+  title="Something went wrong"
+  message="We could not create your recipes right now. Please try again in a moment."
+  actionLabel="Back to preferences"
+  actionLink="/generate/preferences"
+/>

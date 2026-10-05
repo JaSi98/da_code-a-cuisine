@@ -2,11 +2,7 @@
   @if (chefs().length > 1) {
     <div class="direction-list__toolbar">
       <div class="direction-list__filter" role="group" aria-label="Show steps of">
-        <app-tag
-          label="All"
-          [isActive]="selectedChef() === null"
-          (tagClick)="selectChef(null)"
-        />
+        <app-tag label="All" [isActive]="selectedChef() === null" (tagClick)="selectChef(null)" />
         @for (chef of chefs(); track chef) {
           <app-tag
             [label]="'Chef ' + chef"

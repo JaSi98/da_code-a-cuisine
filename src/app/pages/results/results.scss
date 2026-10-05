@@ -1,0 +1,152 @@
+@use '../../../styles/abstracts/colors' as *;
+@use '../../../styles/abstracts/typography' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+$results-max-width: 1280px;
+$results-space-top: 48px;
+$results-space-bottom: 64px;
+$results-section-gap: 64px;
+$results-intro-column-gap: 96px;
+$results-intro-row-gap: 24px;
+$results-title-line-height: 1.2;
+$results-text-line-height: 1.25;
+$results-visual-width: 574px;
+$results-visual-height: 222px;
+$results-visual-radius: 20px;
+// Keeps the cloche in view when the picture is cropped.
+$results-visual-focus: 50% 40%;
+$results-tags-gap: 12px;
+$results-list-gap: 20px;
+$results-card-min-width: 280px;
+
+$results-mobile-space-top: 24px;
+$results-mobile-section-gap: 40px;
+$results-mobile-intro-gap: 16px;
+$results-mobile-visual-height: 120px;
+$results-mobile-list-gap: 12px;
+
+:host {
+  @include focus-ring-on-dark;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background-color: $color-green-olive;
+  color: $color-cream;
+}
+
+.results {
+  @include page-container;
+  display: flex;
+  flex-direction: column;
+  gap: $results-section-gap;
+  max-width: calc(#{$results-max-width} + 2 * #{$page-gutter-max});
+  padding-block: $results-space-top $results-space-bottom;
+
+  @include mobile {
+    gap: $results-mobile-section-gap;
+    padding-top: $results-mobile-space-top;
+  }
+
+  &--waiting {
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+  }
+
+  // Text on the left and picture on the right; on mobile the picture follows the title.
+  &__intro {
+    display: grid;
+    grid-template-areas:
+      'title visual'
+      'text visual'
+      'tags visual';
+    grid-template-columns: minmax(0, 1fr) minmax(0, $results-visual-width);
+    grid-template-rows: auto auto 1fr;
+    gap: $results-intro-row-gap $results-intro-column-gap;
+
+    @include tablet {
+      column-gap: $results-intro-row-gap;
+    }
+
+    @include mobile {
+      grid-template-areas: 'title' 'visual' 'text' 'tags';
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: none;
+      row-gap: $results-mobile-intro-gap;
+    }
+  }
+
+  &__title {
+    grid-area: title;
+    margin: 0;
+    font-size: font-size(h2);
+    font-weight: $font-weight-semibold;
+    line-height: $results-title-line-height;
+
+    @include mobile {
+      font-size: font-size-mobile(h2);
+    }
+  }
+
+  &__visual {
+    grid-area: visual;
+    width: 100%;
+    height: $results-visual-height;
+    border-radius: $results-visual-radius;
+    object-fit: cover;
+    object-position: $results-visual-focus;
+
+    @include mobile {
+      height: $results-mobile-visual-height;
+    }
+  }
+
+  &__text {
+    grid-area: text;
+    margin: 0;
+    font-size: font-size(h5);
+    font-weight: $font-weight-medium;
+    line-height: $results-text-line-height;
+
+    @include mobile {
+      font-size: font-size(text);
+    }
+  }
+
+  &__tags {
+    grid-area: tags;
+    display: flex;
+    flex-wrap: wrap;
+    gap: $results-tags-gap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax($results-card-min-width, 1fr));
+    gap: $results-list-gap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include mobile {
+      grid-template-columns: minmax(0, 1fr);
+      gap: $results-mobile-list-gap;
+    }
+  }
+
+  // Lets the card fill the row height, so all buttons line up.
+  &__item {
+    display: grid;
+  }
+
+  &__new {
+    align-self: flex-end;
+
+    @include mobile {
+      align-self: center;
+    }
+  }
+}
