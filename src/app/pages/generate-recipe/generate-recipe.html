@@ -1,4 +1,29 @@
-<!-- Placeholder until the page is built. -->
-<main>
-  <h1>Generate recipe</h1>
+<app-site-header />
+
+<main class="generate-recipe">
+  <hgroup class="generate-recipe__headline">
+    <h1 class="generate-recipe__title">Generate recipe</h1>
+    <p class="generate-recipe__intro">
+      Got random stuff in your kitchen? Pop it in—we’ve got the perfect recipe waiting.
+    </p>
+  </hgroup>
+
+  <div class="generate-recipe__panels">
+    <app-ingredient-input (ingredientAdd)="store.addIngredient($event)" />
+    <app-ingredient-list
+      [entries]="store.ingredients()"
+      (entryChange)="store.updateIngredient($event)"
+      (entryRemove)="store.removeIngredient($event)"
+    />
+  </div>
+
+  <app-button class="generate-recipe__next" label="Next step" (buttonClick)="goToNextStep()" />
 </main>
+
+<app-error-dialog
+  [(isOpen)]="isErrorOpen"
+  title="No ingredients yet"
+  message="Add at least one ingredient to your list, so we can find a recipe that fits."
+  actionLabel="Add ingredients"
+  actionLink="/generate"
+/>

@@ -1,4 +1,13 @@
-import { Component, DestroyRef, DoCheck, inject, input, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  DoCheck,
+  ElementRef,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -15,6 +24,7 @@ let nextInputId = 0;
 export class Input implements ControlValueAccessor, DoCheck {
   private readonly ngControl = inject(NgControl, { self: true, optional: true });
   private readonly destroyRef = inject(DestroyRef);
+  private readonly control = viewChild<ElementRef<HTMLInputElement>>('control');
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
   private watchedControl: AbstractControl | null = null;
@@ -51,9 +61,18 @@ export class Input implements ControlValueAccessor, DoCheck {
     }
   }
 
-  /** Writes a value from the form model into the field. */
+  /**
+   * Writes a value from the form model into the field. The element is updated directly as well:
+   * if the user typed and the form was reset before the next render, the bound value would not
+   * change and the typed text would stay visible.
+   */
   writeValue(value: string | number | null): void {
-    this.value.set(value === null ? '' : String(value));
+    const text = value === null ? '' : String(value);
+    this.value.set(text);
+    const element = this.control()?.nativeElement;
+    if (element) {
+      element.value = text;
+    }
   }
 
   /** Registers the callback that reports value changes to the form. */

@@ -1,0 +1,106 @@
+@use '../../../styles/abstracts/colors' as *;
+@use '../../../styles/abstracts/typography' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+$generate-recipe-max-width: 1087px;
+$generate-recipe-space-top: 64px;
+$generate-recipe-space-bottom: 64px;
+$generate-recipe-headline-gap: 24px;
+$generate-recipe-intro-gap: 64px;
+$generate-recipe-panels-gap: 32px;
+$generate-recipe-next-gap: 56px;
+$generate-recipe-title-line-height: 1.2;
+
+// The two panels keep the ratio of their design widths when the screen gets narrower.
+$generate-recipe-input-share: 577fr;
+$generate-recipe-list-share: 478fr;
+
+$generate-recipe-mobile-space-top: 40px;
+$generate-recipe-mobile-gap: 40px;
+$generate-recipe-mobile-panels-gap: 20px;
+
+:host {
+  display: block;
+  min-height: 100dvh;
+  background-color: $color-white;
+}
+
+.generate-recipe {
+  @include page-container;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: $generate-recipe-space-top $generate-recipe-space-bottom;
+  color: $color-green-dark;
+
+  @include mobile {
+    align-items: stretch;
+    padding-top: $generate-recipe-mobile-space-top;
+  }
+
+  &__headline {
+    display: flex;
+    flex-direction: column;
+    gap: $generate-recipe-headline-gap;
+    margin: 0 0 $generate-recipe-intro-gap;
+    text-align: center;
+
+    @include mobile {
+      margin-bottom: $generate-recipe-mobile-gap;
+      text-align: start;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    color: $color-green-middle;
+    font-size: font-size(h2);
+    font-weight: $font-weight-semibold;
+    line-height: $generate-recipe-title-line-height;
+
+    @include mobile {
+      font-size: font-size-mobile(h2);
+    }
+  }
+
+  &__intro {
+    margin: 0;
+    font-size: font-size(h5);
+    font-weight: $font-weight-medium;
+    line-height: 1;
+
+    @include mobile {
+      font-size: font-size(h6);
+      line-height: $generate-recipe-title-line-height;
+    }
+  }
+
+  &__panels {
+    display: grid;
+    grid-template-columns:
+      minmax(0, $generate-recipe-input-share)
+      minmax(0, $generate-recipe-list-share);
+    align-items: start;
+    gap: $generate-recipe-panels-gap;
+    width: 100%;
+    max-width: $generate-recipe-max-width;
+
+    @include mobile {
+      grid-template-columns: minmax(0, 1fr);
+      gap: $generate-recipe-mobile-panels-gap;
+    }
+  }
+
+  // Right-aligned below the panels on desktop, centred on mobile.
+  &__next {
+    align-self: flex-end;
+    margin-top: $generate-recipe-next-gap;
+    margin-right: max(0px, (100% - #{$generate-recipe-max-width}) / 2);
+
+    @include mobile {
+      align-self: center;
+      margin-top: $generate-recipe-mobile-gap;
+      margin-right: 0;
+    }
+  }
+}
