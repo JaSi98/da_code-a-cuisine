@@ -1,4 +1,45 @@
-<!-- Placeholder until the page is built. -->
-<main>
-  <h1>Cuisine recipes</h1>
-</main>
+<app-site-header backLink="/cookbook" backLabel="Cookbook">
+  <app-button label="Generate a recipe" link="/generate" />
+</app-site-header>
+
+@if (info(); as info) {
+  <main class="cuisine-recipes">
+    <app-hero-banner
+      [title]="info.name"
+      [image]="info.banner"
+      [imageMobile]="info.bannerMobile"
+      variant="cuisine"
+    />
+
+    @if (pageResource.isLoading()) {
+      <p class="cuisine-recipes__note" role="status">Loading recipes ...</p>
+    } @else if (recipePage().recipes.length > 0) {
+      <ol class="cuisine-recipes__list" [attr.start]="getPosition(0)">
+        @for (recipe of recipePage().recipes; track recipe.id) {
+          <li>
+            <app-cookbook-recipe-item
+              [position]="getPosition($index)"
+              [title]="recipe.title"
+              [cookingTime]="recipe.cookingTime"
+              [tags]="getTags(recipe)"
+              [likes]="recipe.likes"
+              [link]="getRecipeLink(recipe)"
+            />
+          </li>
+        }
+      </ol>
+      @if (totalPages() > 1) {
+        <app-pagination
+          [totalPages]="totalPages()"
+          [currentPage]="currentPage()"
+          (currentPageChange)="changePage($event)"
+          [ariaLabel]="info.name + ' pages'"
+        />
+      }
+    } @else {
+      <p class="cuisine-recipes__note">
+        There are no recipes in this cuisine yet. Generate the first one!
+      </p>
+    }
+  </main>
+}

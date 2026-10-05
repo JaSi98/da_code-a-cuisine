@@ -1,0 +1,59 @@
+@use '../../../styles/abstracts/colors' as *;
+@use '../../../styles/abstracts/typography' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+$cuisine-recipes-space-top: 40px;
+$cuisine-recipes-space-bottom: 64px;
+$cuisine-recipes-gap: 48px;
+$cuisine-recipes-list-max-width: 864px;
+$cuisine-recipes-list-gap: 8px;
+
+$cuisine-recipes-mobile-space-top: 24px;
+$cuisine-recipes-mobile-gap: 32px;
+$cuisine-recipes-mobile-list-gap: 16px;
+
+:host {
+  display: block;
+  min-height: 100dvh;
+  background-color: $color-white;
+  color: $color-green-dark;
+}
+
+.cuisine-recipes {
+  @include page-container;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $cuisine-recipes-gap;
+  padding-block: $cuisine-recipes-space-top $cuisine-recipes-space-bottom;
+
+  @include mobile {
+    gap: $cuisine-recipes-mobile-gap;
+    padding-top: $cuisine-recipes-mobile-space-top;
+  }
+
+  app-hero-banner {
+    align-self: stretch;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $cuisine-recipes-list-gap;
+    width: 100%;
+    max-width: $cuisine-recipes-list-max-width;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include mobile {
+      gap: $cuisine-recipes-mobile-list-gap;
+    }
+  }
+
+  &__note {
+    margin: 0;
+    font-size: font-size(text-large);
+    text-align: center;
+  }
+}
