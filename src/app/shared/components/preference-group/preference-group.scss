@@ -1,0 +1,70 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+
+$preference-group-gap: 24px;
+$preference-group-legend-gap: 2px;
+$preference-group-icon-size: 24px;
+$preference-group-options-gap: 20px;
+$preference-group-options-gap-mobile: 12px;
+$preference-group-hint-gap: 12px;
+$preference-group-hinted-min-width: 83px;
+$preference-group-hint-line-height: 1.2;
+
+:host {
+  display: block;
+}
+
+.preference-group {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+
+  &__legend {
+    display: flex;
+    align-items: center;
+    gap: $preference-group-legend-gap;
+    margin-bottom: $preference-group-gap;
+    padding: 0;
+    color: $color-green-dark;
+    font-size: font-size(h5);
+    font-weight: $font-weight-medium;
+    line-height: 1;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: $preference-group-icon-size;
+    height: $preference-group-icon-size;
+  }
+
+  &__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $preference-group-options-gap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include mobile {
+      gap: $preference-group-options-gap-mobile;
+    }
+  }
+
+  // Options with a hint stack the hint centred below the tag.
+  &__option--hinted {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $preference-group-hint-gap;
+    min-width: $preference-group-hinted-min-width;
+  }
+
+  &__hint {
+    color: $color-green-middle;
+    font-size: font-size(small);
+    font-weight: $font-weight-medium;
+    line-height: $preference-group-hint-line-height;
+  }
+}

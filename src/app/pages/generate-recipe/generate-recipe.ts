@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { INGREDIENT_SUGGESTIONS } from '../../core/data/ingredient-suggestions';
 import { RecipeRequestStore } from '../../core/services/recipe-request-store';
 import { Button } from '../../shared/components/button/button';
 import { ErrorDialog } from '../../shared/components/error-dialog/error-dialog';
@@ -20,6 +21,7 @@ export class GenerateRecipe {
   private readonly router = inject(Router);
 
   protected readonly store = inject(RecipeRequestStore);
+  protected readonly suggestions = [...INGREDIENT_SUGGESTIONS];
   protected readonly isErrorOpen = signal<boolean>(false);
 
   /** Moves on to the preferences, or explains why that is not possible yet. */

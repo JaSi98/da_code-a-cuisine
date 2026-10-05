@@ -1,0 +1,23 @@
+<fieldset class="preference-group">
+  <legend class="preference-group__legend">
+    <svg class="preference-group__icon" viewBox="0 -960 960 960" aria-hidden="true">
+      <use [attr.href]="iconHref()"></use>
+    </svg>
+    {{ legend() }}
+  </legend>
+  <ul class="preference-group__options">
+    @for (option of options(); track option.value) {
+      <li class="preference-group__option" [class.preference-group__option--hinted]="option.hint">
+        <app-tag
+          [label]="option.label"
+          [isActive]="option.value === selected()"
+          [describedBy]="option.hint ? getHintId($index) : null"
+          (tagClick)="select(option.value)"
+        />
+        @if (option.hint; as hint) {
+          <span class="preference-group__hint" [id]="getHintId($index)">{{ hint }}</span>
+        }
+      </li>
+    }
+  </ul>
+</fieldset>

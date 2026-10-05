@@ -1,0 +1,56 @@
+@use '../../../../styles/abstracts/colors' as *;
+@use '../../../../styles/abstracts/typography' as *;
+
+$counter-field-gap: 16px;
+$counter-field-row-gap: 8px;
+$counter-field-line-height: 20px;
+$counter-field-number-min-width: 22px;
+$counter-field-number-padding: 0 5px 1px;
+$counter-field-number-radius: 2px;
+// Wide enough for the longest unit, so the plus button does not move when the unit changes.
+$counter-field-unit-width: 78px;
+$counter-field-disabled-opacity: 0.4;
+
+:host {
+  display: block;
+}
+
+.counter-field {
+  display: flex;
+  flex-direction: column;
+  gap: $counter-field-gap;
+  color: $color-green-dark;
+  font-size: font-size(label);
+  font-weight: $font-weight-medium;
+  line-height: $counter-field-line-height;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: $counter-field-row-gap;
+
+    app-icon-button:has(:disabled) {
+      opacity: $counter-field-disabled-opacity;
+    }
+  }
+
+  &__value {
+    display: flex;
+    align-items: center;
+    gap: $counter-field-row-gap;
+  }
+
+  &__number {
+    box-sizing: border-box;
+    min-width: $counter-field-number-min-width;
+    padding: $counter-field-number-padding;
+    border-radius: $counter-field-number-radius;
+    background-color: rgba($color-green-olive, 0.2);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__unit {
+    width: $counter-field-unit-width;
+  }
+}

@@ -9,7 +9,10 @@
   </hgroup>
 
   <div class="generate-recipe__panels">
-    <app-ingredient-input (ingredientAdd)="store.addIngredient($event)" />
+    <app-ingredient-input
+      [suggestions]="suggestions"
+      (ingredientAdd)="store.addIngredient($event)"
+    />
     <app-ingredient-list
       [entries]="store.ingredients()"
       (entryChange)="store.updateIngredient($event)"

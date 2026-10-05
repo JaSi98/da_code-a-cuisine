@@ -1,0 +1,21 @@
+<div class="counter-field" role="group" [attr.aria-labelledby]="labelId">
+  <span class="counter-field__label" [id]="labelId">{{ label() }}</span>
+  <div class="counter-field__row">
+    <app-icon-button
+      icon="minus"
+      [ariaLabel]="'Fewer ' + unitPlural().toLowerCase()"
+      [isDisabled]="isAtMin()"
+      (buttonClick)="decrease()"
+    />
+    <output class="counter-field__value" aria-live="polite">
+      <span class="counter-field__number">{{ value() }}</span>&ngsp;
+      <span class="counter-field__unit">{{ unitLabel() }}</span>
+    </output>
+    <app-icon-button
+      icon="plus"
+      [ariaLabel]="'More ' + unitPlural().toLowerCase()"
+      [isDisabled]="isAtMax()"
+      (buttonClick)="increase()"
+    />
+  </div>
+</div>

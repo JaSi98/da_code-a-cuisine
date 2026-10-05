@@ -10,6 +10,7 @@ export class Tag {
   readonly isActive = input<boolean>(false);
   readonly isInteractive = input<boolean>(true);
   readonly isDisabled = input<boolean>(false);
+  readonly describedBy = input<string | null>(null);
 
   readonly tagClick = output<void>();
 

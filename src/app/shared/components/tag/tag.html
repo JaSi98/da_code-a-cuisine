@@ -5,6 +5,7 @@
     type="button"
     [disabled]="isDisabled()"
     [attr.aria-pressed]="isActive()"
+    [attr.aria-describedby]="describedBy()"
     (click)="emitClick()"
   >
     {{ label() }}
