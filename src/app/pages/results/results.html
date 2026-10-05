@@ -52,8 +52,8 @@
 
 <app-error-dialog
   [(isOpen)]="isErrorOpen"
-  title="Something went wrong"
-  message="We could not create your recipes right now. Please try again in a moment."
-  actionLabel="Back to preferences"
-  actionLink="/generate/preferences"
+  [title]="error().title"
+  [message]="error().message"
+  [actionLabel]="error().actionLabel"
+  [actionLink]="error().actionLink"
 />

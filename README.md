@@ -11,6 +11,7 @@ Code à Cuisine turns the ingredients you already have at home into recipe ideas
 - **Nutrition facts** per serving or for the whole recipe, with the share of each macronutrient.
 - **Cookbook** with the most liked recipes, one page per cuisine and pagination.
 - **Likes**: one per browser and recipe, can be taken back.
+- **Daily limit**: three recipe requests per day, shown before generating.
 - Responsive from 320 px to wide screens, keyboard and screen reader friendly, reduced motion respected.
 
 ## Tech stack
@@ -104,11 +105,18 @@ Exactly three recipes; any other answer is shown as an error.
       "nutritionPerServing": { "energy": 630, "protein": 18, "fat": 24, "carbs": 58 },
       "likes": 0
     }
-  ]
+  ],
+  "quota": { "remaining": 2, "limit": 3 }
 }
 ```
 
 `energy` is in kcal, the macronutrients in grams. `chef` is the number of the cook (1–3) who does the step.
+
+### Daily limit
+
+Each IP address may request recipes three times per day. The workflow enforces this limit (and the system-wide limit) and reports what is left in the optional `quota` field. When a request is refused, it answers with **HTTP 429**; the app then shows a "Daily limit reached" message.
+
+The app also counts the requests of the browser per day (`RecipeQuota`) and shows "x of 3 recipe requests left today" on the preferences page, so the user knows before sending. This count is only a hint: the answer of the workflow always wins.
 
 ## Database
 
@@ -120,7 +128,7 @@ Exactly three recipes; any other answer is shown as an error.
 src/app/
 ├── core/
 │   ├── data/          static data (cuisines, ingredient suggestions)
-│   └── services/      generator, repository, request store, liked recipes
+│   └── services/      generator, repository, request store, quota, liked recipes
 ├── pages/             one folder per route
 └── shared/
     ├── components/    reusable UI components

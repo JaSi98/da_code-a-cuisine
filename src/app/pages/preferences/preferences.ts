@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { RecipeQuota } from '../../core/services/recipe-quota';
 import { RecipeRequestStore } from '../../core/services/recipe-request-store';
 import { Button } from '../../shared/components/button/button';
 import { CounterField } from '../../shared/components/counter-field/counter-field';
@@ -34,6 +35,14 @@ const REQUIRED_CHOICES: readonly [keyof RecipePreferences, string][] = [
   ['diet', 'a diet'],
 ];
 
+const QUOTA_ERROR: MissingInputError = {
+  title: 'Daily limit reached',
+  message:
+    'You have used all recipe requests for today. Come back tomorrow, or find inspiration in the cookbook.',
+  actionLabel: 'Open cookbook',
+  actionLink: '/cookbook',
+};
+
 const NO_INGREDIENTS_ERROR: MissingInputError = {
   title: 'No ingredients yet',
   message: 'Add at least one ingredient to your list, so we can find a recipe that fits.',
@@ -51,6 +60,7 @@ export class Preferences {
   private readonly router = inject(Router);
 
   protected readonly store = inject(RecipeRequestStore);
+  protected readonly quota = inject(RecipeQuota);
   protected readonly ingredientsRoute = INGREDIENTS_ROUTE;
   protected readonly servingsRange = SERVINGS_RANGE;
   protected readonly cooksRange = COOKS_RANGE;
@@ -73,6 +83,9 @@ export class Preferences {
 
   /** Returns the error for the first missing input, or null if everything is filled in. */
   private findMissingInput(): MissingInputError | null {
+    if (!this.quota.hasRemaining()) {
+      return QUOTA_ERROR;
+    }
     if (!this.store.hasIngredients()) {
       return NO_INGREDIENTS_ERROR;
     }

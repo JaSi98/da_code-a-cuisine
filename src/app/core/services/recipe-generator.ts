@@ -7,7 +7,6 @@ import {
   GenerateRecipeRequest,
   GenerateRecipeResponse,
 } from '../../shared/models/generate-recipe-request';
-import { Recipe } from '../../shared/models/recipe';
 
 const EXPECTED_RECIPE_COUNT = 3;
 
@@ -17,17 +16,17 @@ export class RecipeGenerator {
   private readonly http = inject(HttpClient);
 
   /** Requests three recipes; fails if the answer does not contain exactly three. */
-  generate(request: GenerateRecipeRequest): Observable<Recipe[]> {
+  generate(request: GenerateRecipeRequest): Observable<GenerateRecipeResponse> {
     return this.http
       .post<GenerateRecipeResponse>(environment.generateRecipeUrl, request)
-      .pipe(map((response) => this.checkRecipes(response)));
+      .pipe(map((response) => this.checkResponse(response)));
   }
 
   /** Makes sure the answer has the expected shape before the page shows it. */
-  private checkRecipes(response: GenerateRecipeResponse): Recipe[] {
+  private checkResponse(response: GenerateRecipeResponse): GenerateRecipeResponse {
     if (!Array.isArray(response?.recipes) || response.recipes.length !== EXPECTED_RECIPE_COUNT) {
       throw new Error('The generator returned an unexpected answer.');
     }
-    return response.recipes;
+    return response;
   }
 }

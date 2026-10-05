@@ -50,11 +50,12 @@
     </div>
   </div>
 
-  <app-button
-    class="preferences__submit"
-    label="Generate a recipe"
-    (buttonClick)="generateRecipe()"
-  />
+  <div class="preferences__submit">
+    <app-button label="Generate a recipe" (buttonClick)="generateRecipe()" />
+    <p class="preferences__quota" role="status">
+      {{ quota.remaining() }} of {{ quota.limit }} recipe requests left today
+    </p>
+  </div>
 </main>
 
 <app-error-dialog

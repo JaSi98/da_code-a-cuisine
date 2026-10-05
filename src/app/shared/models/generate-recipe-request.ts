@@ -12,7 +12,14 @@ export interface GenerateRecipeRequest {
   diet: Diet;
 }
 
+/** How many generations are left today for the requesting IP address. */
+export interface RecipeQuotaInfo {
+  remaining: number;
+  limit: number;
+}
+
 /** The generator's answer: three different recipes, already saved in the cookbook. */
 export interface GenerateRecipeResponse {
   recipes: Recipe[];
+  quota?: RecipeQuotaInfo;
 }

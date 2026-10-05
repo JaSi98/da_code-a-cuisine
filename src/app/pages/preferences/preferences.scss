@@ -10,6 +10,7 @@ $preferences-counters-gap: 120px;
 $preferences-panel-padding: 32px 24px;
 $preferences-panel-gap: 40px;
 $preferences-panel-radius: 20px;
+$preferences-quota-gap: 12px;
 
 $preferences-mobile-space-top: 24px;
 $preferences-mobile-section-gap: 32px;
@@ -83,6 +84,14 @@ $preferences-mobile-panel-padding: 24px 16px;
   }
 
   &__submit {
-    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $preferences-quota-gap;
+  }
+
+  &__quota {
+    margin: 0;
+    font-size: font-size(text);
   }
 }
