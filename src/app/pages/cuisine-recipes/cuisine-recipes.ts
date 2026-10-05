@@ -12,7 +12,7 @@ import { SiteHeader } from '../../shared/components/site-header/site-header';
 import { Recipe } from '../../shared/models/recipe';
 import { COOKING_TIME_OPTIONS, DIET_OPTIONS } from '../../shared/models/recipe-preferences';
 
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 20;
 const FIRST_PAGE = 1;
 const COOKBOOK_ROUTE = '/cookbook';
 const COOKBOOK_RECIPE_ROUTE = '/cookbook/recipe/';
