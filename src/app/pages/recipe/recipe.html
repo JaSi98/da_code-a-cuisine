@@ -1,4 +1,120 @@
-<!-- Placeholder until the page is built. -->
-<main>
-  <h1>Recipe</h1>
-</main>
+<app-site-header [backLink]="backLink().link" [backLabel]="backLink().label" />
+
+@if (recipe(); as recipe) {
+  <main class="recipe">
+    <article class="recipe__card">
+      <header class="recipe__head">
+        <div class="recipe__name">
+          <p class="recipe__meta">
+            <svg class="recipe__meta-icon" viewBox="0 -960 960 960" aria-hidden="true">
+              <use href="assets/icons/schedule.svg#icon"></use>
+            </svg>
+            Cooking time: {{ recipe.cookingTime }}min
+          </p>
+          <h1 class="recipe__title">{{ recipe.title }}</h1>
+          <div class="recipe__cooks">
+            <p class="recipe__meta">Cooking persons: {{ recipe.cooks }}</p>
+            <ul class="recipe__chefs" aria-label="Cooks">
+              @for (chef of chefs(); track chef) {
+                <li><app-cook-label [chef]="chef" /></li>
+              }
+            </ul>
+          </div>
+        </div>
+        <div class="recipe__facts">
+          <ul class="recipe__tags" aria-label="Recipe details">
+            @for (label of tagLabels(); track label) {
+              <li><app-tag [label]="label" [isInteractive]="false" [isActive]="true" /></li>
+            }
+            <li><app-like-count [count]="likes()" /></li>
+          </ul>
+          <app-nutrition-info
+            [perServing]="recipe.nutritionPerServing"
+            [servings]="recipe.servings"
+          />
+        </div>
+      </header>
+
+      <section class="recipe__section">
+        <app-hero-banner
+          title="Ingredients"
+          image="assets/banners/ingredients.webp"
+          imageMobile="assets/banners/ingredients-mobile.webp"
+        />
+        <div class="recipe__ingredients">
+          @if (ownIngredients().length > 0) {
+            <div class="recipe__ingredient-group">
+              <h3 class="recipe__ingredient-title">Your ingredients</h3>
+              <ul class="recipe__ingredient-list">
+                @for (ingredient of ownIngredients(); track ingredient.name) {
+                  <li class="recipe__ingredient">
+                    <span class="recipe__amount">{{ formatAmount(ingredient) }}</span>
+                    {{ ingredient.name }}
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+          @if (extraIngredients().length > 0) {
+            <div class="recipe__ingredient-group">
+              <h3 class="recipe__ingredient-title">Extra ingredients</h3>
+              <ul class="recipe__ingredient-list">
+                @for (ingredient of extraIngredients(); track ingredient.name) {
+                  <li class="recipe__ingredient">
+                    <span class="recipe__amount">{{ formatAmount(ingredient) }}</span>
+                    {{ ingredient.name }}
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+      </section>
+
+      <section class="recipe__section">
+        <app-hero-banner
+          title="Directions"
+          image="assets/banners/directions.webp"
+          imageMobile="assets/banners/directions-mobile.webp"
+        />
+        <app-direction-list [steps]="recipe.steps" [storageKey]="recipe.id" />
+      </section>
+
+      <footer class="recipe__like">
+        <p class="recipe__like-text">
+          <strong class="recipe__like-question">Just finished this meal?</strong>
+          Give it a heart, so that the others know this is delicious.
+        </p>
+        <app-like-button
+          [isLiked]="isLiked()"
+          [ariaLabel]="isLiked() ? 'Remove your like' : 'Like this recipe'"
+          (likeToggle)="toggleLike()"
+        />
+      </footer>
+    </article>
+
+    <aside class="recipe__inspiration">
+      <p class="recipe__inspiration-text">Find inspiration for your next culinary adventure!</p>
+      <app-button label="Cookbook" link="/cookbook" />
+    </aside>
+
+    <app-button
+      class="recipe__new"
+      variant="secondary-green"
+      label="Generate new recipe"
+      (buttonClick)="startOver()"
+    />
+  </main>
+} @else if (recipeResource.isLoading()) {
+  <main class="recipe recipe--waiting">
+    <app-loading-indicator label="Loading ..." />
+  </main>
+}
+
+<app-error-dialog
+  [isOpen]="isMissing()"
+  title="Recipe not found"
+  message="This recipe could not be loaded. Find another one in the cookbook."
+  actionLabel="Open cookbook"
+  actionLink="/cookbook"
+/>

@@ -19,6 +19,7 @@ $direction-list-filter-gap: 8px;
   flex-direction: column;
   gap: $direction-list-row-gap;
   max-width: $direction-list-max-width;
+  margin-inline: auto;
   font-family: $font-family-base;
 
   &__toolbar {

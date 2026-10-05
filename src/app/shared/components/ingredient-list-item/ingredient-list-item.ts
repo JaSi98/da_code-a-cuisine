@@ -12,18 +12,12 @@ import {
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { INGREDIENT_UNITS, IngredientEntry, IngredientUnit } from '../../models/ingredient-entry';
+import { formatAmount } from '../../utils/format-amount';
 import { IconButton } from '../icon-button/icon-button';
 import { Input } from '../input/input';
 import { UnitSelect } from '../unit-select/unit-select';
 
 const MIN_AMOUNT = 0.01;
-const UNIT_SYMBOLS: Record<IngredientUnit, string> = {
-  gram: 'g',
-  kg: 'kg',
-  ml: 'ml',
-  l: 'l',
-  piece: ' piece',
-};
 
 @Component({
   selector: 'app-ingredient-list-item',
@@ -47,7 +41,9 @@ export class IngredientListItem {
     validators: [Validators.required, Validators.min(MIN_AMOUNT)],
   });
   protected readonly unitControl = new FormControl<IngredientUnit>('gram', { nonNullable: true });
-  protected readonly formattedAmount = computed<string>(() => this.formatAmount(this.entry()));
+  protected readonly formattedAmount = computed<string>(() =>
+    formatAmount(this.entry().amount, this.entry().unit),
+  );
 
   /** Shows the amount and unit as editable fields, filled with the current values. */
   protected startEditing(): void {
@@ -80,11 +76,5 @@ export class IngredientListItem {
       () => this.hostElement.nativeElement.querySelector<HTMLElement>(selector)?.focus(),
       { injector: this.injector },
     );
-  }
-
-  /** Returns the amount with its unit, e.g. "100g" or "2 pieces". */
-  private formatAmount(entry: IngredientEntry): string {
-    const isPlural = entry.unit === 'piece' && entry.amount !== 1;
-    return `${entry.amount}${UNIT_SYMBOLS[entry.unit]}${isPlural ? 's' : ''}`;
   }
 }

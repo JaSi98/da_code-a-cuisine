@@ -1,0 +1,258 @@
+@use '../../../styles/abstracts/colors' as *;
+@use '../../../styles/abstracts/typography' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+$recipe-max-width: 1248px;
+$recipe-space-top: 48px;
+$recipe-space-bottom: 64px;
+$recipe-page-gap: 56px;
+$recipe-card-padding: 40px 48px;
+$recipe-card-gap: 48px;
+$recipe-card-border: 4px;
+$recipe-radius: 20px;
+$recipe-head-padding: 24px;
+$recipe-head-gap: 32px;
+$recipe-name-gap: 12px;
+$recipe-meta-gap: 4px;
+$recipe-icon-size: 20px;
+$recipe-title-line-height: 1.2;
+$recipe-chefs-gap: 8px;
+$recipe-facts-gap: 24px;
+$recipe-tags-gap: 12px;
+$recipe-section-gap: 32px;
+$recipe-ingredients-gap: 24px 96px;
+$recipe-ingredient-title-gap: 16px;
+$recipe-ingredient-gap: 4px;
+$recipe-amount-width: 72px;
+$recipe-like-gap: 16px;
+$recipe-inspiration-padding: 32px;
+$recipe-inspiration-gap: 40px;
+
+$recipe-mobile-space-top: 24px;
+$recipe-mobile-page-gap: 32px;
+$recipe-mobile-card-padding: 24px 12px;
+$recipe-mobile-card-gap: 32px;
+$recipe-mobile-head-padding: 16px;
+$recipe-mobile-inspiration-padding: 24px 16px;
+$recipe-mobile-inspiration-gap: 16px;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background-color: $color-white;
+  color: $color-green-dark;
+}
+
+// The loader is designed for the green background.
+:host(.is-loading) {
+  @include focus-ring-on-dark;
+  background-color: $color-green-olive;
+}
+
+.recipe {
+  @include page-container;
+  display: flex;
+  flex-direction: column;
+  gap: $recipe-page-gap;
+  max-width: calc(#{$recipe-max-width} + 2 * #{$page-gutter-max});
+  padding-block: $recipe-space-top $recipe-space-bottom;
+
+  @include mobile {
+    gap: $recipe-mobile-page-gap;
+    padding-top: $recipe-mobile-space-top;
+  }
+
+  &--waiting {
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: $recipe-card-gap;
+    padding: $recipe-card-padding;
+    border: $recipe-card-border solid $color-cream;
+    border-radius: $recipe-radius;
+    background-color: rgba($color-cream, 0.3);
+
+    @include mobile {
+      gap: $recipe-mobile-card-gap;
+      padding: $recipe-mobile-card-padding;
+    }
+  }
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: $recipe-head-gap;
+    padding: $recipe-head-padding;
+    border-radius: $recipe-radius;
+    background-color: $color-cream;
+
+    @include mobile {
+      padding: $recipe-mobile-head-padding;
+    }
+  }
+
+  &__name {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: $recipe-name-gap;
+    min-width: min(100%, 320px);
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: $recipe-meta-gap;
+    margin: 0;
+    font-size: font-size(text-large);
+    font-weight: $font-weight-medium;
+  }
+
+  &__meta-icon {
+    flex-shrink: 0;
+    width: $recipe-icon-size;
+    height: $recipe-icon-size;
+  }
+
+  &__title {
+    margin: 0;
+    color: $color-green-middle;
+    font-size: font-size(h2);
+    font-weight: $font-weight-semibold;
+    line-height: $recipe-title-line-height;
+    overflow-wrap: anywhere;
+
+    @include mobile {
+      font-size: font-size-mobile(h2);
+    }
+  }
+
+  &__cooks {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $recipe-chefs-gap $recipe-tags-gap;
+  }
+
+  &__chefs,
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $recipe-chefs-gap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__facts {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $recipe-facts-gap;
+  }
+
+  &__tags {
+    gap: $recipe-tags-gap;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: $recipe-section-gap;
+  }
+
+  &__ingredients {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $recipe-ingredients-gap;
+  }
+
+  &__ingredient-group {
+    display: flex;
+    flex-direction: column;
+    gap: $recipe-ingredient-title-gap;
+  }
+
+  &__ingredient-title {
+    margin: 0;
+    color: $color-green-bright;
+    font-size: font-size(label);
+    font-weight: $font-weight-medium;
+  }
+
+  &__ingredient-list {
+    display: flex;
+    flex-direction: column;
+    gap: $recipe-ingredient-gap;
+    margin: 0;
+    padding-left: 1.2em;
+    font-size: font-size(text-large);
+  }
+
+  &__amount {
+    display: inline-block;
+    min-width: $recipe-amount-width;
+  }
+
+  &__like {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: $recipe-like-gap;
+    text-align: center;
+  }
+
+  &__like-text {
+    margin: 0;
+    font-size: font-size(text);
+  }
+
+  &__like-question {
+    font-size: font-size(text-large);
+  }
+
+  &__inspiration {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: $recipe-inspiration-gap;
+    padding: $recipe-inspiration-padding;
+    border-radius: $recipe-radius;
+    background-color: $color-sage-light;
+    text-align: center;
+
+    @include mobile {
+      gap: $recipe-mobile-inspiration-gap;
+      padding: $recipe-mobile-inspiration-padding;
+    }
+  }
+
+  &__inspiration-text {
+    margin: 0;
+    font-size: font-size(h5);
+    font-weight: $font-weight-medium;
+
+    @include mobile {
+      font-size: font-size(text-large);
+    }
+  }
+
+  &__new {
+    align-self: flex-end;
+
+    @include mobile {
+      align-self: center;
+    }
+  }
+}
