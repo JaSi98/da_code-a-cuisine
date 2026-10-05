@@ -1,51 +1,66 @@
-<!-- Placeholder until the page is built; temporary component preview for review. -->
-<main style="display: flex; gap: 120px; padding: 64px">
-  <app-counter-field
-    label="How many portions you need?"
-    unit="Portion"
-    unitPlural="Portions"
-    [min]="servingsRange.min"
-    [max]="servingsRange.max"
-    [(value)]="servings"
-  />
-  <app-counter-field
-    label="How many are cooking?"
-    unit="Person"
-    unitPlural="Persons"
-    [min]="cooksRange.min"
-    [max]="cooksRange.max"
-    [(value)]="cooks"
+<app-site-header [backLink]="ingredientsRoute" backLabel="Ingredients" />
+
+<main class="preferences">
+  <h1 class="preferences__title">Choose your preferences</h1>
+
+  <div class="preferences__form">
+    <div class="preferences__counters">
+      <app-counter-field
+        label="How many portions you need?"
+        unit="Portion"
+        unitPlural="Portions"
+        [min]="servingsRange.min"
+        [max]="servingsRange.max"
+        [value]="store.preferences().servings"
+        (valueChange)="store.updatePreferences({ servings: $event })"
+      />
+      <app-counter-field
+        label="How many are cooking?"
+        unit="Person"
+        unitPlural="Persons"
+        [min]="cooksRange.min"
+        [max]="cooksRange.max"
+        [value]="store.preferences().cooks"
+        (valueChange)="store.updatePreferences({ cooks: $event })"
+      />
+    </div>
+
+    <div class="preferences__panel">
+      <app-preference-group
+        legend="Cooking time"
+        icon="schedule"
+        [options]="cookingTimeOptions"
+        [selected]="store.preferences().cookingTime"
+        (selectedChange)="store.updatePreferences({ cookingTime: $event })"
+      />
+      <app-preference-group
+        legend="Cuisine"
+        icon="globe"
+        [options]="cuisineOptions"
+        [selected]="store.preferences().cuisine"
+        (selectedChange)="store.updatePreferences({ cuisine: $event })"
+      />
+      <app-preference-group
+        legend="Diet preferences"
+        icon="restaurant"
+        [options]="dietOptions"
+        [selected]="store.preferences().diet"
+        (selectedChange)="store.updatePreferences({ diet: $event })"
+      />
+    </div>
+  </div>
+
+  <app-button
+    class="preferences__submit"
+    label="Generate a recipe"
+    (buttonClick)="generateRecipe()"
   />
 </main>
-<section
-  style="
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    max-width: 450px;
-    margin: 0 64px;
-    padding: 24px;
-    border-radius: 20px;
-    background: rgba(57, 96, 57, 0.2);
-  "
->
-  <app-preference-group
-    legend="Cooking time"
-    icon="schedule"
-    [options]="cookingTimeOptions"
-    [(selected)]="cookingTime"
-  />
-  <app-preference-group
-    legend="Cuisine"
-    icon="globe"
-    [options]="cuisineOptions"
-    [(selected)]="cuisine"
-  />
-  <app-preference-group
-    legend="Diet preferences"
-    icon="restaurant"
-    [options]="dietOptions"
-    [(selected)]="diet"
-  />
-  <p>Selected: {{ cookingTime() }} / {{ cuisine() }} / {{ diet() }}</p>
-</section>
+
+<app-error-dialog
+  [(isOpen)]="isErrorOpen"
+  [title]="error().title"
+  [message]="error().message"
+  [actionLabel]="error().actionLabel"
+  [actionLink]="error().actionLink"
+/>
