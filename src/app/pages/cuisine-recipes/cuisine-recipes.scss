@@ -49,6 +49,12 @@ $cuisine-recipes-mobile-list-gap: 16px;
     @include mobile {
       gap: $cuisine-recipes-mobile-list-gap;
     }
+
+    // Every second recipe gets a light beige background.
+    li:nth-child(even) {
+      --cookbook-recipe-item-background: #{rgba($color-cream, 0.7)};
+      --cookbook-recipe-item-background-hover: #{$color-cream};
+    }
   }
 
   &__note {

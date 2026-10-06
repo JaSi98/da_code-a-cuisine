@@ -9,7 +9,7 @@ import { SiteHeader } from '../../shared/components/site-header/site-header';
 import { Button } from '../../shared/components/button/button';
 import { Recipe } from '../../shared/models/recipe';
 
-const POPULAR_RECIPE_COUNT = 10;
+const POPULAR_RECIPE_COUNT = 3;
 const COOKBOOK_RECIPE_ROUTE = '/cookbook/recipe/';
 const COOKBOOK_ROUTE = '/cookbook/';
 

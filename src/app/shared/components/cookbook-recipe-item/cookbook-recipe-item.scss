@@ -34,10 +34,12 @@ $cookbook-recipe-item-transition: 200ms ease-out;
   font-family: $font-family-base;
   font-weight: $font-weight-medium;
   text-decoration: none;
+  // A list can shade every second row by setting these properties.
+  background-color: var(--cookbook-recipe-item-background, transparent);
   transition: background-color $cookbook-recipe-item-transition;
 
   &:hover {
-    background-color: rgba($color-cream, 0.7);
+    background-color: var(--cookbook-recipe-item-background-hover, #{rgba($color-cream, 0.7)});
   }
 
   @include mobile {

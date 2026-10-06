@@ -66,9 +66,9 @@ export class RecipeRepository {
       );
   }
 
-  /** Loads the recipes with the most likes. */
+  /** Loads the recipes with the most likes; recipes without any like are left out. */
   getPopular(limit: number): Observable<Recipe[]> {
-    const params = { select: '*', order: 'likes.desc', limit: String(limit) };
+    const params = { select: '*', likes: 'gt.0', order: 'likes.desc', limit: String(limit) };
     return this.http
       .get<RecipeRow[]>(this.tableUrl(), { headers: this.headers, params })
       .pipe(map((rows) => rows.map(toRecipe)));

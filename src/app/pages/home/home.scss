@@ -1,3 +1,4 @@
+@use 'sass:math';
 @use '../../../styles/abstracts/colors' as *;
 @use '../../../styles/abstracts/typography' as *;
 @use '../../../styles/abstracts/mixins' as *;
@@ -27,7 +28,17 @@ $home-eyebrow-size-fluid: 3.3vw;
 $home-plate-size: min(46dvh, 36vw);
 $home-plate-size-mobile: min(46dvh, 97vw);
 $home-plates-inset: 3.5%;
-$home-plates-start-mobile: 63%;
+// Share of the page width left of the plates on tablets and phones.
+$home-plates-start-ratio: 0.63;
+$home-plates-start-mobile: math.percentage($home-plates-start-ratio);
+// The headline ends before the plates and wraps instead of running into them.
+$home-headline-plates-gap: 12px;
+$home-headline-max-width-small: calc(
+  #{$home-plates-start-ratio * 100vw} -
+    #{clamp($page-gutter-min, $page-gutter-fluid, $page-gutter-max)} - #{$home-headline-plates-gap}
+);
+// On narrow phones the title shrinks, so "Cuisine" still fits next to the plates.
+$home-title-size-small: 16vw;
 $home-plate-shadow: drop-shadow(6px -2px 4px rgba($color-black, 0.25));
 
 // Vertical centre of each plate, relative to the page height.
@@ -85,6 +96,10 @@ $home-plate-scale-middle: 1.03;
 
   &__headline {
     margin: 0;
+
+    @include tablet {
+      max-width: $home-headline-max-width-small;
+    }
   }
 
   &__eyebrow {
@@ -113,7 +128,7 @@ $home-plate-scale-middle: 1.03;
     line-height: 1;
 
     @include mobile {
-      font-size: font-size-mobile(h1);
+      font-size: min(#{font-size-mobile(h1)}, #{$home-title-size-small});
       line-height: $home-title-line-height-mobile;
     }
   }
