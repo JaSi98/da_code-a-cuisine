@@ -65,6 +65,7 @@ export class Results {
   private readonly quota = inject(RecipeQuota);
 
   protected readonly recipes = computed<Recipe[]>(() => this.store.results() ?? []);
+  protected readonly excludedIngredients = this.store.excludedIngredients;
   protected readonly status = signal<ResultsStatus>(this.store.results() ? 'ready' : 'loading');
   protected readonly isErrorOpen = signal<boolean>(false);
   protected readonly error = signal<ResultsError>(GENERATION_ERROR);
@@ -119,7 +120,7 @@ export class Results {
     } else {
       this.quota.recordUse();
     }
-    this.store.setResults(response.recipes);
+    this.store.setResults(response.recipes, response.excludedIngredients ?? []);
     this.status.set('ready');
   }
 

@@ -18,8 +18,15 @@ export interface RecipeQuotaInfo {
   limit: number;
 }
 
+/** A user ingredient the generator left out because it does not fit the chosen diet. */
+export interface ExcludedIngredient {
+  name: string;
+  reason: string;
+}
+
 /** The generator's answer: three different recipes, already saved in the cookbook. */
 export interface GenerateRecipeResponse {
   recipes: Recipe[];
+  excludedIngredients?: ExcludedIngredient[];
   quota?: RecipeQuotaInfo;
 }

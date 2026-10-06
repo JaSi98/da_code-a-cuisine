@@ -20,6 +20,19 @@
           <li><app-tag [label]="label" [isInteractive]="false" /></li>
         }
       </ul>
+      @if (excludedIngredients().length > 0) {
+        <aside class="results__excluded" aria-labelledby="excluded-title">
+          <h2 class="results__excluded-title" id="excluded-title">Not used because of your diet</h2>
+          <ul class="results__excluded-list">
+            @for (ingredient of excludedIngredients(); track ingredient.name) {
+              <li>
+                <strong>{{ ingredient.name }}</strong
+                >: {{ ingredient.reason }}
+              </li>
+            }
+          </ul>
+        </aside>
+      }
     </section>
 
     <ol class="results__list" aria-label="Generated recipes">

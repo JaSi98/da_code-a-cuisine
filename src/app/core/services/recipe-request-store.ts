@@ -1,6 +1,9 @@
 import { Injectable, computed, signal } from '@angular/core';
 
-import { GenerateRecipeRequest } from '../../shared/models/generate-recipe-request';
+import {
+  ExcludedIngredient,
+  GenerateRecipeRequest,
+} from '../../shared/models/generate-recipe-request';
 import { IngredientEntry, IngredientEntryChange } from '../../shared/models/ingredient-entry';
 import { Recipe } from '../../shared/models/recipe';
 import {
@@ -19,6 +22,8 @@ interface RecipeRequestState {
   ingredients: IngredientEntry[];
   preferences: RecipePreferences;
   results: Recipe[] | null;
+  /** Ingredients the generator did not use because they do not fit the diet. */
+  excludedIngredients: ExcludedIngredient[];
 }
 
 const EMPTY_STATE: RecipeRequestState = {
@@ -31,6 +36,7 @@ const EMPTY_STATE: RecipeRequestState = {
     diet: null,
   },
   results: null,
+  excludedIngredients: [],
 };
 
 /**
@@ -45,6 +51,9 @@ export class RecipeRequestStore {
   readonly hasIngredients = computed<boolean>(() => this.ingredients().length > 0);
   readonly preferences = computed<RecipePreferences>(() => this.state().preferences);
   readonly results = computed<Recipe[] | null>(() => this.state().results);
+  readonly excludedIngredients = computed<ExcludedIngredient[]>(
+    () => this.state().excludedIngredients,
+  );
   readonly request = computed<GenerateRecipeRequest | null>(() => this.buildRequest());
 
   /** Adds an ingredient at the top, so the latest one is the first in the list. */
@@ -72,9 +81,9 @@ export class RecipeRequestStore {
     this.setState({ ...state, preferences: { ...state.preferences, ...change }, results: null });
   }
 
-  /** Keeps the generated recipes for the current input. */
-  setResults(results: Recipe[]): void {
-    this.setState({ ...this.state(), results });
+  /** Keeps the generated recipes for the current input, with the ingredients left out. */
+  setResults(results: Recipe[], excludedIngredients: ExcludedIngredient[] = []): void {
+    this.setState({ ...this.state(), results, excludedIngredients });
   }
 
   /** Clears everything, so the generator starts again from the first step. */
@@ -119,6 +128,7 @@ export class RecipeRequestStore {
       ingredients: stored.ingredients ?? EMPTY_STATE.ingredients,
       preferences: { ...EMPTY_STATE.preferences, ...stored.preferences },
       results: stored.results ?? null,
+      excludedIngredients: stored.excludedIngredients ?? [],
     };
   }
 

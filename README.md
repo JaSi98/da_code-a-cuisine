@@ -5,7 +5,8 @@ Code à Cuisine turns the ingredients you already have at home into recipe ideas
 ## Features
 
 - **Ingredient input** with suggestions while typing, amount and unit per ingredient; entries can be edited and removed.
-- **Preferences**: 1–12 servings (default 2), 1–3 cooks, cooking time (quick, medium, complex), cuisine and diet.
+- **Preferences**: 1–12 servings (default 2), 1–3 cooks, cooking time (quick, medium, complex), cuisine and diet; a dice picks a random option per group.
+- **Diet check**: ingredients that do not fit the diet are left out and listed with the reason.
 - **Three recipes per request**, with the missing ingredients listed separately.
 - **Directions per cook**: steps show who does what, parallel steps share a number (e.g. 2a/2b), each cook can filter their own steps and tick them off.
 - **Nutrition facts** per serving or for the whole recipe, with the share of each macronutrient.
@@ -106,11 +107,12 @@ Exactly three recipes; any other answer is shown as an error.
       "likes": 0
     }
   ],
+  "excludedIngredients": [{ "name": "Chicken breast", "reason": "contains meat" }],
   "quota": { "remaining": 2, "limit": 3 }
 }
 ```
 
-`energy` is in kcal, the macronutrients in grams. `chef` is the number of the cook (1–3) who does the step.
+`energy` is in kcal, the macronutrients in grams. `chef` is the number of the cook (1–3) who does the step. `excludedIngredients` (optional) lists the user's ingredients that were left out because they do not fit the diet; the results page shows them as a note.
 
 ### Daily limit
 

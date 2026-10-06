@@ -16,6 +16,9 @@ $results-visual-radius: 20px;
 // Keeps the cloche in view when the picture is cropped.
 $results-visual-focus: 50% 40%;
 $results-tags-gap: 12px;
+$results-excluded-padding: 4px 0 4px 16px;
+$results-excluded-border: 3px;
+$results-excluded-gap: 4px;
 $results-list-gap: 20px;
 $results-card-min-width: 280px;
 
@@ -59,9 +62,10 @@ $results-mobile-list-gap: 12px;
     grid-template-areas:
       'title visual'
       'text visual'
-      'tags visual';
+      'tags visual'
+      'excluded visual';
     grid-template-columns: minmax(0, 1fr) minmax(0, $results-visual-width);
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: auto auto auto 1fr;
     gap: $results-intro-row-gap $results-intro-column-gap;
 
     @include tablet {
@@ -69,7 +73,7 @@ $results-mobile-list-gap: 12px;
     }
 
     @include mobile {
-      grid-template-areas: 'title' 'visual' 'text' 'tags';
+      grid-template-areas: 'title' 'visual' 'text' 'tags' 'excluded';
       grid-template-columns: minmax(0, 1fr);
       grid-template-rows: none;
       row-gap: $results-mobile-intro-gap;
@@ -121,6 +125,25 @@ $results-mobile-list-gap: 12px;
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  &__excluded {
+    grid-area: excluded;
+    align-self: start;
+    padding: $results-excluded-padding;
+    border-left: $results-excluded-border solid $color-cream;
+    font-size: font-size(text);
+  }
+
+  &__excluded-title {
+    margin: 0 0 $results-excluded-gap;
+    font-size: font-size(text-large);
+    font-weight: $font-weight-semibold;
+  }
+
+  &__excluded-list {
+    margin: 0;
+    padding-left: 1.2em;
   }
 
   &__list {
