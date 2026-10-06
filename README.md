@@ -44,7 +44,7 @@ The endpoints live in [`src/environments/environment.ts`](src/environments/envir
 | `supabaseUrl` | URL of the Supabase project |
 | `supabasePublishableKey` | Publishable key (`sb_publishable_…`): read access only, plus the like function |
 
-The values in the repository are placeholders. Until they are replaced, generating a recipe and loading the cookbook end in the app's error and empty states.
+The repository contains the values of the hosted project. To run your own backend, replace them with your webhook URL and Supabase project.
 
 ## Data flow
 
