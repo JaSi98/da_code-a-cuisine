@@ -22,10 +22,12 @@ export class PreferenceGroup<T extends string> {
   readonly icon = input.required<PreferenceGroupIcon>();
   readonly options = input.required<readonly PreferenceOption<T>[]>();
   readonly selected = model<T | null>(null);
+  /** Name of the choice in the dice label, e.g. "diet"; defaults to the legend. */
+  readonly choiceName = input<string | null>(null);
 
   protected readonly hintIdPrefix = `preference-group-hint-${nextPreferenceGroupId++}`;
   protected readonly diceLabel = computed<string>(
-    () => `Pick a random ${this.legend().toLowerCase()}`,
+    () => `Pick a random ${this.choiceName() ?? this.legend().toLowerCase()}`,
   );
   protected readonly iconHref = computed<string>(
     () => ICON_BASE_PATH + this.icon() + ICON_SYMBOL_ID,
