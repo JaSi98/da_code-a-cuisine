@@ -8,7 +8,7 @@ create table if not exists public.recipes (
   cooking_time integer not null check (cooking_time > 0),
   cooking_time_category text not null check (cooking_time_category in ('quick', 'medium', 'complex')),
   cuisine text not null
-    check (cuisine in ('german', 'italian', 'indian', 'japanese', 'gourmet', 'fusion', 'arabic')),
+    check (cuisine in ('german', 'italian', 'indian', 'japanese', 'gourmet', 'fusion', 'levantine')),
   diet text not null check (diet in ('vegetarian', 'vegan', 'keto', 'none')),
   servings integer not null check (servings between 1 and 12),
   cooks integer not null check (cooks between 1 and 3),

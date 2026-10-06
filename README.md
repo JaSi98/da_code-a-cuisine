@@ -82,7 +82,7 @@ The repository contains the values of the hosted project. To run your own backen
 | `servings` | 1–12 |
 | `cooks` | 1–3 |
 | `cookingTime` | `quick` (up to 20 min), `medium` (20–45 min), `complex` (over 45 min) |
-| `cuisine` | `german`, `italian`, `indian`, `japanese`, `gourmet`, `fusion`, `arabic` |
+| `cuisine` | `german`, `italian`, `indian`, `japanese`, `gourmet`, `fusion`, `levantine` |
 | `diet` | `vegetarian`, `vegan`, `keto`, `none` |
 
 ### Response
@@ -184,4 +184,4 @@ n8n/                   exported n8n workflows
 
 - Fonts: [Quicksand](https://fonts.google.com/specimen/Quicksand) (SIL Open Font License) and [Ubuntu](https://design.ubuntu.com/font) (Ubuntu Font Licence), see `src/styles/fonts/`.
 - Icons: [Material Symbols](https://fonts.google.com/icons) (Apache License 2.0), see `public/assets/icons/`.
-- Photo of the Arabic cuisine: see `public/assets/cuisines/CREDITS.txt`.
+- Photo of the Levantine cuisine: see `public/assets/cuisines/CREDITS.txt`.

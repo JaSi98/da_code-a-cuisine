@@ -17,11 +17,11 @@ const CUISINE_EMOJIS: Record<Cuisine, string> = {
   japanese: '🥢',
   gourmet: '✨',
   fusion: '🍢',
-  arabic: '🧆',
+  levantine: '🧆',
 };
 
-// The Arabic banner is drawn as a vector graphic, all others are photos.
-const BANNER_EXTENSIONS: Partial<Record<Cuisine, string>> = { arabic: 'svg' };
+// The Levantine banner is drawn as a vector graphic, all others are photos.
+const BANNER_EXTENSIONS: Partial<Record<Cuisine, string>> = { levantine: 'svg' };
 const DEFAULT_BANNER_EXTENSION = 'webp';
 
 /** All cuisines in the order of the cookbook overview. */
@@ -32,7 +32,7 @@ export const CUISINES: readonly CuisineInfo[] = [
   'gourmet',
   'indian',
   'fusion',
-  'arabic',
+  'levantine',
 ].map((value) => createCuisineInfo(value as Cuisine));
 
 /** Returns the presentation of a cuisine, or undefined for an unknown value. */

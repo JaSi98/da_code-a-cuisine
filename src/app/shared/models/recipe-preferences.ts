@@ -6,7 +6,7 @@ export const CUISINES = [
   'japanese',
   'gourmet',
   'fusion',
-  'arabic',
+  'levantine',
 ] as const;
 export const DIETS = ['vegetarian', 'vegan', 'keto', 'none'] as const;
 
@@ -47,7 +47,7 @@ export const CUISINE_OPTIONS: readonly PreferenceOption<Cuisine>[] = [
   { value: 'japanese', label: 'Japanese' },
   { value: 'gourmet', label: 'Gourmet' },
   { value: 'fusion', label: 'Fusion' },
-  { value: 'arabic', label: 'Arabic' },
+  { value: 'levantine', label: 'Levantine' },
 ];
 
 export const DIET_OPTIONS: readonly PreferenceOption<Diet>[] = [
