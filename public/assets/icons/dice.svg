@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+  <g id="icon" fill="currentColor">
+    <path fill-rule="evenodd" d="M240-840h480q50 0 85 35t35 85v480q0 50-35 85t-85 35H240q-50 0-85-35t-35-85v-480q0-50 35-85t85-35Zm20 80q-25 0-42.5 17.5T200-700v440q0 25 17.5 42.5T260-200h440q25 0 42.5-17.5T760-260v-440q0-25-17.5-42.5T700-760H260Z"/>
+    <circle cx="340" cy="-620" r="60"/>
+    <circle cx="620" cy="-620" r="60"/>
+    <circle cx="480" cy="-480" r="60"/>
+    <circle cx="340" cy="-340" r="60"/>
+    <circle cx="620" cy="-340" r="60"/>
+  </g>
+</svg>

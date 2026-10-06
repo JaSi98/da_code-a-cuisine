@@ -5,6 +5,7 @@
 $preference-group-gap: 24px;
 $preference-group-legend-gap: 2px;
 $preference-group-icon-size: 24px;
+$preference-group-dice-gap: 8px;
 $preference-group-options-gap: 20px;
 $preference-group-options-gap-mobile: 8px;
 $preference-group-hint-gap: 12px;
@@ -31,6 +32,10 @@ $preference-group-hint-line-height: 1.2;
     font-size: font-size(h5);
     font-weight: $font-weight-medium;
     line-height: 1;
+  }
+
+  &__dice {
+    margin-left: $preference-group-dice-gap;
   }
 
   &__icon {

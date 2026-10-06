@@ -66,6 +66,17 @@ $icon-button-variants: (
     background-active: $color-sage-medium,
     color-active: $color-green-middle,
   ),
+  // Picks a random option in a preference group.
+  dice: (
+      size: 32px,
+      icon-size: 24px,
+      radius: 6px,
+      color: $color-green-dark,
+      background-hover: $color-cream,
+      color-hover: $color-green-dark,
+      background-active: $color-cream-hover,
+      color-active: $color-green-bright,
+    ),
 );
 
 .icon-button {
@@ -118,6 +129,15 @@ $icon-button-variants: (
       color: map.get($variant, color-active);
     }
   }
+}
+
+// The dice tilts a little on hover, as if it were about to roll.
+.icon-button--dice .icon-button__icon {
+  transition: transform $icon-button-transition;
+}
+
+.icon-button--dice:hover:not(:disabled) .icon-button__icon {
+  transform: rotate(-15deg);
 }
 
 // The back arrow on dark backgrounds.

@@ -1,6 +1,7 @@
 import { Component, computed, input, model } from '@angular/core';
 
 import { PreferenceOption } from '../../models/recipe-preferences';
+import { IconButton } from '../icon-button/icon-button';
 import { Tag } from '../tag/tag';
 
 export type PreferenceGroupIcon = 'schedule' | 'globe' | 'restaurant';
@@ -12,7 +13,7 @@ let nextPreferenceGroupId = 0;
 
 @Component({
   selector: 'app-preference-group',
-  imports: [Tag],
+  imports: [IconButton, Tag],
   styleUrl: './preference-group.scss',
   templateUrl: './preference-group.html',
 })
@@ -23,6 +24,9 @@ export class PreferenceGroup<T extends string> {
   readonly selected = model<T | null>(null);
 
   protected readonly hintIdPrefix = `preference-group-hint-${nextPreferenceGroupId++}`;
+  protected readonly diceLabel = computed<string>(
+    () => `Pick a random ${this.legend().toLowerCase()}`,
+  );
   protected readonly iconHref = computed<string>(
     () => ICON_BASE_PATH + this.icon() + ICON_SYMBOL_ID,
   );
@@ -30,6 +34,16 @@ export class PreferenceGroup<T extends string> {
   /** Makes the clicked option the only selected one of this group. */
   protected select(value: T): void {
     this.selected.set(value);
+  }
+
+  /** Selects a random option, never the one that is already selected. */
+  protected selectRandom(): void {
+    const candidates = this.options().filter((option) => option.value !== this.selected());
+    if (candidates.length === 0) {
+      return;
+    }
+    const index = Math.floor(Math.random() * candidates.length);
+    this.selected.set(candidates[index].value);
   }
 
   /** Returns the element id of the hint below the option at the given position. */

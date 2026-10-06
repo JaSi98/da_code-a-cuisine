@@ -1,6 +1,7 @@
 import { Component, computed, input, output } from '@angular/core';
 
-export type IconButtonIcon = 'edit' | 'delete' | 'add' | 'check' | 'plus' | 'minus' | 'back';
+export type IconButtonIcon =
+  'edit' | 'delete' | 'add' | 'check' | 'plus' | 'minus' | 'back' | 'dice';
 export type IconButtonType = 'button' | 'submit';
 
 interface IconAsset {
@@ -19,6 +20,7 @@ const ICON_ASSETS: Record<IconButtonIcon, IconAsset> = {
   plus: { file: 'plus-box.svg', viewBox: MATERIAL_VIEW_BOX },
   minus: { file: 'minus-box.svg', viewBox: MATERIAL_VIEW_BOX },
   back: { file: 'arrow-left.svg', viewBox: '0 0 20 14' },
+  dice: { file: 'dice.svg', viewBox: MATERIAL_VIEW_BOX },
 };
 
 @Component({
