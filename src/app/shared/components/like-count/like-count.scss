@@ -12,7 +12,10 @@ $like-count-icon-size: 20px;
   flex-shrink: 0;
 }
 
+// Positioned, so the hidden label stays inside the pill: in a scrolling list it would
+// otherwise escape the clipping and widen the page.
 .like-count {
+  position: relative;
   display: inline-flex;
   align-items: center;
   box-sizing: border-box;
