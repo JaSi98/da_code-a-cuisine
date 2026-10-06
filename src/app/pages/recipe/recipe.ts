@@ -112,6 +112,13 @@ export class Recipe {
       });
   }
 
+  /** Closing the "not found" dialog leads to the cookbook, as there is no recipe to show. */
+  protected handleMissingDialog(isOpen: boolean): void {
+    if (!isOpen) {
+      this.router.navigateByUrl(COOKBOOK_ROUTE);
+    }
+  }
+
   /** Clears the generator input and starts a new recipe. */
   protected startOver(): void {
     this.requestStore.reset();

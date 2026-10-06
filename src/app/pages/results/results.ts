@@ -82,6 +82,17 @@ export class Results {
     return RECIPE_ROUTE + recipe.id;
   }
 
+  /**
+   * Without recipes there is nothing to show behind the dialog, so closing it leads to the same
+   * place as its button.
+   */
+  protected handleErrorDialog(isOpen: boolean): void {
+    this.isErrorOpen.set(isOpen);
+    if (!isOpen) {
+      this.router.navigateByUrl(this.error().actionLink);
+    }
+  }
+
   /** Clears the current input and goes back to the first step. */
   protected startOver(): void {
     this.store.reset();

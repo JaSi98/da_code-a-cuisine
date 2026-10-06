@@ -113,6 +113,7 @@
 
 <app-error-dialog
   [isOpen]="isMissing()"
+  (isOpenChange)="handleMissingDialog($event)"
   title="Recipe not found"
   message="This recipe could not be loaded. Find another one in the cookbook."
   actionLabel="Open cookbook"

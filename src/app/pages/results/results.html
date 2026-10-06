@@ -64,7 +64,8 @@
 }
 
 <app-error-dialog
-  [(isOpen)]="isErrorOpen"
+  [isOpen]="isErrorOpen()"
+  (isOpenChange)="handleErrorDialog($event)"
   [title]="error().title"
   [message]="error().message"
   [actionLabel]="error().actionLabel"
