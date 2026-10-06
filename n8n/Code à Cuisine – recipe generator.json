@@ -7,7 +7,7 @@
         "path": "generate-recipe",
         "responseMode": "responseNode",
         "options": {
-          "allowedOrigins": "http://localhost:4200,http://localhost:4300"
+          "allowedOrigins": "https://jan-sippl.developerakademie.net,http://localhost:4200,http://localhost:4300"
         }
       },
       "id": "bd1c9f33-7d68-47f8-97c8-5e7777262c8f",
