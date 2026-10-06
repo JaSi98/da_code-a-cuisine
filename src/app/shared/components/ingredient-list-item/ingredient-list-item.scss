@@ -4,6 +4,9 @@
 
 $ingredient-list-item-min-height: 30px;
 $ingredient-list-item-padding: 2px 4px;
+// The edit fields fit into the row (min height minus padding), so editing does not move the
+// rows below.
+$ingredient-list-item-field-height: 26px;
 $ingredient-list-item-radius: 8px;
 $ingredient-list-item-gap: 16px;
 $ingredient-list-item-actions-gap: 10px;
@@ -58,6 +61,8 @@ $ingredient-list-item-bullet-gap: 8px;
 
   // Spans amount and name, so the wider fields do not move the names of the other rows.
   &__edit {
+    --input-height: #{$ingredient-list-item-field-height};
+    --unit-select-height: #{$ingredient-list-item-field-height};
     display: flex;
     grid-column: 2 / 4;
     align-items: center;
@@ -65,9 +70,21 @@ $ingredient-list-item-bullet-gap: 8px;
     min-width: 0;
   }
 
-  // Amount and unit belong together and sit closer than the name.
+  // Amount and unit belong together and sit closer than the name. They keep their width;
+  // the name gives way and is shortened to one line.
   &__edit app-input {
     margin-right: $ingredient-list-item-field-gap - $ingredient-list-item-gap;
+  }
+
+  &__edit app-input,
+  &__edit app-unit-select {
+    flex-shrink: 0;
+  }
+
+  &__edit &__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__actions {

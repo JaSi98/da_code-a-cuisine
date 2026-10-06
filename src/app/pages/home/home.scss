@@ -44,7 +44,7 @@ $home-plate-scale-middle: 1.03;
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
+  flex: 1 0 auto;
   overflow: clip;
   background-color: $color-green-olive;
   color: $color-cream;

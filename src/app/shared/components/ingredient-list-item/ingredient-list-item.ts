@@ -36,6 +36,8 @@ export class IngredientListItem {
 
   protected readonly units = [...INGREDIENT_UNITS];
   protected readonly isEditing = signal<boolean>(false);
+  /** Height of the row before editing; kept while editing, so the rows below do not move. */
+  protected readonly reservedHeight = signal<number | null>(null);
   protected readonly amountControl = new FormControl('', {
     nonNullable: true,
     validators: [Validators.required, Validators.min(MIN_AMOUNT)],
@@ -49,6 +51,7 @@ export class IngredientListItem {
   protected startEditing(): void {
     this.amountControl.setValue(String(this.entry().amount));
     this.unitControl.setValue(this.entry().unit);
+    this.reservedHeight.set(this.hostElement.nativeElement.offsetHeight);
     this.isEditing.set(true);
     this.focusAfterRender('input');
   }

@@ -38,7 +38,8 @@ $input-radius: 20px;
   &__control {
     box-sizing: border-box;
     width: 100%;
-    height: $input-height;
+    // Can be lowered by a parent, e.g. to fit the field into a list row.
+    height: var(--input-height, #{$input-height});
     padding: $input-padding;
     border: none;
     border-radius: $input-radius;

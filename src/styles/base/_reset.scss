@@ -15,3 +15,11 @@ body {
   // User texts may contain very long words; they break instead of widening the layout.
   overflow-wrap: anywhere;
 }
+
+// The page and the footer share the viewport: short pages fill it without scrolling,
+// the footer then sits at the bottom.
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}

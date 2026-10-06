@@ -1,4 +1,8 @@
-<div class="ingredient-list-item" [class.ingredient-list-item--editing]="isEditing()">
+<div
+  class="ingredient-list-item"
+  [class.ingredient-list-item--editing]="isEditing()"
+  [style.min-height.px]="isEditing() ? reservedHeight() : null"
+>
   @if (isEditing()) {
     <div class="ingredient-list-item__edit">
       <app-input

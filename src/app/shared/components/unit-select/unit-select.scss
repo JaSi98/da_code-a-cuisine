@@ -33,7 +33,8 @@ $unit-select-option-line-height: 18px;
     align-items: center;
     gap: $unit-select-gap;
     width: 100%;
-    height: $unit-select-height;
+    // Can be lowered by a parent, e.g. to fit the select into a list row.
+    height: var(--unit-select-height, #{$unit-select-height});
     padding: $unit-select-padding;
     border: none;
     border-radius: $unit-select-radius;

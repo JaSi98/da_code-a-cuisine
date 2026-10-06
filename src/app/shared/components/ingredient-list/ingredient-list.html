@@ -2,7 +2,7 @@
   <h2 id="ingredient-list-title" class="ingredient-list__title">List of your Ingredients</h2>
   @if (entries().length > 0) {
     <ul class="ingredient-list__items">
-      @for (entry of entries(); track $index) {
+      @for (entry of entries(); track entry) {
         <li class="ingredient-list__item">
           <app-ingredient-list-item
             [entry]="entry"

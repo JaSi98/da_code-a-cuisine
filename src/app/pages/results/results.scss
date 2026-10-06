@@ -32,7 +32,7 @@ $results-mobile-list-gap: 12px;
   @include focus-ring-on-dark;
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
+  flex: 1 0 auto;
   background-color: $color-green-olive;
   color: $color-cream;
 }

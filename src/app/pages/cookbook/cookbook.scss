@@ -31,7 +31,7 @@ $cookbook-mobile-cuisine-gap: 32px;
 
 :host {
   display: block;
-  min-height: 100dvh;
+  flex: 1 0 auto;
   background-color: $color-white;
   color: $color-green-dark;
 }
