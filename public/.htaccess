@@ -1,0 +1,71 @@
+# Apache configuration for the built app (dist/code-a-cuisine/browser).
+# The app runs in the folder /angular-projects/code-a-cuisine/. When the folder changes, update
+# RewriteBase and ErrorDocument here and baseHref of the production build in angular.json.
+
+# ---------------------------------------------------------------------------------------------
+# Routing: the app has its own routes (e.g. /cookbook/italian). Requests for files that do not
+# exist are answered with index.html, so deep links and reloads work.
+# ---------------------------------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /angular-projects/code-a-cuisine/
+
+  # Uncomment to send all visitors to HTTPS, if the host does not do this already.
+  # RewriteCond %{HTTPS} off
+  # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . index.html [L]
+</IfModule>
+
+DirectoryIndex index.html
+Options -Indexes
+
+# ---------------------------------------------------------------------------------------------
+# Types that older Apache versions do not know.
+# ---------------------------------------------------------------------------------------------
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+  AddType image/svg+xml .svg
+  AddType font/woff2 .woff2
+  AddType font/ttf .ttf
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
+# ---------------------------------------------------------------------------------------------
+# Compression of text files.
+# ---------------------------------------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain application/javascript application/json image/svg+xml font/ttf
+</IfModule>
+
+# ---------------------------------------------------------------------------------------------
+# Caching: JavaScript and CSS have a content hash in their name (main-AB12CD34.js) and can be
+# kept for a year.
+# index.html is always checked again, so a new version is loaded right after a deployment.
+# ---------------------------------------------------------------------------------------------
+<IfModule mod_headers.c>
+  <FilesMatch "-[0-9A-Za-z_-]{8,}\.(js|css)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(webp|png|svg|jpg|jpeg|woff2|ttf|ico)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+  <FilesMatch "^index\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+
+  # ---------------------------------------------------------------------------------------------
+  # Security headers.
+  # ---------------------------------------------------------------------------------------------
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+# The rewrite rule above sends unknown paths to index.html, so this only applies when the
+# rewrite module is missing.
+ErrorDocument 404 /angular-projects/code-a-cuisine/index.html

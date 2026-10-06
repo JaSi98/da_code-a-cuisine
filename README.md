@@ -35,6 +35,12 @@ npm run build      # production build in dist/
 npm test           # unit tests
 ```
 
+### Deployment
+
+`npm run build` creates the app in `dist/code-a-cuisine/browser`. The production build expects the folder **`/angular-projects/code-a-cuisine/`** (`baseHref` in `angular.json`). Upload the content of `browser/` including the hidden `.htaccess`, which sends all app routes to `index.html` and sets caching and security headers on Apache. For another folder, change `baseHref` and the paths in [`public/.htaccess`](public/.htaccess).
+
+The n8n webhook only accepts requests from the origins listed in *Allowed Origins*; add the domain of the server there.
+
 ### Configuration
 
 The endpoints live in [`src/environments/environment.ts`](src/environments/environment.ts):
