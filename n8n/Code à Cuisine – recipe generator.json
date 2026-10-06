@@ -1,0 +1,597 @@
+{
+  "name": "Code à Cuisine – recipe generator",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "generate-recipe",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "http://localhost:4200,http://localhost:4300"
+        }
+      },
+      "id": "bd1c9f33-7d68-47f8-97c8-5e7777262c8f",
+      "name": "Receive recipe request",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        1472,
+        512
+      ],
+      "webhookId": "8adade21-bf27-40f9-9686-277e4f3f66f8",
+      "notesInFlow": true,
+      "notes": "POST /webhook/generate-recipe from the Angular app. Answers come from the \"Send …\" / \"Reject …\" nodes."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Checks the request from the Angular app again on the server and finds the client IP address.\nconst UNITS = ['gram', 'kg', 'ml', 'l', 'piece'];\nconst COOKING_TIMES = ['quick', 'medium', 'complex'];\nconst CUISINES = ['german', 'italian', 'indian', 'japanese', 'gourmet', 'fusion', 'arabic'];\nconst DIETS = ['vegetarian', 'vegan', 'keto', 'none'];\nconst SERVINGS = { min: 1, max: 12 };\nconst COOKS = { min: 1, max: 3 };\nconst MAX_INGREDIENTS = 30;\nconst MAX_NAME_LENGTH = 60;\nconst MAX_AMOUNT = 100000;\n// Letters of all languages, digits and a few punctuation marks; keeps prompt injection out.\nconst NAME_PATTERN = /^[\\p{L}\\p{N} .,'()&\\/-]+$/u;\nconst IPV4 = /^(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}$/;\nconst IPV6 = /^[0-9a-f:]+$/;\nconst UNKNOWN_IP = 'unknown';\n\nconst { body = {}, headers = {} } = $input.first().json;\nconst errors = [];\n\nfunction isInRange(value, range) {\n  return Number.isInteger(value) && value >= range.min && value <= range.max;\n}\n\nfunction isIpV6(value) {\n  return value.includes(':') && value.length <= 39 && IPV6.test(value) && value.split('::').length <= 2;\n}\n\n// Behind a proxy the original address is the first entry of X-Forwarded-For.\nfunction readClientIp() {\n  const forwarded = String(headers['x-forwarded-for'] || '').split(',')[0].trim();\n  const raw = String(forwarded || headers['x-real-ip'] || '').trim().toLowerCase();\n  if (!raw) {\n    return UNKNOWN_IP;\n  }\n  const address = raw.replace(/^::ffff:(?=\\d+\\.)/, '');\n  return IPV4.test(address) || isIpV6(address) ? address : null;\n}\n\nfunction cleanIngredient(entry, index) {\n  const name = typeof entry?.name === 'string' ? entry.name.trim().replace(/\\s+/g, ' ') : '';\n  if (!name || name.length > MAX_NAME_LENGTH || !NAME_PATTERN.test(name)) {\n    errors.push(`ingredients[${index}].name is missing or contains invalid characters`);\n  }\n  if (typeof entry?.amount !== 'number' || !(entry.amount > 0) || entry.amount > MAX_AMOUNT) {\n    errors.push(`ingredients[${index}].amount must be a number between 0 and ${MAX_AMOUNT}`);\n  }\n  if (!UNITS.includes(entry?.unit)) {\n    errors.push(`ingredients[${index}].unit must be one of ${UNITS.join(', ')}`);\n  }\n  return { name, amount: entry?.amount, unit: entry?.unit };\n}\n\nconst rawIngredients = Array.isArray(body.ingredients) ? body.ingredients : [];\nif (rawIngredients.length < 1 || rawIngredients.length > MAX_INGREDIENTS) {\n  errors.push(`ingredients must contain 1 to ${MAX_INGREDIENTS} entries`);\n}\nconst ingredients = rawIngredients.slice(0, MAX_INGREDIENTS).map(cleanIngredient);\n\nif (!isInRange(body.servings, SERVINGS)) errors.push('servings must be a whole number from 1 to 12');\nif (!isInRange(body.cooks, COOKS)) errors.push('cooks must be a whole number from 1 to 3');\nif (!COOKING_TIMES.includes(body.cookingTime)) errors.push(`cookingTime must be one of ${COOKING_TIMES.join(', ')}`);\nif (!CUISINES.includes(body.cuisine)) errors.push(`cuisine must be one of ${CUISINES.join(', ')}`);\nif (!DIETS.includes(body.diet)) errors.push(`diet must be one of ${DIETS.join(', ')}`);\n\nconst ip = readClientIp();\nif (!ip) errors.push('the client IP address is invalid');\n\nconsole.log(`[recipe-generator] request from ${ip ?? 'invalid ip'}: ${errors.length} validation error(s)`);\n\nreturn [{\n  json: {\n    isValid: errors.length === 0,\n    errors,\n    ip,\n    request: {\n      ingredients,\n      servings: body.servings,\n      cooks: body.cooks,\n      cookingTime: body.cookingTime,\n      cuisine: body.cuisine,\n      diet: body.diet,\n    },\n  },\n}];"
+      },
+      "id": "a31b5571-e64e-49f4-8fd7-318dc449fd6f",
+      "name": "Validate request and identify client",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1712,
+        512
+      ],
+      "notesInFlow": true,
+      "notes": "Validates ingredients, servings, cooks, time, cuisine and diet again and reads the client IP (IPv4/IPv6)."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "59034686-c13a-4740-82c0-ff9929e7433c",
+              "leftValue": "={{ $json.isValid }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "afb53b39-47b8-441a-b90a-9475247f9f5c",
+      "name": "Is the request valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1952,
+        512
+      ],
+      "notesInFlow": true,
+      "notes": "false → 400 with the list of validation errors."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ message: \"The request is invalid.\", errors: $json.errors }) }}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "id": "7cf412bb-e765-4f49-8649-bcf4406b4fdc",
+      "name": "Reject invalid request",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2192,
+        704
+      ],
+      "notesInFlow": true,
+      "notes": "HTTP 400: the app shows its general error dialog."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Daily limits as cost airbag: requests per IP address and recipes for the whole system.\n// The counters live in the workflow's static data; they are only kept for production runs\n// of the active workflow (not for manual test runs in the editor).\nconst REQUESTS_PER_IP = 3;\nconst SYSTEM_RECIPES_PER_DAY = 12;\nconst RECIPES_PER_REQUEST = 3;\n\nconst data = $getWorkflowStaticData('global');\nconst today = new Date().toISOString().slice(0, 10);\nif (data.quotaDate !== today) {\n  data.quotaDate = today;\n  data.requestsByIp = {};\n  data.recipesToday = 0;\n}\n\nconst input = $input.first().json;\nconst usedByIp = data.requestsByIp[input.ip] || 0;\nconst hasIpQuota = usedByIp < REQUESTS_PER_IP;\nconst hasSystemQuota = data.recipesToday + RECIPES_PER_REQUEST <= SYSTEM_RECIPES_PER_DAY;\n\nconsole.log(`[recipe-generator] quota ${input.ip}: ${usedByIp}/${REQUESTS_PER_IP}, system ${data.recipesToday}/${SYSTEM_RECIPES_PER_DAY}`);\n\nreturn [{\n  json: {\n    ...input,\n    isQuotaAvailable: hasIpQuota && hasSystemQuota,\n    quotaReason: !hasIpQuota ? 'ip' : !hasSystemQuota ? 'system' : null,\n    quota: { remaining: Math.max(0, REQUESTS_PER_IP - usedByIp), limit: REQUESTS_PER_IP },\n  },\n}];"
+      },
+      "id": "f64c568b-4c75-4116-bf5c-78b2da6aae3d",
+      "name": "Check daily quota",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2192,
+        512
+      ],
+      "notesInFlow": true,
+      "notes": "3 requests per IP and day, 12 recipes per day for the whole system."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "021a846f-1d52-4a91-98d6-37899267fad6",
+              "leftValue": "={{ $json.isQuotaAvailable }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "fea12c3f-323f-4c42-939f-7a112052c0e9",
+      "name": "Is quota available?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        2432,
+        512
+      ],
+      "notesInFlow": true,
+      "notes": "false → 429, the app shows \"Daily limit reached\"."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ message: $json.quotaReason === \"ip\" ? \"You have used all recipe requests for today.\" : \"The daily recipe limit of the app is reached.\", reason: $json.quotaReason, quota: { remaining: 0, limit: $json.quota.limit } }) }}",
+        "options": {
+          "responseCode": 429
+        }
+      },
+      "id": "c1b24274-c8d3-4ba3-a942-1f247fa93ce1",
+      "name": "Reject request over the daily limit",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2672,
+        144
+      ],
+      "notesInFlow": true,
+      "notes": "HTTP 429 with the reason (ip or system)."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Prepares the AI agent: fixed rules as system message, the user's input as prompt.\nconst { request } = $input.first().json;\n\nconst COOKING_TIME_RULES = {\n  quick: 'at most 20 minutes in total',\n  medium: 'between 20 and 45 minutes in total',\n  complex: 'more than 45 minutes in total',\n};\nconst DIET_RULES = {\n  vegetarian: 'vegetarian: no meat, no fish, no seafood, no gelatine',\n  vegan: 'vegan: no animal products at all (no meat, fish, dairy, eggs, honey)',\n  keto: 'keto: at most 20 g carbohydrates per serving, no sugar, no grains, no potatoes',\n  none: 'no dietary restriction',\n};\n\nconst SYSTEM = [\n  'You are an experienced chef who writes recipes for home cooks and beginners.',\n  'Answer only with JSON that matches the given schema. Write all texts in English.',\n  'Create exactly 3 recipes that clearly differ in preparation method or flavour.',\n  'Each recipe must use at least 70 % of the listed user ingredients; write their names exactly as listed and set isMissing to false.',\n  'Each recipe may add at most 3 basic extra ingredients (e.g. oil, salt, garlic); set isMissing to true for them.',\n  'First check every listed user ingredient against the diet. Never use one that conflicts with it; list it in excludedIngredients with its name exactly as listed and a short reason (e.g. \"contains meat\"). Leave excludedIngredients empty if all ingredients fit.',\n  'The 70 % rule applies to the user ingredients that fit the diet.',\n  'Scale all amounts to the number of servings. Use only the units gram, kg, ml, l and piece.',\n  'Use spices, techniques and dishes typical for the requested cuisine.',\n  'Split the work between the cooks: every step has a chef number from 1 to the number of cooks, and every cook gets steps.',\n  'Order steps chronologically. Steps that run at the same time share their number with a letter, e.g. \"2a\" and \"2b\".',\n  'Use waiting times (oven, simmering, resting) for other preparations and say so in the step.',\n  'Describe every step clearly enough for beginners. nutritionPerServing holds kcal and grams per serving.',\n].join('\\n');\n\nconst ingredientList = request.ingredients\n  .map((entry) => `- ${entry.name}: ${entry.amount} ${entry.unit}`)\n  .join('\\n');\n\nconst prompt = [\n  'Ingredients available at home:',\n  ingredientList,\n  '',\n  `Servings: ${request.servings}`,\n  `Number of cooks: ${request.cooks}`,\n  `Cooking time: ${COOKING_TIME_RULES[request.cookingTime]}`,\n  `Cuisine: ${request.cuisine}`,\n  `Diet: ${DIET_RULES[request.diet]}`,\n].join('\\n');\n\nreturn [{ json: { systemMessage: SYSTEM, prompt } }];"
+      },
+      "id": "39619121-fb3f-41f2-b080-79cfe6af436b",
+      "name": "Build recipe prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2672,
+        512
+      ],
+      "notesInFlow": true,
+      "notes": "System rules from the user stories plus the user input; JSON schema for the answer."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "={{ $json.systemMessage }}"
+        }
+      },
+      "id": "01bc9f03-e384-4ec0-b581-93aeab4d28f7",
+      "name": "Generate recipes with AI agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        2848,
+        320
+      ],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "notesInFlow": true,
+      "onError": "continueErrorOutput",
+      "notes": "Chef agent: creates 3 recipes from the prompt; the parser forces the JSON format."
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {
+          "maxOutputTokens": 8192,
+          "temperature": 0.9
+        }
+      },
+      "id": "481bffc3-5d67-4d42-882f-47326028bbcd",
+      "name": "Gemini chat model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2848,
+        752
+      ],
+      "notesInFlow": true,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "PLtxsZJTbYMKAsMU",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      },
+      "notes": "Language model of the agent."
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"excludedIngredients\": {\n      \"type\": \"array\",\n      \"description\": \"User ingredients that do not fit the diet; empty if all fit\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"name\": { \"type\": \"string\", \"description\": \"Exactly as listed by the user\" },\n          \"reason\": { \"type\": \"string\", \"description\": \"Short reason, e.g. \\\"contains meat\\\"\" }\n        },\n        \"required\": [\"name\", \"reason\"]\n      }\n    },\n    \"recipes\": {\n      \"type\": \"array\",\n      \"minItems\": 3,\n      \"maxItems\": 3,\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"title\": { \"type\": \"string\" },\n          \"cookingTime\": { \"type\": \"integer\", \"description\": \"Total time in minutes\" },\n          \"ingredients\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"name\": { \"type\": \"string\" },\n                \"amount\": { \"type\": \"number\" },\n                \"unit\": { \"type\": \"string\", \"enum\": [\"gram\", \"kg\", \"ml\", \"l\", \"piece\"] },\n                \"isMissing\": { \"type\": \"boolean\" }\n              },\n              \"required\": [\"name\", \"amount\", \"unit\", \"isMissing\"]\n            }\n          },\n          \"steps\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"number\": { \"type\": \"string\", \"description\": \"e.g. \\\"1\\\", or \\\"2a\\\"/\\\"2b\\\" for parallel\nsteps\" },\n                \"title\": { \"type\": \"str\n                \"description\": { \"type\": \"string\" },\n                \"chef\": { \"type\": \"integer\", \"description\": \"Number of the cook, from 1\" }\n              },\n              \"required\": [\"number\", \"title\", \"description\", \"chef\"]\n            }\n          },\n          \"nutritionPerServing\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"energy\": { \"type\": \"inter serving\" },\n              \"protein\": { \"type\": \"intper serving\" },\n              \"fat\": { \"type\": \"integerserving\" },\n              \"carbs\": { \"type\": \"integr serving\" }\n            },\n            \"required\": [\"energy\", \"pro\n          }\n        },\n        \"required\": [\"title\", \"cookingT \"nutritionPerServing\"]\n      }\n    }\n  },\n  \"required\": [\"recipes\", \"excludedIngr\n}"
+      },
+      "id": "e80f6312-55c3-420a-9ff1-3153b2488b87",
+      "name": "Recipe output format",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        3024,
+        752
+      ],
+      "notesInFlow": true,
+      "notes": "JSON schema of the 3 recipes."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Checks the agent's structured answer against the rules of the user stories\n// before saving.\nconst MIN_USAGE = 0.7;\nconst MAX_MISSING = 3;\nconst UNITS = ['gram', 'kg', 'ml', 'l', 'piece'];\nconst TIME_RANGES = {\n  quick: [1, 20],\n  medium: [20, 45],\n  complex: [46, 600],\n};\n\nconst { request } = $('Check daily quota').first().json;\nconst problems = [];\n\n// With an output parser the agent returns an object;\n// a plain text answer is parsed as fallback.\nlet answer = {};\ntry {\n  const output = $input.first().json.output;\n  const parsed = typeof output === 'string' ? JSON.parse(output) : output;\n  answer = parsed ?? {};\n} catch (error) {\n  problems.push('the answer is not valid JSON');\n}\nconst recipes = answer.recipes ?? [];\n\n// Only user ingredients count as excluded;\n// the agent cannot drop anything else this way.\nconst allUserNames = request.ingredients.map(\n  (entry) => entry.name.toLowerCase(),\n);\nconst excludedIngredients = (answer.excludedIngredients ?? [])\n  .filter((entry) =>\n    allUserNames.includes(String(entry.name).toLowerCase()),\n  )\n  .map((entry) => ({\n    name: String(entry.name),\n    reason: String(entry.reason ?? 'does not fit the diet'),\n  }));\nconst excludedNames = excludedIngredients.map(\n  (entry) => entry.name.toLowerCase(),\n);\nconst userNames = allUserNames.filter(\n  (name) => !excludedNames.includes(name),\n);\nif (userNames.length === 0) {\n  problems.push('none of the ingredients fits the diet');\n}\n\nfunction namesMatch(name, userName) {\n  return name.includes(userName) || userName.includes(name);\n}\n\nfunction isUserIngredient(name) {\n  return userNames.some((userName) => namesMatch(name, userName));\n}\n\n// The flag is set again here, so it never depends on the model alone.\nfunction markMissing(ingredient) {\n  const name = String(ingredient.name ?? '').trim();\n  const isMissing = !isUserIngredient(name.toLowerCase());\n  return { ...ingredient, name, isMissing };\n}\n\nfunction countUsedUserIngredients(ingredients) {\n  const ownNames = ingredients\n    .filter((ingredient) => !ingredient.isMissing)\n    .map((ingredient) => ingredient.name.toLowerCase());\n  return userNames.filter((userName) =>\n    ownNames.some((name) => namesMatch(name, userName)),\n  ).length;\n}\n\nfunction hasInvalidAmount(ingredient) {\n  return !UNITS.includes(ingredient.unit) || !(ingredient.amount > 0);\n}\n\nfunction checkRecipe(recipe, index) {\n  const label = `recipe ${index + 1}`;\n  const ingredients = (recipe.ingredients ?? []).map(markMissing);\n  const missing = ingredients.filter((item) => item.isMissing).length;\n  const usage = countUsedUserIngredients(ingredients) / userNames.length;\n  const [minTime, maxTime] = TIME_RANGES[request.cookingTime];\n  const time = recipe.cookingTime;\n  const steps = recipe.steps ?? [];\n  const chefs = new Set(steps.map((step) => step.chef));\n  const isChefValid = (chef) => chef >= 1 && chef <= request.cooks;\n\n  if (!recipe.title?.trim()) {\n    problems.push(`${label}: title is missing`);\n  }\n  if (missing > MAX_MISSING) {\n    problems.push(`${label}: ${missing} extra ingredients`);\n  }\n  if (usage < MIN_USAGE) {\n    problems.push(`${label}: uses less than 70 % of the user ingredients`);\n  }\n  if (!(time >= minTime && time <= maxTime)) {\n    problems.push(`${label}: cooking time does not fit the category`);\n  }\n  if (ingredients.some(hasInvalidAmount)) {\n    problems.push(`${label}: invalid amount or unit`);\n  }\n  if (steps.length === 0) {\n    problems.push(`${label}: no steps`);\n  }\n  if ([...chefs].some((chef) => !isChefValid(chef))) {\n    problems.push(`${label}: step for an unknown cook`);\n  }\n  if (chefs.size !== request.cooks) {\n    problems.push(`${label}: not every cook has steps`);\n  }\n\n  return {\n    title: recipe.title?.trim(),\n    cooking_time: time,\n    cooking_time_category: request.cookingTime,\n    cuisine: request.cuisine,\n    diet: request.diet,\n    servings: request.servings,\n    cooks: request.cooks,\n    ingredients,\n    steps: steps.map((step) => ({ ...step, number: String(step.number) })),\n    nutrition_per_serving: recipe.nutritionPerServing,\n    likes: 0,\n  };\n}\n\nif (recipes.length !== 3) {\n  problems.push(`expected 3 recipes, got ${recipes.length}`);\n}\nconst rows = recipes.map(checkRecipe);\nconst titles = new Set(rows.map((row) => row.title?.toLowerCase()));\nif (titles.size !== rows.length) {\n  problems.push('the recipes are not different');\n}\n\nconsole.log(\n  `[recipe-generator] ${rows.length} recipe(s), ${problems.length} problem(s)`,\n  problems,\n);\n\nreturn [\n  {\n    json: {\n      isValid: problems.length === 0,\n      problems,\n      rows,\n      excludedIngredients,\n    },\n  },\n];\n"
+      },
+      "id": "fb21e3d7-8d97-4bb6-8a32-940bd9a67451",
+      "name": "Check generated recipes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3152,
+        512
+      ],
+      "notesInFlow": true,
+      "notes": "Exactly 3 different recipes, ≥ 70 % user ingredients, ≤ 3 extras, fitting time, steps for every cook."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "66658b06-24cd-40b4-aa5e-ccfe89064968",
+              "leftValue": "={{ $json.isValid }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3bc5c68f-51d2-4bce-a2e5-1e370aeec5b4",
+      "name": "Do the recipes meet the rules?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        3392,
+        512
+      ],
+      "notesInFlow": true,
+      "notes": "false → 502; the request does not count against the quota."
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "rows",
+        "options": {}
+      },
+      "id": "440adff6-b7f5-4d53-a7d5-b0cf2ca33005",
+      "name": "Split recipes into rows",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        3632,
+        512
+      ],
+      "notesInFlow": true,
+      "notes": "One item per recipe, so the Supabase node creates one row each."
+    },
+    {
+      "parameters": {
+        "tableId": "recipes",
+        "dataToSend": "autoMapInputData"
+      },
+      "id": "f648b8ad-a47b-4f4c-855d-a14b07fdf897",
+      "name": "Save recipes in Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3872,
+        512
+      ],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000,
+      "notesInFlow": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "7G6plPf7D86g2Q8y",
+          "name": "Supabase account"
+        }
+      },
+      "onError": "continueErrorOutput",
+      "notes": "Inserts each recipe into the recipes table and returns it with its id."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Counts the successful request against both daily limits and builds the answer for the app.\nconst RECIPES_PER_REQUEST = 3;\n\nconst { ip, quota } = $('Check daily quota').first().json;\nconst { excludedIngredients } = $('Check generated recipes').first().json;\nconst data = $getWorkflowStaticData('global');\ndata.requestsByIp[ip] = (data.requestsByIp[ip] || 0) + 1;\ndata.recipesToday += RECIPES_PER_REQUEST;\n\nconst recipes = $input.all().map(({ json: row }) => ({\n  id: row.id,\n  title: row.title,\n  cookingTime: row.cooking_time,\n  cookingTimeCategory: row.cooking_time_category,\n  cuisine: row.cuisine,\n  diet: row.diet,\n  servings: row.servings,\n  cooks: row.cooks,\n  ingredients: row.ingredients,\n  steps: row.steps,\n  nutritionPerServing: row.nutrition_per_serving,\n  likes: row.likes,\n}));\n\nconsole.log(`[recipe-generator] saved ${recipes.length} recipe(s) for ${ip}`);\n\nreturn [{\n  json: {\n    recipes,\n    excludedIngredients,\n    quota: { remaining: Math.max(0, quota.remaining - 1), limit: quota.limit },\n  },\n}];"
+      },
+      "id": "b8851a33-9a00-4d8f-898a-17f1a46b46cf",
+      "name": "Count quota and build answer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4112,
+        512
+      ],
+      "notesInFlow": true,
+      "notes": "Counts the request and maps the rows to the format of the app."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "1b94ed7b-5816-4815-92b1-8f777ebc9a86",
+      "name": "Send recipes",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        4352,
+        512
+      ],
+      "notesInFlow": true,
+      "notes": "HTTP 200: { recipes, quota }."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ message: \"The recipes could not be created. Please try again.\" }) }}",
+        "options": {
+          "responseCode": 502
+        }
+      },
+      "id": "d396430f-6496-49b6-8ec7-f0e1bfd054ab",
+      "name": "Report generation failure",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        3648,
+        848
+      ],
+      "notesInFlow": true,
+      "notes": "HTTP 502 if Gemini, the rule check or Supabase fails."
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Receive recipe request": {
+      "main": [
+        [
+          {
+            "node": "Validate request and identify client",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate request and identify client": {
+      "main": [
+        [
+          {
+            "node": "Is the request valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is the request valid?": {
+      "main": [
+        [
+          {
+            "node": "Check daily quota",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Reject invalid request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check daily quota": {
+      "main": [
+        [
+          {
+            "node": "Is quota available?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is quota available?": {
+      "main": [
+        [
+          {
+            "node": "Build recipe prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Reject request over the daily limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build recipe prompt": {
+      "main": [
+        [
+          {
+            "node": "Generate recipes with AI agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate recipes with AI agent": {
+      "main": [
+        [
+          {
+            "node": "Check generated recipes",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Report generation failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check generated recipes": {
+      "main": [
+        [
+          {
+            "node": "Do the recipes meet the rules?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Do the recipes meet the rules?": {
+      "main": [
+        [
+          {
+            "node": "Split recipes into rows",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Report generation failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split recipes into rows": {
+      "main": [
+        [
+          {
+            "node": "Save recipes in Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save recipes in Supabase": {
+      "main": [
+        [
+          {
+            "node": "Count quota and build answer",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Report generation failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Count quota and build answer": {
+      "main": [
+        [
+          {
+            "node": "Send recipes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini chat model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate recipes with AI agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recipe output format": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Generate recipes with AI agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d2867091-5e25-48c2-842b-21b05bbde1e5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5d45f31a5da67f52dec1869b51bcdd92439c4cd21e66475335389319da744624"
+  },
+  "nodeGroups": [],
+  "id": "CAVKzBGtbFFDiMZ7",
+  "tags": []
+}

@@ -1,0 +1,107 @@
+{
+  "name": "Code à Cuisine – error notification",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e5f31e25-5e0f-4da3-bfe6-174258bba5d7",
+      "name": "Catch failed run",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ],
+      "notes": "Runs whenever a workflow that names this one as error workflow fails.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Turns the error data of the failed run into a short report for the email.\nconst { execution = {}, workflow = {} } = $input.first().json;\nconst error = execution.error ?? {};\n\nconst lines = [\n  `Workflow: ${workflow.name ?? 'unknown'} (${workflow.id ?? '-'})`,\n  `Execution: ${execution.id ?? '-'} (${execution.mode ?? '-'})`,\n  `Failed node: ${execution.lastNodeExecuted ?? error.node?.name ?? 'unknown'}`,\n  `Message: ${error.message ?? 'no message'}`,\n  '',\n  `Open the execution: ${execution.url ?? 'not available'}`,\n  '',\n  error.stack ?? '',\n];\n\nconsole.log(`[error-notification] ${workflow.name}: ${error.message}`);\n\nreturn [{\n  json: {\n    subject: `Code à Cuisine: run of \"${workflow.name ?? 'workflow'}\" failed`,\n    text: lines.join('\\n'),\n  },\n}];"
+      },
+      "id": "cb800276-d463-455b-af07-66bf654e76eb",
+      "name": "Build error report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ],
+      "notes": "Workflow, failed node, message and link to the execution.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "fromEmail": "n8n@example.com",
+        "toEmail": "you@example.com",
+        "subject": "={{ $json.subject }}",
+        "emailFormat": "text",
+        "text": "={{ $json.text }}",
+        "options": {}
+      },
+      "id": "66aff22a-5bb6-4b31-b428-85b01ce48387",
+      "name": "Email developer about failure",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        480,
+        300
+      ],
+      "notes": "Replace sender and recipient; needs an SMTP credential.",
+      "notesInFlow": true,
+      "credentials": {
+        "smtp": {
+          "id": "",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Code à Cuisine – error notification\n\nSet this workflow as *Error workflow* in the settings of the recipe generator. Then every failed run sends an email with the failed node, the message and a link to the execution.\n\nSetup: SMTP credential **\"SMTP account\"**, sender and recipient address in the email node.",
+        "height": 240,
+        "width": 560
+      },
+      "id": "8bd48670-36c0-40cd-b596-a14d0b89bcd6",
+      "name": "Note fdd224c7",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Catch failed run": {
+      "main": [
+        [
+          {
+            "node": "Build error report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build error report": {
+      "main": [
+        [
+          {
+            "node": "Email developer about failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

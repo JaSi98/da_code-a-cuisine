@@ -120,6 +120,25 @@ Each IP address may request recipes three times per day. The workflow enforces t
 
 The app also counts the requests of the browser per day (`RecipeQuota`) and shows "x of 3 recipe requests left today" on the preferences page, so the user knows before sending. This count is only a hint: the answer of the workflow always wins.
 
+## n8n workflows
+
+The folder [`n8n/`](n8n) contains the exported workflows:
+
+| File | Purpose |
+| --- | --- |
+| `Code à Cuisine – recipe generator.json` | Webhook → validation → daily quota → recipe agent (Gemini) → rule check → Supabase → answer |
+| `Code à Cuisine – error notification.json` | Error trigger that emails a report when a run of the generator fails |
+
+Import both under *Workflows → Import from file*, then:
+
+1. Create a *Google Gemini (PaLM) API* credential and select it in **Gemini chat model**.
+2. Create a *Supabase API* credential with the project URL and the secret key (`sb_secret_…`) and select it in **Save recipes in Supabase**.
+3. In the error workflow, add an SMTP credential and the sender and recipient addresses.
+4. In the settings of the generator, choose **Code à Cuisine – error notification** as error workflow.
+5. Add the domain of the app to *Allowed Origins* of the webhook, activate both workflows and put the production URL into `environment.ts`.
+
+The daily limits (3 requests per IP address, 12 recipes in total) are constants at the top of the node **Check daily quota**.
+
 ## Database
 
 [`supabase/schema.sql`](supabase/schema.sql) creates the `recipes` table, its read-only policy for the public and the function `change_recipe_likes(recipe_id, delta)`, which is the only way the app changes data. Run it once in the SQL editor of the Supabase project.
@@ -138,6 +157,7 @@ src/app/
     └── utils/         small helpers
 src/styles/            SCSS (abstracts, base, fonts)
 supabase/              database schema
+n8n/                   exported n8n workflows
 ```
 
 ## Routes
