@@ -51,5 +51,11 @@ export const routes: Routes = [
     title: `Legal notice – ${APP_NAME}`,
     loadComponent: () => import('./pages/imprint/imprint').then((page) => page.Imprint),
   },
+  {
+    path: 'privacy-policy',
+    title: `Privacy policy – ${APP_NAME}`,
+    loadComponent: () =>
+      import('./pages/privacy-policy/privacy-policy').then((page) => page.PrivacyPolicy),
+  },
   { path: '**', redirectTo: '' },
 ];

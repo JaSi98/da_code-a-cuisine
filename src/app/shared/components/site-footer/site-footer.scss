@@ -26,6 +26,12 @@ $site-footer-gap: 8px 24px;
     margin: 0;
   }
 
+  &__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $site-footer-gap;
+  }
+
   &__link {
     color: inherit;
     text-underline-offset: 3px;

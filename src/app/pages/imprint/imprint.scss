@@ -8,6 +8,7 @@ $imprint-space-bottom: 64px;
 $imprint-gap: 32px;
 $imprint-section-gap: 8px;
 $imprint-text-line-height: 1.5;
+$imprint-list-indent: 20px;
 
 $imprint-mobile-space-top: 24px;
 
@@ -54,10 +55,15 @@ $imprint-mobile-space-top: 24px;
   }
 
   &__address,
-  &__text {
+  &__text,
+  &__list {
     margin: 0;
     font-size: font-size(text-large);
     font-style: normal;
     line-height: $imprint-text-line-height;
+  }
+
+  &__list {
+    padding-left: $imprint-list-indent;
   }
 }
